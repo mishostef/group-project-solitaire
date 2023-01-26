@@ -4,7 +4,7 @@ import * as PIXI from "pixi.js";
 
 import { gsap } from "gsap";
 import { PixiPlugin } from "gsap/PixiPlugin.js";
-import { createBox, transformTo, turnCard } from "./utils";
+import { createBox, getMask, turnCard } from "./utils";
 
 gsap.registerPlugin(PixiPlugin);
 PixiPlugin.registerPIXI(PIXI);
@@ -50,7 +50,14 @@ export function test() {
   board.appendChild(app.view as HTMLCanvasElement);
   const front = createBox(300, 300, 0xa777aa, 50, 100);
   const back = createBox(300, 300, 0xe777e, 50, 100);
+  const masked = createBox(300, 500, 0xaa55555, 100, 100);
+  
+  const mask = getMask(300,500, 5);
+  app.stage.addChild(mask);
 
+  masked.mask = mask;
+  app.stage.addChild(masked);
+  
   app.stage.addChild(front);
   app.stage.addChild(back);
   turnCard(back, front);

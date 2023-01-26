@@ -2,6 +2,7 @@ import * as PIXI from "pixi.js";
 
 import { gsap } from "gsap";
 import { PixiPlugin } from "gsap/PixiPlugin.js";
+import { DisplayObject } from "pixi.js";
 
 gsap.registerPlugin(PixiPlugin);
 PixiPlugin.registerPIXI(PIXI);
@@ -57,4 +58,16 @@ export function createCircle(x, y, radius, color) {
   circle.endFill();
   circle.position.set(x, y);
   return circle;
+}
+
+export function getMask(x, y, radius) {
+  const mask = new PIXI.Graphics();
+  mask.beginFill(0xffffff);
+  const width = 100;
+  const height = 100;
+  mask.drawRoundedRect(-width / 2, -height / 2, width, height, radius);
+  mask.endFill();
+  mask.pivot.set(0, 0); 
+  mask.position.set(x, y);
+  return mask;
 }
