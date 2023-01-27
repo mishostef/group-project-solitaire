@@ -79,10 +79,7 @@ function sliceCard(x: number, y: number, w:  number, h: number) {
 function sliceDeck(arr, x: number, y: number, row) {
     for ( let i = 0; i < 13; i++) {
         
-        const startX = x;
-        const startY = y;
-    
-        const card = sliceCard(startX + (i*width) + (i * 48) + i/2, startY, width, height);
+        const card = sliceCard(x + (i*width) + (i * 48) + i/2, y, width, height);
         
         card.position.set(20 + (i*100), row);
         arr.push(card)
@@ -101,6 +98,19 @@ function sliceDeck(arr, x: number, y: number, row) {
     }
 
     return arr;
+
+}
+
+//backCard()
+function backCard() {
+
+    const cardTexture = new PIXI.Texture(spritesheet);
+    const card = new PIXI.Sprite(cardTexture);
+    card.scale.set(scale);
+    
+    app.stage.addChild(card);
+     
+    return card;
 
 }
 
