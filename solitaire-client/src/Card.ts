@@ -12,7 +12,9 @@ export class Card extends Container {
     this.face = face;
     this.suit = suit;
     this.front = createBox(x, y, 0x0000ff, CARD_WIDTH / 2, CARD_HEIGHT / 2); ///will be changed
+    this.front.scale.set(0.5);
     this.back = createBox(x, y, 0xff0000, CARD_WIDTH / 2, CARD_HEIGHT / 2); ///will be changed
+    this.front.scale.set(0.5);
     app.stage.addChild(this.front);
     app.stage.addChild(this.back);
   }

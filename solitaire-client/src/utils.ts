@@ -4,6 +4,8 @@ import { gsap } from "gsap";
 import { PixiPlugin } from "gsap/PixiPlugin.js";
 import { DisplayObject } from "pixi.js";
 import { app } from "./app";
+import { Card } from "./Card";
+import { Suits } from "./constans";
 
 gsap.registerPlugin(PixiPlugin);
 PixiPlugin.registerPIXI(PIXI);
@@ -68,14 +70,14 @@ export function test() {
   clearScreen(app);
   const front = createBox(300, 300, 0xa777aa, 50, 100);
   const back = createBox(300, 300, 0xe777e, 50, 100);
-  const masked = createBox(300, 500, 0xaa55555, 100, 100);
+  // const masked = createBox(300, 500, 0xaa55555, 100, 100);
 
-  const mask = getMask(300, 500, 5);
-  app.stage.addChild(mask);
+  // const mask = getMask(300, 500, 5);
+  // app.stage.addChild(mask);
 
-  masked.mask = mask;
-  app.stage.addChild(masked);
-
+  // masked.mask = mask;
+  // app.stage.addChild(masked);
+  const card = new Card(400, 400, "A", Suits.hearts);
   app.stage.addChild(front);
   app.stage.addChild(back);
   turnCard(back, front);

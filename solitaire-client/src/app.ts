@@ -74,7 +74,7 @@ function sliceDeck(arr, x: number, y: number, row) {
   return arr;
 }
 
-//backCard()
+backCard()
 function backCard() {
   const cardTexture = new PIXI.Texture(spritesheet);
   const card = new PIXI.Sprite(cardTexture);

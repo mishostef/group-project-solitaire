@@ -37,23 +37,6 @@ document.getElementById("disconnect").addEventListener("click", () => {
 function showBoard() {
   initSection.style.display = "none";
   gameSection.style.display = "block";
-
-  test();
-}
-
-export function test() {
-  const board = document.getElementById("board");
-  const app = new PIXI.Application({
-    width: 800,
-    height: 600,
-  });
-  board.appendChild(app.view as HTMLCanvasElement);
-  const front = createBox(300, 300, 0xa777aa, 50, 100);
-  const back = createBox(300, 300, 0xe777e, 50, 100);
-
-  app.stage.addChild(front);
-  app.stage.addChild(back);
-  turnCard(back, front);
 }
 
 function showInit() {
