@@ -1,7 +1,8 @@
 //diamonds (♦), clubs (♣), hearts (♥) and spades (♠)
 
-export const CARD_HEIGHT = 410;
-export const CARD_WIDTH = 623;
+export const CARD_WIDTH = 410;
+export const CARD_HEIGHT = 620;
+export const CARD_SCALE = 0.2;
 export enum Suits {
   diamonds,
   clubs,

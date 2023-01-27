@@ -1,12 +1,12 @@
 import { Connection } from "./Connection";
 import { engine } from "./engine";
 import * as PIXI from "pixi.js";
-
 import { gsap } from "gsap";
 import { PixiPlugin } from "gsap/PixiPlugin.js";
 import { clearScreen, createBox, getMask, turnCard } from "./utils";
 import { Card } from "./Card";
-import { Suits } from "./constans";
+import { CARD_HEIGHT, CARD_SCALE, CARD_WIDTH, Suits } from "./constans";
+import { backCard, sliceDeck } from "./cardsTexture";
 
 gsap.registerPlugin(PixiPlugin);
 PixiPlugin.registerPIXI(PIXI);
@@ -19,11 +19,7 @@ export const app = new PIXI.Application({
 
 document.body.appendChild(app.view as HTMLCanvasElement);
 
-const spritesheet = PIXI.BaseTexture.from("assets/22331.jpg");
-
-const width = 410;
-const height = 620;
-const scale = 0.2;
+// Create Cards Deck
 
 const clubs = [];
 sliceDeck(clubs, 47, 847, 50);
@@ -37,6 +33,7 @@ sliceDeck(spades, 47, 2167, 350);
 const diamonds = [];
 sliceDeck(diamonds, 47, 2827, 500);
 
+//backCard();
 
 //const card = new Card(400, 400, "A", Suits.hearts);
 
@@ -63,54 +60,7 @@ export function test() {
   turnCard(back, front);
 }
 
-function sliceCard(x: number, y: number, w:  number, h: number) {
-    
-    const cardTexture = new PIXI.Texture(spritesheet, new PIXI.Rectangle(x, y, w, h));
-    const card = new PIXI.Sprite(cardTexture);
-    card.scale.set(scale);
-    
-    app.stage.addChild(card);
-     
-    return card;
-}
 
-function sliceDeck(arr, x: number, y: number, row) {
-    for ( let i = 0; i < 13; i++) {
-        
-        const card = sliceCard(x + (i*width) + (i * 48) + i/2, y, width, height);
-        
-        card.position.set(20 + (i*100), row);
-        arr.push(card)
-
-        const mask = new PIXI.Graphics();
-        mask.beginFill(0);
-        mask. drawRoundedRect(5, 5, width-8, height-5, 45);
-        mask.endFill();
-        mask.scale.set(scale);
-        card.mask = mask;
-
-        app.stage.addChild(mask);
-            
-        mask.position.set(card.x, card.y);
-    
-    }
-
-    return arr;
-
-}
-
-//backCard()
-function backCard() {
-
-    const cardTexture = new PIXI.Texture(spritesheet);
-    const card = new PIXI.Sprite(cardTexture);
-    card.scale.set(scale);
-    
-    app.stage.addChild(card);
-     
-    return card;
-
-}
 
 
 const initForm = document.querySelector("form");
