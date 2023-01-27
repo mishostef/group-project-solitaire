@@ -6,6 +6,8 @@ import { gsap } from "gsap";
 import { PixiPlugin } from "gsap/PixiPlugin.js";
 import { createBox, getMask, turnCard } from "./utils";
 
+
+
 gsap.registerPlugin(PixiPlugin);
 PixiPlugin.registerPIXI(PIXI);
 
@@ -25,7 +27,16 @@ const spritesheet = PIXI.BaseTexture.from('assets/22331.jpg');
 
 const clubs = [];
 sliceDeck(clubs, 47, 847, 50);
-console.log(clubs);
+
+const hearts = [];
+sliceDeck(hearts, 47, 1507, 200);
+
+const spades = [];
+sliceDeck(spades, 47, 2167, 350);
+
+const diamonds = [];
+sliceDeck(diamonds, 47, 2827, 500);
+
 
 export function test() {
   const board = document.getElementById("board");
@@ -48,17 +59,7 @@ export function test() {
   app.stage.addChild(back);
   turnCard(back, front);
 }
-const hearts = [];
-sliceDeck(hearts, 47, 1507, 200);
-console.log(hearts);
 
-const spades = [];
-sliceDeck(spades, 47, 2167, 350);
-console.log(spades);
-
-const diamonds = [];
-sliceDeck(diamonds, 47, 2827, 500);
-console.log(diamonds);
 
 function sliceCard(x: number, y: number, w:  number, h: number) {
     
@@ -91,3 +92,43 @@ function sliceDeck(arr, x: number, y: number, row) {
     return arr;
 
 }
+
+
+const initForm = document.querySelector("form");
+const initSection = document.getElementById("init");
+const gameSection = document.getElementById("game");
+
+let connection = null;
+
+initForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const { nickname } = Object.fromEntries(
+    new FormData(event.target as HTMLFormElement)
+  );
+
+  connection = new Connection(nickname as string);
+  await connection.open();
+  engine(connection);
+  showBoard();
+
+  connection.send("startGame");
+});
+
+document.getElementById("disconnect").addEventListener("click", () => {
+  connection?.disconnect();
+  showInit();
+});
+
+function showBoard() {
+  initSection.style.display = "none";
+  gameSection.style.display = "block";
+
+  test();
+}
+
+function showInit() {
+  initSection.style.display = "block";
+  gameSection.style.display = "none";
+}
+
+
