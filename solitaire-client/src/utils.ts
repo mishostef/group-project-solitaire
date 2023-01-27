@@ -3,6 +3,7 @@ import * as PIXI from "pixi.js";
 import { gsap } from "gsap";
 import { PixiPlugin } from "gsap/PixiPlugin.js";
 import { DisplayObject } from "pixi.js";
+import { app } from "./app";
 
 gsap.registerPlugin(PixiPlugin);
 PixiPlugin.registerPIXI(PIXI);
@@ -61,4 +62,21 @@ export function clearScreen(app) {
   for (var i = app.stage.children.length - 1; i >= 0; i--) {
     app.stage.removeChild(app.stage.children[i]);
   }
+}
+
+export function test() {
+  clearScreen(app);
+  const front = createBox(300, 300, 0xa777aa, 50, 100);
+  const back = createBox(300, 300, 0xe777e, 50, 100);
+  const masked = createBox(300, 500, 0xaa55555, 100, 100);
+
+  const mask = getMask(300, 500, 5);
+  app.stage.addChild(mask);
+
+  masked.mask = mask;
+  app.stage.addChild(masked);
+
+  app.stage.addChild(front);
+  app.stage.addChild(back);
+  turnCard(back, front);
 }

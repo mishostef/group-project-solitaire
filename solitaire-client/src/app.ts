@@ -7,7 +7,7 @@ import { clearScreen, createBox, getMask, turnCard } from "./utils";
 import { Card } from "./Card";
 import { CARD_HEIGHT, CARD_SCALE, CARD_WIDTH, Suits } from "./constans";
 import { backCard, sliceDeck } from "./cardsTexture";
-
+import { test } from "./utils";
 gsap.registerPlugin(PixiPlugin);
 PixiPlugin.registerPIXI(PIXI);
 
@@ -32,34 +32,6 @@ sliceDeck(spades, 47, 2167, 350);
 
 const diamonds = [];
 sliceDeck(diamonds, 47, 2827, 500);
-
-//backCard();
-
-//const card = new Card(400, 400, "A", Suits.hearts);
-
-export function test() {
-  // const board = document.getElementById("board");
-  // const app = new PIXI.Application({
-  //   width: 800,
-  //   height: 600,
-  // });
-  // board.appendChild(app.view as HTMLCanvasElement);
-  clearScreen(app);
-  const front = createBox(300, 300, 0xa777aa, 50, 100);
-  const back = createBox(300, 300, 0xe777e, 50, 100);
-  const masked = createBox(300, 500, 0xaa55555, 100, 100);
-
-  const mask = getMask(300, 500, 5);
-  app.stage.addChild(mask);
-
-  masked.mask = mask;
-  app.stage.addChild(masked);
-
-  app.stage.addChild(front);
-  app.stage.addChild(back);
-  turnCard(back, front);
-}
-
 
 
 
