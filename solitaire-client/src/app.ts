@@ -34,9 +34,15 @@ const diamonds = [];
 sliceDeck(diamonds, 47, 2827, 500);
 
 console.log("hearts", hearts);
-// const card = new Card(400, 400, "A", Suits.hearts);
+const card = new Card(400, 400, "A", Suits.hearts);
 
 export function test() {
+  // const board = document.getElementById("board");
+  // const app = new PIXI.Application({
+  //   width: 800,
+  //   height: 600,
+  // });
+  // board.appendChild(app.view as HTMLCanvasElement);
   clearScreen(app);
   const front = createBox(300, 300, 0xa777aa, 50, 100);
   const back = createBox(300, 300, 0xe777e, 50, 100);
@@ -50,7 +56,6 @@ export function test() {
 
   app.stage.addChild(front);
   app.stage.addChild(back);
-  const card = new Card(400, 400, "A", Suits.hearts);
   turnCard(back, front);
 }
 
