@@ -4,25 +4,22 @@ import * as PIXI from "pixi.js";
 
 import { gsap } from "gsap";
 import { PixiPlugin } from "gsap/PixiPlugin.js";
-import { createBox, getMask, turnCard } from "./utils";
-
-
+import { clearScreen, createBox, getMask, turnCard } from "./utils";
+import { Card } from "./Card";
+import { Suits } from "./constans";
 
 gsap.registerPlugin(PixiPlugin);
 PixiPlugin.registerPIXI(PIXI);
 
-
-const app = new PIXI.Application({
-    width: 1800, 
-    height: 1800,
-    background: 0x999999
+export const app = new PIXI.Application({
+  width: 1800,
+  height: 1800,
+  background: 0x999999,
 });
-
 
 document.body.appendChild(app.view as HTMLCanvasElement);
 
-
-const spritesheet = PIXI.BaseTexture.from('assets/22331.jpg');
+const spritesheet = PIXI.BaseTexture.from("assets/22331.jpg");
 
 const width = 410;
 const height = 620;
@@ -41,28 +38,30 @@ const diamonds = [];
 sliceDeck(diamonds, 47, 2827, 500);
 
 
+//const card = new Card(400, 400, "A", Suits.hearts);
+
 export function test() {
-  const board = document.getElementById("board");
-  const app = new PIXI.Application({
-    width: 800,
-    height: 600,
-  });
-  board.appendChild(app.view as HTMLCanvasElement);
+  // const board = document.getElementById("board");
+  // const app = new PIXI.Application({
+  //   width: 800,
+  //   height: 600,
+  // });
+  // board.appendChild(app.view as HTMLCanvasElement);
+  clearScreen(app);
   const front = createBox(300, 300, 0xa777aa, 50, 100);
   const back = createBox(300, 300, 0xe777e, 50, 100);
   const masked = createBox(300, 500, 0xaa55555, 100, 100);
-  
-  const mask = getMask(300,500, 5);
+
+  const mask = getMask(300, 500, 5);
   app.stage.addChild(mask);
 
   masked.mask = mask;
   app.stage.addChild(masked);
-  
+
   app.stage.addChild(front);
   app.stage.addChild(back);
   turnCard(back, front);
 }
-
 
 function sliceCard(x: number, y: number, w:  number, h: number) {
     
@@ -74,7 +73,6 @@ function sliceCard(x: number, y: number, w:  number, h: number) {
      
     return card;
 }
-
 
 function sliceDeck(arr, x: number, y: number, row) {
     for ( let i = 0; i < 13; i++) {
@@ -151,5 +149,3 @@ function showInit() {
   initSection.style.display = "block";
   gameSection.style.display = "none";
 }
-
-

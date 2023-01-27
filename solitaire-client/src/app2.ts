@@ -4,7 +4,7 @@ import * as PIXI from "pixi.js";
 
 import { gsap } from "gsap";
 import { PixiPlugin } from "gsap/PixiPlugin.js";
-import { createBox, transformTo, turnCard } from "./utils";
+import { createBox, turnCard } from "./utils";
 
 gsap.registerPlugin(PixiPlugin);
 PixiPlugin.registerPIXI(PIXI);
