@@ -17,24 +17,20 @@ export class Card extends Container {
     this.front = createDeckAssets()[`${face}${Suits[suit]}`];
     this.back = this.getCardBack();
     this.interactive = true;
-    this.back.on("pointertap", this.flip.bind(this));
+    this.front.on("mouseup", (e) => {
+      console.log("Picked up");
+      this.dragging = false;
+    });
     this.front.on("mousemove", (e) => {
       console.log("Dragging");
+      console.log(this.dragging);
       if (this.dragging) {
         const s = this.placeCard.bind(this);
         s(e.globalX, e.globalY);
       }
     });
-    this.front.on("mouseup", function (e) {
-      console.log("Moving");
-      const s = this.placeCard.bind(this);
-      s(e.globalX, e.globalY);
-      this.dragging = false;
-    });
     this.front.on("mousedown", (e) => {
       console.log("Picked up");
-      const s = this.placeCard.bind(this);
-      s(e.globalX, e.globalY);
       this.dragging = true;
     });
   }
