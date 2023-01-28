@@ -18,6 +18,25 @@ export class Card extends Container {
     this.back = this.getCardBack();
     this.interactive = true;
     this.back.on("pointertap", this.flip.bind(this));
+    this.front.on("mousemove", (e) => {
+      console.log("Dragging");
+      if (this.dragging) {
+        const s = this.placeCard.bind(this);
+        s(e.globalX, e.globalY);
+      }
+    });
+    this.front.on("mouseup", function (e) {
+      console.log("Moving");
+      const s = this.placeCard.bind(this);
+      s(e.globalX, e.globalY);
+      this.dragging = false;
+    });
+    this.front.on("mousedown", (e) => {
+      console.log("Picked up");
+      const s = this.placeCard.bind(this);
+      s(e.globalX, e.globalY);
+      this.dragging = true;
+    });
   }
 
   getCardBack() {
@@ -40,28 +59,16 @@ export class Card extends Container {
     this.app.stage.addChild(this.front);
     this.setCardPosition(x, y);
     this.front.interactive = true;
-    this.front.on("mousedown", (e) => {
-      console.log("Picked up");
-      const s = this.setCardPosition.bind(this);
-      s(e.globalX, e.globalY);
-      this.dragging = true;
-    });
-    this.front.on("mousemove", (e) => {
-      console.log("Dragging");
-      if (this.dragging) {
-        const s = this.setCardPosition.bind(this);
-        s(e.globalX, e.globalY);
-      }
-    });
   }
 
   private setCardPosition(x: number, y: number) {
     this.front.position.set(x, y);
-    // this.back.position.set(x, y);
-    const mask = this.getMask();
-    this.app.stage.addChild(mask);
-    this.front.mask = mask;
-    mask.position.set(x, y);
+    ///todo- mask as prop
+
+    // const mask = this.getMask();
+    // this.app.stage.addChild(mask);
+    // this.front.mask = mask;
+    // mask.position.set(x, y);
   }
 
   private getMask() {
