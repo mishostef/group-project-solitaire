@@ -3,11 +3,7 @@ import { engine } from "./engine";
 import * as PIXI from "pixi.js";
 import { gsap } from "gsap";
 import { PixiPlugin } from "gsap/PixiPlugin.js";
-import { clearScreen, createBox, getMask, turnCard } from "./utils";
-import { Card } from "./Card";
-import { CARD_HEIGHT, CARD_SCALE, CARD_WIDTH, Suits } from "./constans";
-import { backCard, sliceDeck } from "./cardsTexture";
-import { test } from "./utils";
+import { createDeckAssets, test } from "./utils";
 gsap.registerPlugin(PixiPlugin);
 PixiPlugin.registerPIXI(PIXI);
 
@@ -20,20 +16,7 @@ export const app = new PIXI.Application({
 document.body.appendChild(app.view as HTMLCanvasElement);
 
 // Create Cards Deck
-
-const clubs = [];
-sliceDeck(clubs, 47, 847, 50);
-
-const hearts = [];
-sliceDeck(hearts, 47, 1507, 200);
-
-const spades = [];
-sliceDeck(spades, 47, 2167, 350);
-
-const diamonds = [];
-sliceDeck(diamonds, 47, 2827, 500);
-
-
+createDeckAssets();
 
 const initForm = document.querySelector("form");
 const initSection = document.getElementById("init");

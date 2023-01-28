@@ -1,10 +1,8 @@
 import { Connection } from "./Connection";
 import { engine } from "./engine";
 import * as PIXI from "pixi.js";
-
 import { gsap } from "gsap";
 import { PixiPlugin } from "gsap/PixiPlugin.js";
-import { createBox, turnCard } from "./utils";
 
 gsap.registerPlugin(PixiPlugin);
 PixiPlugin.registerPIXI(PIXI);

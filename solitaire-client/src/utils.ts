@@ -5,7 +5,8 @@ import { PixiPlugin } from "gsap/PixiPlugin.js";
 import { DisplayObject } from "pixi.js";
 import { app } from "./app";
 import { Card } from "./Card";
-import { Suits } from "./constans";
+import { cards, Suits } from "./constans";
+import { sliceDeck } from "./cardsTexture";
 
 gsap.registerPlugin(PixiPlugin);
 PixiPlugin.registerPIXI(PIXI);
@@ -68,18 +69,21 @@ export function clearScreen(app) {
 }
 
 export function test() {
+  const card = new Card("A", Suits.hearts, app);
   clearScreen(app);
-  const front = createBox(300, 300, 0xa777aa, 50, 100);
-  const back = createBox(300, 300, 0xe777e, 50, 100);
-  // const masked = createBox(300, 500, 0xaa55555, 100, 100);
-
-  // const mask = getMask(300, 500, 5);
-  // app.stage.addChild(mask);
-
-  // masked.mask = mask;
-  // app.stage.addChild(masked);
-  const card = new Card(400, 400, "A", Suits.hearts);
-  app.stage.addChild(front);
-  app.stage.addChild(back);
-  turnCard(back, front);
+  card.placeCard(300, 300);
+}
+export function createDeckAssets() {
+  const map = {};
+  const x = 47;
+  let y = 847;
+  let row = 50;
+  ["clubs", "hearts", "spades", "diamonds"].forEach((suit) => {
+    sliceDeck([], x, y, row).forEach((asset, i) => {
+      map[`${cards[i]}${suit}`] = asset;
+    });
+    y += 660;
+    row += 150;
+  });
+  return map;
 }
