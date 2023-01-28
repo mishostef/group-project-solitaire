@@ -9,7 +9,6 @@ import { sliceDeck } from "./cardsTexture";
 gsap.registerPlugin(PixiPlugin);
 PixiPlugin.registerPIXI(PIXI);
 
-
 export function createBox(
   x: number,
   y: number,
@@ -55,8 +54,11 @@ export function clearScreen(app) {
 export function test() {
   const card = new Card("A", Suits.hearts, app);
   clearScreen(app);
-  card.placeCard(300, 300);
+  card.placeCardReverse(300, 300);
+  const card2 = new Card("Q", Suits.hearts, app);
+  card2.placeCard(500, 500);
 }
+
 export function createDeckAssets() {
   const map = {};
   const x = 47;

@@ -2,12 +2,13 @@ import * as PIXI from "pixi.js";
 import { Container, DisplayObject } from "pixi.js";
 import { CARD_HEIGHT, CARD_SCALE, CARD_WIDTH, Face, Suits } from "./constans";
 import { createDeckAssets } from "./utils";
-import { turnCard } from "./animations";
+import { gsap } from "gsap";
 
 export class Card extends Container {
   public back: DisplayObject;
   public front: DisplayObject;
   private app: PIXI.Application;
+  private dragging = false;
   constructor(public face: Face, public suit: Suits, app) {
     super();
     this.face = face;
@@ -15,6 +16,8 @@ export class Card extends Container {
     this.app = app;
     this.front = createDeckAssets()[`${face}${Suits[suit]}`];
     this.back = this.getCardBack();
+    this.interactive = true;
+    this.back.on("pointertap", this.flip.bind(this));
   }
 
   getCardBack() {
@@ -25,16 +28,40 @@ export class Card extends Container {
     return back;
   }
 
-  placeCard(x: number, y: number) {
+  placeCardReverse(x: number, y: number) {
     this.app.stage.addChild(this.front);
     this.app.stage.addChild(this.back);
-    this.front.position.set(x, y);
+    this.setCardPosition(x, y);
     this.back.position.set(x, y);
+    this.flip();
+  }
+
+  placeCard(x: number, y: number) {
+    this.app.stage.addChild(this.front);
+    this.setCardPosition(x, y);
+    this.front.interactive = true;
+    this.front.on("mousedown", (e) => {
+      console.log("Picked up");
+      const s = this.setCardPosition.bind(this);
+      s(e.globalX, e.globalY);
+      this.dragging = true;
+    });
+    this.front.on("mousemove", (e) => {
+      console.log("Dragging");
+      if (this.dragging) {
+        const s = this.setCardPosition.bind(this);
+        s(e.globalX, e.globalY);
+      }
+    });
+  }
+
+  private setCardPosition(x: number, y: number) {
+    this.front.position.set(x, y);
+    // this.back.position.set(x, y);
     const mask = this.getMask();
     this.app.stage.addChild(mask);
     this.front.mask = mask;
     mask.position.set(x, y);
-    turnCard(this.front, this.back);
   }
 
   private getMask() {
@@ -50,5 +77,20 @@ export class Card extends Container {
     mask.endFill();
     mask.scale.set(CARD_SCALE);
     return mask;
+  }
+
+  flip() {
+    const duration = 0.07;
+    const tl = gsap.timeline();
+    this.front.alpha = 0;
+    gsap.set(this.front, { pixi: { skewY: 90 } });
+    this.back.interactive = true;
+    this.back.on("pointertap", () => {
+      tl.to(this.back, { pixi: { skewY: -90 }, duration });
+      tl.to(this.front, {
+        pixi: { skewY: 0, alpha: 1 },
+        duration,
+      });
+    });
   }
 }
