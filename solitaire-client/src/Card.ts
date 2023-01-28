@@ -1,8 +1,8 @@
 import * as PIXI from "pixi.js";
 import { Container, DisplayObject } from "pixi.js";
 import { CARD_HEIGHT, CARD_SCALE, CARD_WIDTH, Face, Suits } from "./constans";
-import { createBox, turnCard } from "./utils";
-import { createDeckAssets } from "./app";
+import { createDeckAssets } from "./utils";
+import { turnCard } from "./animations";
 
 export class Card extends Container {
   public back: DisplayObject;

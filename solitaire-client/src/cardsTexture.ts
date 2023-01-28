@@ -4,7 +4,7 @@ import { PixiPlugin } from "gsap/PixiPlugin.js";
 
 import { app } from "./app";
 import { CARD_HEIGHT, CARD_SCALE, CARD_WIDTH } from "./constans";
-import { turnCard } from "./utils";
+import { turnCard } from "./animations";
 
 gsap.registerPlugin(PixiPlugin);
 PixiPlugin.registerPIXI(PIXI);

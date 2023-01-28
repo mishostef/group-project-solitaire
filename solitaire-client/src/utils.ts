@@ -1,8 +1,6 @@
 import * as PIXI from "pixi.js";
-
 import { gsap } from "gsap";
 import { PixiPlugin } from "gsap/PixiPlugin.js";
-import { DisplayObject } from "pixi.js";
 import { app } from "./app";
 import { Card } from "./Card";
 import { cards, Suits } from "./constans";
@@ -11,20 +9,6 @@ import { sliceDeck } from "./cardsTexture";
 gsap.registerPlugin(PixiPlugin);
 PixiPlugin.registerPIXI(PIXI);
 
-export function turnCard(back: DisplayObject, front: DisplayObject) {
-  const duration = 0.5;
-  const tl = gsap.timeline();
-  back.alpha = 0;
-  gsap.set(back, { pixi: { skewY: 90 } });
-  front.interactive = true;
-  front.on("pointertap", () => {
-    tl.to(front, { pixi: { skewY: -90 }, duration });
-    tl.to(back, {
-      pixi: { skewY: 0, alpha: 1 },
-      duration,
-    });
-  });
-}
 
 export function createBox(
   x: number,
