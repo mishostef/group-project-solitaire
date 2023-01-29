@@ -17,7 +17,7 @@ document.body.appendChild(app.view as HTMLCanvasElement);
 
 // Create Cards Deck
 createDeckAssets();
-
+test();
 const initForm = document.querySelector("form");
 const initSection = document.getElementById("init");
 const gameSection = document.getElementById("game");
@@ -47,7 +47,7 @@ function showBoard() {
   initSection.style.display = "none";
   gameSection.style.display = "block";
 
-  test();
+  // test();
 }
 
 function showInit() {

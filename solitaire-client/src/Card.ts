@@ -3,12 +3,12 @@ import { Container, DisplayObject } from "pixi.js";
 import { CARD_HEIGHT, CARD_SCALE, CARD_WIDTH, Face, Suits } from "./constans";
 import { createDeckAssets } from "./utils";
 import { gsap } from "gsap";
+import { DraggableObject } from "./DraggableObject";
 
-export class Card extends Container {
+export class Card extends DraggableObject {
   private back: DisplayObject;
   private front: DisplayObject;
   private app: PIXI.Application;
-  private dragging = false;
   private isPlaced = false;
   private frontMask: any;
 
@@ -27,19 +27,6 @@ export class Card extends Container {
     this.back = this.getCardBack();
     this.addChild(this.front);
     this.addChild(this.back);
-
-    this.interactive = true;
-    this.on("mousemove", (e) => {
-      if (this.dragging) {
-        this.position.set(e.globalX, e.globalY);
-      }
-    });
-    this.on("mouseup", function (e) {
-      this.dragging = false;
-    });
-    this.on("mousedown", (e) => {
-      this.dragging = true;
-    });
   }
 
   getCardBack() {

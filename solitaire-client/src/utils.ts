@@ -57,6 +57,10 @@ export function test() {
   card.placeCardReverse(300, 300);
   const card2 = new Card("Q", Suits.hearts, app);
   card2.placeCard(500, 500);
+  // gsap.to(card2, { pixi: { skewX: 30, x: "+=50",  }, duration: 2 });
+  // gsap.to(card2, { pixi: { skewY: 30, x: "+=50",  }, duration: 2 });
+  // card2.pivot.set(-50,100);
+  // gsap.to(card2, { pixi: { rotation: 360  }, duration: 2 });
 }
 
 export function createDeckAssets() {
