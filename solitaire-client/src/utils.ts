@@ -3,7 +3,7 @@ import { gsap } from "gsap";
 import { PixiPlugin } from "gsap/PixiPlugin.js";
 import { app } from "./app";
 import { Card } from "./Card";
-import { cards, Suits } from "./constans";
+import { CANVAS_HEIGHT, CANVAS_WIDTH, cards, Suits } from "./constans";
 import { sliceDeck } from "./cardsTexture";
 
 gsap.registerPlugin(PixiPlugin);
@@ -72,4 +72,13 @@ export function createDeckAssets() {
     row += 150;
   });
   return map;
+}
+export function createInteractiveBg() {
+  const bg = new PIXI.Graphics();
+  bg.beginFill(0);
+  bg.drawRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+  bg.alpha = 0;
+  bg.endFill();
+  bg.interactive = true;
+  return bg;
 }
