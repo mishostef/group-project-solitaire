@@ -5,36 +5,31 @@ import { createDeckAssets } from "./utils";
 import { gsap } from "gsap";
 
 export class Card extends Container {
-  public back: DisplayObject;
-  public front: DisplayObject;
+  private back: DisplayObject;
+  private front: DisplayObject;
   private app: PIXI.Application;
   private dragging = false;
+  private isPlaced = false;
+  private frontMask: any;
+
   constructor(public face: Face, public suit: Suits, app) {
     super();
     this.face = face;
     this.suit = suit;
     this.app = app;
     this.front = createDeckAssets()[`${face}${Suits[suit]}`];
-    this.back = this.getCardBack();
-    this.interactive = true;
-    this.front.on("mouseup", (e) => {
-      console.log("Picked up");
-      this.dragging = false;
-    });
-    this.front.on("mousemove", (e) => {
-      console.log("Dragging");
-      console.log(this.dragging);
-      if (this.dragging) {
-        const s = this.placeCard.bind(this);
-        s(e.globalX, e.globalY);
-      }
-    });
-    this.front.on("mousedown", (e) => {
-      console.log("Picked up");
-      this.dragging = true;
-    });
-  }
 
+    this.frontMask = this.getMask();
+    this.frontMask.position.set(this.x, this.y);
+    this.addChild(this.frontMask);
+    this.front.mask = this.frontMask;
+
+    this.back = this.getCardBack();
+    this.addChild(this.front);
+    this.addChild(this.back);
+    console.log("this in ctor =", this);
+  }
+  
   getCardBack() {
     const backTexture = PIXI.Texture.from("assets/back.png");
     const back = new PIXI.Sprite(backTexture);
@@ -44,27 +39,21 @@ export class Card extends Container {
   }
 
   placeCardReverse(x: number, y: number) {
-    this.app.stage.addChild(this.front);
-    this.app.stage.addChild(this.back);
-    this.setCardPosition(x, y);
-    this.back.position.set(x, y);
+    this.position.set(x, y);
+    if (!this.isPlaced) {
+      this.app.stage.addChild(this);
+      this.isPlaced = true;
+    }
     this.flip();
   }
 
   placeCard(x: number, y: number) {
-    this.app.stage.addChild(this.front);
-    this.setCardPosition(x, y);
-    this.front.interactive = true;
-  }
-
-  private setCardPosition(x: number, y: number) {
-    this.front.position.set(x, y);
-    ///todo- mask as prop
-
-    // const mask = this.getMask();
-    // this.app.stage.addChild(mask);
-    // this.front.mask = mask;
-    // mask.position.set(x, y);
+    this.position.set(x, y);
+    this.removeChild(this.back);
+    if (!this.isPlaced) {
+      this.app.stage.addChild(this);
+      this.isPlaced = true;
+    }
   }
 
   private getMask() {
