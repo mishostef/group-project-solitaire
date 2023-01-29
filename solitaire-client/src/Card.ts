@@ -4,8 +4,9 @@ import { CARD_HEIGHT, CARD_SCALE, CARD_WIDTH, Face, Suits } from "./constans";
 import { createDeckAssets } from "./utils";
 import { gsap } from "gsap";
 import { DraggableObject } from "./DraggableObject";
+import { BaseCard } from "./BaseCard";
 
-export class Card extends DraggableObject {
+export class Card extends BaseCard {
   private back: DisplayObject;
   private front: DisplayObject;
   private app: PIXI.Application;
@@ -27,14 +28,6 @@ export class Card extends DraggableObject {
     this.back = this.getCardBack();
     this.addChild(this.front);
     this.addChild(this.back);
-  }
-
-  getCardBack() {
-    const backTexture = PIXI.Texture.from("assets/back.png");
-    const back = new PIXI.Sprite(backTexture);
-    back.scale.set(CARD_SCALE);
-    back.anchor.set(0.5);
-    return back;
   }
 
   placeCardReverse(x: number, y: number) {

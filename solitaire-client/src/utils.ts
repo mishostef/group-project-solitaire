@@ -5,6 +5,7 @@ import { app } from "./app";
 import { Card } from "./Card";
 import { CANVAS_HEIGHT, CANVAS_WIDTH, cards, Suits } from "./constans";
 import { sliceDeck } from "./cardsTexture";
+import { CardContainer } from "./CardContainer";
 
 gsap.registerPlugin(PixiPlugin);
 PixiPlugin.registerPIXI(PIXI);
@@ -57,6 +58,8 @@ export function test() {
   card.placeCardReverse(300, 300);
   const card2 = new Card("Q", Suits.hearts, app);
   card2.placeCard(500, 500);
+  
+
   // gsap.to(card2, { pixi: { skewX: 30, x: "+=50",  }, duration: 2 });
   // gsap.to(card2, { pixi: { skewY: 30, x: "+=50",  }, duration: 2 });
   // card2.pivot.set(-50,100);
