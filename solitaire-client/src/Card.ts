@@ -27,9 +27,21 @@ export class Card extends Container {
     this.back = this.getCardBack();
     this.addChild(this.front);
     this.addChild(this.back);
-    console.log("this in ctor =", this);
+
+    this.interactive = true;
+    this.on("mousemove", (e) => {
+      if (this.dragging) {
+        this.position.set(e.globalX, e.globalY);
+      }
+    });
+    this.on("mouseup", function (e) {
+      this.dragging = false;
+    });
+    this.on("mousedown", (e) => {
+      this.dragging = true;
+    });
   }
-  
+
   getCardBack() {
     const backTexture = PIXI.Texture.from("assets/back.png");
     const back = new PIXI.Sprite(backTexture);
