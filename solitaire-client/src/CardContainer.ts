@@ -12,13 +12,14 @@ export class CardContainer extends BaseCard {
     if (rowNumber < 1) {
       throw new RangeError("Row must be positive and lower than 8");
     }
-    this.position.set(100, 100); //(CANVAS_WIDTH / (rowNumber - 1), CANVAS_HEIGHT * 0.4);
-    this.cardsClosed = new Array(rowNumber - 1).fill(this.getCardBack());
-    this.cardsClosed.forEach((card, i) => {
-      card.position.set(this.x, this.y + 200 * i);
+    this.position.set(CANVAS_WIDTH / (rowNumber - 1), CANVAS_HEIGHT * 0.2);
+    for (let i = 0; i < rowNumber; i++) {
+      const card = this.getCardBack();
+      card.position.set(this.x, this.y + 20 * i);
       console.log("x=", card.x, "y=", card.y);
       this.addChild(card);
-    });
+    }
+
     console.log(this.cardsClosed);
     console.log(this.children);
   }
