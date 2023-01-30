@@ -5,19 +5,18 @@ import { createDeckAssets } from "./utils";
 import { gsap } from "gsap";
 import { DraggableObject } from "./DraggableObject";
 import { BaseCard } from "./BaseCard";
-
+import { app } from "./app";
 export class Card extends BaseCard {
   private back: DisplayObject;
   private front: DisplayObject;
-  private app: PIXI.Application;
+ 
   private isPlaced = false;
   private frontMask: any;
 
-  constructor(public face: Face, public suit: Suits, app) {
+  constructor(public face: Face, public suit: Suits) {
     super();
     this.face = face;
     this.suit = suit;
-    this.app = app;
     this.front = createDeckAssets()[`${face}${Suits[suit]}`];
 
     this.frontMask = this.getMask();
@@ -33,7 +32,7 @@ export class Card extends BaseCard {
   placeCardReverse(x: number, y: number) {
     this.position.set(x, y);
     if (!this.isPlaced) {
-      this.app.stage.addChild(this);
+      app.stage.addChild(this);
       this.isPlaced = true;
     }
     this.flip();
@@ -43,7 +42,7 @@ export class Card extends BaseCard {
     this.position.set(x, y);
     this.removeChild(this.back);
     if (!this.isPlaced) {
-      this.app.stage.addChild(this);
+      app.stage.addChild(this);
       this.isPlaced = true;
     }
   }

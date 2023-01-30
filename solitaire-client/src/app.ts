@@ -47,9 +47,9 @@ function showBoard() {
   initSection.style.display = "none";
   gameSection.style.display = "block";
 
-  //test();
-  const cont = new CardContainer(5);
-  app.stage.addChild(cont);
+  test();
+  //const cont = new CardContainer(5);
+  //app.stage.addChild(cont);
 }
 
 function showInit() {
