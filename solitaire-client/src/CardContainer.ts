@@ -5,26 +5,43 @@ import { gsap } from "gsap";
 import { CANVAS_HEIGHT, CANVAS_WIDTH } from "./constans";
 import { DraggableObject } from "./DraggableObject";
 
-export class CardContainer extends BaseCard {
+export class CardContainer {
   cards: Card[];
-  dragg:DraggableObject//otvorenite
+  draggableContainer: DraggableObject;
   constructor(rowNumber: number, cards) {
-    super();
     if (rowNumber < 1) {
       throw new RangeError("Row must be positive and lower than 8");
     }
+
     this.cards = cards;
-    this.position.set(CANVAS_WIDTH / (rowNumber - 1), CANVAS_HEIGHT * 0.2);
+    this.draggableContainer = new DraggableObject();
+    this.draggableContainer.interactive = true;
+    this.draggableContainer.on("mousedown", () => {
+      console.log("in container");
+    });
+    this.draggableContainer.position.set(
+      (CANVAS_WIDTH * rowNumber) / 7,
+      CANVAS_HEIGHT * 0.2
+    );
     //all but the last one are reversed
-    for (let i = 0; i < rowNumber - 1; i++) {
+    for (let i = 0; i < cards.length - 1; i++) {
       const card = cards[i];
-      card.placeCardReverse(this.x, this.y + 20 * i);
       console.log("x=", card.x, "y=", card.y);
-      this.addChild(card);
+      this.draggableContainer.addChild(card);
+      card.placeCardReverse(
+        this.draggableContainer.x,
+        this.draggableContainer.y + 20 * i
+      );
     }
+
     const lastCard = cards[cards.length - 1];
-    lastCard.placeCard()
+    this.draggableContainer.addChild(lastCard);
+    lastCard.placeCard(
+      this.draggableContainer.x,
+      this.draggableContainer.y + 20 * cards.length
+    );
+
     console.log(this.cards);
-    console.log(this.children);
+    console.log(this.draggableContainer.children);
   }
 }

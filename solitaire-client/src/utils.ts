@@ -39,7 +39,13 @@ export function getMask(x, y, radius) {
   mask.beginFill(0xffffff);
   const width = 100;
   const height = 100;
-  mask.drawRoundedRect(2.5 - width / 2, 2.5 - height / 2, width, height, radius);
+  mask.drawRoundedRect(
+    2.5 - width / 2,
+    2.5 - height / 2,
+    width,
+    height,
+    radius
+  );
   mask.endFill();
   mask.pivot.set(0, 0);
   mask.position.set(x, y);
@@ -55,10 +61,12 @@ export function clearScreen(app) {
 export function test() {
   const card = new Card("K", Suits.hearts);
   clearScreen(app);
-  card.placeCardReverse(300, 300);
+  //card.placeCardReverse(300, 300);
   const card2 = new Card("Q", Suits.hearts);
-  card2.placeCard(500, 500);
-
+  //card2.placeCard(500, 500);
+  const card3 = new Card("A", Suits.clubs);
+  const container = new CardContainer(2, [card, card2, card3]);
+  app.stage.addChild(container.draggableContainer);
   // gsap.to(card2, { pixi: { skewX: 30, x: "+=50",  }, duration: 2 });
   // gsap.to(card2, { pixi: { skewY: 30, x: "+=50",  }, duration: 2 });
   // card2.pivot.set(-50,100);

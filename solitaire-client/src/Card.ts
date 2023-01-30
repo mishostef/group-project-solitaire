@@ -6,6 +6,7 @@ import { gsap } from "gsap";
 import { DraggableObject } from "./DraggableObject";
 import { BaseCard } from "./BaseCard";
 import { app } from "./app";
+
 export class Card extends BaseCard {
   private back: DisplayObject;
   private front: DisplayObject;
