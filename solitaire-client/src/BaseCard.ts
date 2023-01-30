@@ -10,7 +10,8 @@ export abstract class BaseCard extends DraggableObject {
   getCardBack() {
     const backTexture = PIXI.Texture.from("assets/back.png");
     const back = new PIXI.Sprite(backTexture);
-    back.scale.set(CARD_SCALE);
+    back.scale.set(CARD_SCALE - 0.01);
+    back.position.set(1.2, 0)
     back.anchor.set(0.5);
     return back;
   }

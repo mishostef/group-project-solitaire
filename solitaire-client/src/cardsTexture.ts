@@ -63,11 +63,11 @@ export function sliceDeck(arr, x: number, y: number, row) {
 }
 
 //backCard()
-export function backCard() {
-  const cardTexture = PIXI.Texture.from("assets/back.png");
-  const card = new PIXI.Sprite(cardTexture);
-  card.scale.set(CARD_SCALE);
-  card.anchor.set(0.5); //
-  app.stage.addChild(card);
-  return card;
-}
+// export function backCard() {
+//   const cardTexture = PIXI.Texture.from("assets/back.png");
+//   const card = new PIXI.Sprite(cardTexture);
+//   card.scale.set(CARD_SCALE);
+//   card.anchor.set(0.5); //
+//   app.stage.addChild(card);
+//   return card;
+// }

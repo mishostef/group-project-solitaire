@@ -5,6 +5,8 @@ import { gsap } from "gsap";
 import { PixiPlugin } from "gsap/PixiPlugin.js";
 import { createDeckAssets, test } from "./utils";
 import { CardContainer } from "./CardContainer";
+import { CARD_SCALE } from "./constans";
+import { loadFoundations } from "./FoundationsZone";
 gsap.registerPlugin(PixiPlugin);
 PixiPlugin.registerPIXI(PIXI);
 
@@ -16,8 +18,13 @@ export const app = new PIXI.Application({
 
 document.body.appendChild(app.view as HTMLCanvasElement);
 
+
+
+
+
 // Create Cards Deck
 createDeckAssets();
+
 const initForm = document.querySelector("form");
 const initSection = document.getElementById("init");
 const gameSection = document.getElementById("game");
@@ -47,6 +54,7 @@ function showBoard() {
   initSection.style.display = "none";
   gameSection.style.display = "block";
 
+  loadFoundations();
   test();
   //const cont = new CardContainer(5);
   //app.stage.addChild(cont);

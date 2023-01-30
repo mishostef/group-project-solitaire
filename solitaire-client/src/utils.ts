@@ -56,6 +56,11 @@ export function test() {
   const card = new Card("K", Suits.clubs);
   //clearScreen(app);
   card.placeCardReverse(120, 300);
+
+  const card4 = new Card("K", Suits.clubs);
+  card4.placeCardReverse(120, 330);
+
+
   const card2 = new Card("K", Suits.hearts);
   card2.placeCard(350, 300);
   const card3 = new Card("K", Suits.spades);
