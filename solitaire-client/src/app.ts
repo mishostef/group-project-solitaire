@@ -3,10 +3,12 @@ import { engine } from "./engine";
 import * as PIXI from "pixi.js";
 import { gsap } from "gsap";
 import { PixiPlugin } from "gsap/PixiPlugin.js";
-import { createDeckAssets, test } from "./utils";
+import { clearScreen, createDeckAssets, test } from "./utils";
 import { CardContainer } from "./CardContainer";
 import { CARD_SCALE } from "./constans";
 import { loadFoundations } from "./FoundationsZone";
+import { Card } from "./Card";
+import { Suits } from "./constans";
 gsap.registerPlugin(PixiPlugin);
 PixiPlugin.registerPIXI(PIXI);
 
@@ -56,8 +58,20 @@ function showBoard() {
 
   loadFoundations();
   test();
-  //const cont = new CardContainer(5);
-  //app.stage.addChild(cont);
+  const card = new Card("K", Suits.hearts);
+  clearScreen(app);
+  //card.placeCardReverse(300, 300);
+  const card2 = new Card("Q", Suits.hearts);
+  //card2.placeCard(500, 500);
+  const card3 = new Card("A", Suits.clubs);
+  const container = new CardContainer(2, [card, card2, card3]);
+  app.stage.addChild(container.draggableContainer);
+  app.ticker.add(function () {
+    const activated = container.cards.find((card) => card.dragging);
+    if (activated) {
+      console.log(activated);
+    }
+  });
 }
 
 function showInit() {

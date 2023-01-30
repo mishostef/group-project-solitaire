@@ -1,7 +1,7 @@
 import { Container, DisplayObject } from "pixi.js";
 
 export class DraggableObject extends Container {
-  private dragging = false;
+  public dragging = false;
   constructor() {
     super();
     this.interactive = true;
