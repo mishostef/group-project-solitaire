@@ -53,11 +53,13 @@ export function clearScreen(app) {
 }
 
 export function test() {
-  const card = new Card("K", Suits.hearts);
-  clearScreen(app);
-  card.placeCardReverse(300, 300);
-  const card2 = new Card("Q", Suits.hearts);
-  card2.placeCard(500, 500);
+  const card = new Card("K", Suits.clubs);
+  //clearScreen(app);
+  card.placeCardReverse(120, 300);
+  const card2 = new Card("K", Suits.hearts);
+  card2.placeCard(350, 300);
+  const card3 = new Card("K", Suits.spades);
+  card3.placeCard(600, 300);
 
   // gsap.to(card2, { pixi: { skewX: 30, x: "+=50",  }, duration: 2 });
   // gsap.to(card2, { pixi: { skewY: 30, x: "+=50",  }, duration: 2 });
@@ -67,7 +69,7 @@ export function test() {
 
 export function createDeckAssets() {
   const map = {};
-  const x = 47;
+  const x = 45;
   let y = 847;
   let row = 50;
   ["clubs", "hearts", "spades", "diamonds"].forEach((suit) => {
@@ -77,6 +79,7 @@ export function createDeckAssets() {
     y += 660;
     row += 150;
   });
+
   return map;
 }
 export function createInteractiveBg() {
