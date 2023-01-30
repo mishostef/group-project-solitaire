@@ -49,7 +49,7 @@ function showBoard() {
   initSection.style.display = "none";
   gameSection.style.display = "block";
 
-  //test();
+  test();
   const card = new Card("K", Suits.hearts);
   clearScreen(app);
   //card.placeCardReverse(300, 300);
@@ -59,8 +59,10 @@ function showBoard() {
   const container = new CardContainer(2, [card, card2, card3]);
   app.stage.addChild(container.draggableContainer);
   app.ticker.add(function () {
-    console.log(container.draggableContainer.children)
-   
+    const activated = container.cards.find((card) => card.dragging);
+    if (activated) {
+      console.log(activated);
+    }
   });
 }
 

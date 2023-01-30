@@ -12,13 +12,8 @@ export class CardContainer {
     if (rowNumber < 1) {
       throw new RangeError("Row must be positive and lower than 8");
     }
-
     this.cards = cards;
     this.draggableContainer = new DraggableObject();
-    this.draggableContainer.interactive = true;
-    this.draggableContainer.on("mousedown", () => {
-      console.log("in container");
-    });
     this.draggableContainer.position.set(
       (CANVAS_WIDTH * rowNumber) / 7,
       CANVAS_HEIGHT * 0.2
