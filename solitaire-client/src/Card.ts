@@ -10,7 +10,6 @@ import { app } from "./app";
 export class Card extends BaseCard {
   private back: DisplayObject;
   private front: DisplayObject;
- 
   private isPlaced = false;
   private frontMask: any;
 
@@ -22,7 +21,7 @@ export class Card extends BaseCard {
 
     this.frontMask = this.getMask();
     this.frontMask.position.set(this.x, this.y);
-    this.addChild(this.frontMask);
+    this.addChild(this.frontMask)
     this.front.mask = this.frontMask;
 
     this.back = this.getCardBack();
@@ -64,7 +63,8 @@ export class Card extends BaseCard {
   }
 
   flip() {
-    const duration = 0.07;
+    //const duration = 0.07;
+    const duration = 0.3;
     const tl = gsap.timeline();
     this.front.alpha = 0;
     gsap.set(this.front, { pixi: { skewY: 90 } });
