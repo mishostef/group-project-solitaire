@@ -10,7 +10,6 @@ import {
   test,
 } from "./utils";
 import { CardContainer } from "./CardContainer";
-import { CARD_SCALE } from "./constans";
 import { loadFoundations } from "./FoundationsZone";
 import { Card } from "./Card";
 import { Suits } from "./constans";
@@ -72,14 +71,7 @@ function showBoard() {
   const card3 = new Card("A", Suits.clubs);
   const container = new CardContainer(2, [card, card2, card3]);
   app.stage.addChild(container.draggableContainer);
-  // const interactivebg = new InteractiveBackground();
-  // app.stage.addChild(interactivebg);
-  // app.ticker.add(function () {
-  //   const activated = container.cards.find((card) => card.dragging);
-  //   if (activated) {
-  //     console.log(activated);
-  //   }
-  // });
+
 }
 
 function showInit() {
