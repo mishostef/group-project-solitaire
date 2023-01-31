@@ -6,6 +6,8 @@ import { Card } from "./Card";
 import { CANVAS_HEIGHT, CANVAS_WIDTH, cards, Suits } from "./constants";
 import { sliceDeck } from "./cardsTexture";
 import { CardContainer } from "./CardContainer";
+import { DraggableObject } from "./DraggableObject";
+import { Container } from "pixi.js";
 
 gsap.registerPlugin(PixiPlugin);
 PixiPlugin.registerPIXI(PIXI);
@@ -66,13 +68,12 @@ export function test() {
   const card4 = new Card("K", Suits.clubs);
   card4.placeCardReverse(120, 330);
 
-
   const card2 = new Card("K", Suits.hearts);
   card2.placeCard(350, 300);
   const card3 = new Card("K", Suits.spades);
   card3.placeCard(600, 300);
 
-  const container = new CardContainer(2, [card, card2,card3]);
+  const container = new CardContainer(2, [card, card2, card3]);
   app.stage.addChild(container.draggableContainer);
   // gsap.to(card2, { pixi: { skewX: 30, x: "+=50",  }, duration: 2 });
   // gsap.to(card2, { pixi: { skewY: 30, x: "+=50",  }, duration: 2 });
@@ -102,4 +103,40 @@ export function createInteractiveBg() {
   bg.endFill();
   bg.interactive = true;
   return bg;
+}
+export class InteractiveBackground extends Container {
+  bg: PIXI.Graphics;
+  dragging: boolean = false;
+  constructor() {
+    super();
+    const card = new Card("K", Suits.hearts);
+  //clearScreen(app);
+
+  const card2 = new Card("Q", Suits.hearts);
+  const card3 = new Card("A", Suits.clubs);
+  const container = new CardContainer(2, [card, card2, card3]);
+  this.addChild(container.draggableContainer);
+  app.stage.addChild(container.draggableContainer);
+    this.bg = new PIXI.Graphics();
+    this.bg.beginFill(0);
+    this.bg.drawRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+    this.bg.alpha = 0;
+    this.bg.endFill();
+    this.bg.interactive = true;
+    this.bg.on("mousemove", (e) => {
+      if (this.dragging) {
+        console.log(`dragging in container`);
+      }
+    });
+    this.bg.on("mouseup", function (e) {
+      this.dragging = false;
+    });
+    this.bg.on("mousedown", (e) => {
+      this.dragging = true;
+    });
+    this.addChild(this.bg);
+  }
+  addCardContainers(){
+
+  }
 }

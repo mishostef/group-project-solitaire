@@ -4,10 +4,9 @@ import { CARD_HEIGHT, CARD_SCALE, CARD_WIDTH, Face, Suits } from "./constants";
 import { createDeckAssets } from "./utils";
 import { gsap } from "gsap";
 import { DraggableObject } from "./DraggableObject";
-import { BaseCard } from "./BaseCard";
 import { app } from "./app";
 
-export class Card extends BaseCard {
+export class Card extends DraggableObject {
   private back: DisplayObject;
   private front: DisplayObject;
   private isPlaced = false;
@@ -21,7 +20,7 @@ export class Card extends BaseCard {
 
     this.frontMask = this.getMask();
     this.frontMask.position.set(this.x, this.y);
-    this.addChild(this.frontMask)
+    this.addChild(this.frontMask);
     this.front.mask = this.frontMask;
 
     this.back = this.getCardBack();
@@ -63,7 +62,6 @@ export class Card extends BaseCard {
   }
 
   flip() {
-    //const duration = 0.07;
     const duration = 0.3;
     const tl = gsap.timeline();
     this.front.alpha = 0;
@@ -76,5 +74,26 @@ export class Card extends BaseCard {
         duration,
       });
     });
+  }
+
+  showface() {
+    const duration = 0.3;
+    const tl = gsap.timeline();
+    this.front.alpha = 0;
+    gsap.set(this.front, { pixi: { skewY: 90 } });
+    tl.to(this.back, { pixi: { skewY: -90 }, duration });
+    tl.to(this.front, {
+      pixi: { skewY: 0, alpha: 1 },
+      duration,
+    });
+  }
+
+  getCardBack() {
+    const backTexture = PIXI.Texture.from("assets/back.png");
+    const back = new PIXI.Sprite(backTexture);
+    back.scale.set(CARD_SCALE - 0.01);
+    back.position.set(1.2, 0);
+    back.anchor.set(0.5);
+    return back;
   }
 }

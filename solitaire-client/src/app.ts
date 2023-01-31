@@ -3,7 +3,12 @@ import { engine } from "./engine";
 import * as PIXI from "pixi.js";
 import { gsap } from "gsap";
 import { PixiPlugin } from "gsap/PixiPlugin.js";
-import { clearScreen, createDeckAssets, test } from "./utils";
+import {
+  clearScreen,
+  createDeckAssets,
+  InteractiveBackground,
+  test,
+} from "./utils";
 import { CardContainer } from "./CardContainer";
 import { CARD_SCALE } from "./constants";
 import { loadFoundations } from "./FoundationsZone";
@@ -19,10 +24,6 @@ export const app = new PIXI.Application({
 });
 
 document.body.appendChild(app.view as HTMLCanvasElement);
-
-
-
-
 
 // Create Cards Deck
 createDeckAssets();
@@ -57,6 +58,13 @@ function showBoard() {
   gameSection.style.display = "block";
 
   //test();
+  const interactivebg = new InteractiveBackground();
+  app.stage.addChild(interactivebg);
+
+  loadFoundations();
+  test();
+
+  
   const card = new Card("K", Suits.hearts);
   //clearScreen(app);
   loadFoundations();
@@ -66,12 +74,14 @@ function showBoard() {
   const card3 = new Card("A", Suits.clubs);
   const container = new CardContainer(2, [card, card2, card3]);
   app.stage.addChild(container.draggableContainer);
-  app.ticker.add(function () {
-    const activated = container.cards.find((card) => card.dragging);
-    if (activated) {
-      console.log(activated);
-    }
-  });
+  // const interactivebg = new InteractiveBackground();
+  // app.stage.addChild(interactivebg);
+  // app.ticker.add(function () {
+  //   const activated = container.cards.find((card) => card.dragging);
+  //   if (activated) {
+  //     console.log(activated);
+  //   }
+  // });
 }
 
 function showInit() {
