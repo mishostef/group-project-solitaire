@@ -57,12 +57,9 @@ function showBoard() {
   initSection.style.display = "none";
   gameSection.style.display = "block";
 
-  //test();
-  const interactivebg = new InteractiveBackground();
-  app.stage.addChild(interactivebg);
 
-  loadFoundations();
-  test();
+  //loadFoundations();
+  //test();
 
   
   const card = new Card("K", Suits.hearts);
