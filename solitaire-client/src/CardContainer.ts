@@ -6,7 +6,7 @@ import {
   CANVAS_WIDTH,
   CARD_HEIGHT,
   CARD_WIDTH,
-} from "./constans";
+} from "./constants";
 import { DraggableObject } from "./DraggableObject";
 import { app } from "./app";
 
