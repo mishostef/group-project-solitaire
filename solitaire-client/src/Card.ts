@@ -1,6 +1,6 @@
 import * as PIXI from "pixi.js";
 import { Container, DisplayObject } from "pixi.js";
-import { CARD_HEIGHT, CARD_SCALE, CARD_WIDTH, Face, Suits } from "./constans";
+import { CARD_HEIGHT, CARD_SCALE, CARD_WIDTH, Face, Suits } from "./constants";
 import { createDeckAssets } from "./utils";
 import { gsap } from "gsap";
 import { DraggableObject } from "./DraggableObject";

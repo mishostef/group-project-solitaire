@@ -3,7 +3,7 @@ import { gsap } from "gsap";
 import { PixiPlugin } from "gsap/PixiPlugin.js";
 import { app } from "./app";
 import { Card } from "./Card";
-import { CANVAS_HEIGHT, CANVAS_WIDTH, cards, Suits } from "./constans";
+import { CANVAS_HEIGHT, CANVAS_WIDTH, cards, Suits } from "./constants";
 import { sliceDeck } from "./cardsTexture";
 import { CardContainer } from "./CardContainer";
 

@@ -2,7 +2,7 @@ import { DisplayObject, Sprite } from "pixi.js";
 import { BaseCard } from "./BaseCard";
 import { Card } from "./Card";
 import { gsap } from "gsap";
-import { CANVAS_HEIGHT, CANVAS_WIDTH } from "./constans";
+import { CANVAS_HEIGHT, CANVAS_WIDTH } from "./constants";
 import { DraggableObject } from "./DraggableObject";
 
 export class CardContainer {

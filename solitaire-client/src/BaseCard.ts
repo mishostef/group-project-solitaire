@@ -1,6 +1,6 @@
 import { DraggableObject } from "./DraggableObject";
 import * as PIXI from "pixi.js";
-import { CARD_SCALE } from "./constans";
+import { CARD_SCALE } from "./constants";
 
 export abstract class BaseCard extends DraggableObject {
   constructor() {

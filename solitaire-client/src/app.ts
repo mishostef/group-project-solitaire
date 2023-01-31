@@ -5,10 +5,10 @@ import { gsap } from "gsap";
 import { PixiPlugin } from "gsap/PixiPlugin.js";
 import { clearScreen, createDeckAssets, test } from "./utils";
 import { CardContainer } from "./CardContainer";
-import { CARD_SCALE } from "./constans";
+import { CARD_SCALE } from "./constants";
 import { loadFoundations } from "./FoundationsZone";
 import { Card } from "./Card";
-import { Suits } from "./constans";
+import { Suits } from "./constants";
 gsap.registerPlugin(PixiPlugin);
 PixiPlugin.registerPIXI(PIXI);
 
@@ -56,10 +56,10 @@ function showBoard() {
   initSection.style.display = "none";
   gameSection.style.display = "block";
 
-  loadFoundations();
-  test();
+  //test();
   const card = new Card("K", Suits.hearts);
-  clearScreen(app);
+  //clearScreen(app);
+  loadFoundations();
   //card.placeCardReverse(300, 300);
   const card2 = new Card("Q", Suits.hearts);
   //card2.placeCard(500, 500);

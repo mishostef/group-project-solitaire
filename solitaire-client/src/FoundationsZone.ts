@@ -1,6 +1,6 @@
 
 import * as PIXI from "pixi.js";
-import { CARD_SCALE } from "./constans";
+import { CARD_SCALE } from "./constants";
 import { app } from "./app";
 
 
@@ -19,7 +19,6 @@ export function loadFoundations() {
     spade.position.set(500, 100)
     spade.anchor.set(0.5);
     app.stage.addChild(spade);
-
 
     const diamondTexture = PIXI.Texture.from("assets/diamond.png");
     const diamond = new PIXI.Sprite(diamondTexture);
