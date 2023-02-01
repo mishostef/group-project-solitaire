@@ -62,32 +62,35 @@ export function clearScreen(app) {
 }
 
 export function test() {
-  const card = new Card("K", Suits.clubs);
+  const card = new Card("2", Suits.clubs);
   console.log(card);
   //clearScreen(app);
   card.placeCardReverse(20, 300);
 
   
-  const card2 = new Card("K", Suits.hearts);
+  const card2 = new Card("3", Suits.hearts);
   card2.placeCard(350, 300);
   
-  const card3 = new Card("K", Suits.spades);
+  const card3 = new Card("4", Suits.spades);
   card3.placeCard(600, 300);
+
 
 
 
   const card4 = new Card("A", Suits.diamonds);
   card4.placeCard(120, 300);
+  card4.sortableChildren = true;
+  //card4.zIndex = 5;
   //app.stage.removeChild(card4);
   
-  const card5 = new Card("A", Suits.clubs);
+  const card5 = new Card("2", Suits.diamonds);
   card5.placeCard(220, 300);
   
-  const card6 = new Card("A", Suits.hearts);
+  const card6 = new Card("3", Suits.diamonds);
   card6.placeCard(320, 300);
   //app.stage.removeChild(card4);
   
-  const card7 = new Card("A", Suits.spades);
+  const card7 = new Card("4", Suits.diamonds);
   card7.placeCard(420, 300);
 
   console.log(card4.suit);
@@ -97,8 +100,6 @@ export function test() {
   //app.stage.removeChild(card5);
 
   //app.stage.addChild(card5, card4)
-
-
 
 
   const spadesFoundation = new Foundations(Suits.spades);

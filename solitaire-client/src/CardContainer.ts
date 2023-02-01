@@ -16,11 +16,11 @@ export class CardContainer {
   draggableContainer: Container;
   dragging = false;
 
-  constructor(public rowNumber: number, crds) {
+  constructor(public rowNumber: number, cards) {
     if (rowNumber < 1) {
       throw new RangeError("Row must be positive and lower than 8");
     }
-    this.cards = crds;
+    this.cards = cards;
     this.draggableContainer = new Container();
     this.draggableContainer.pivot.set(
       this.draggableContainer.width / 2,
@@ -39,7 +39,8 @@ export class CardContainer {
     }
     const lastCard = this.cards[this.cards.length - 1];
     lastCard.showface();
-    this.addEvents(this.cards);
+    //this.addEvents(this.cards);
+    this.addEvents(lastCard);
   }
 
   private addEvents(cards: any) {
@@ -48,6 +49,7 @@ export class CardContainer {
     this.draggableContainer.on("mousedown", (e) => {
       console.log(e.globalY);
       const target = e.target;
+      console.log('target',e.target)
       index = this.cards.lastIndexOf(target as Card);
       this.dragging = true;
     });

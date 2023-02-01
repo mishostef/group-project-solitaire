@@ -33,7 +33,7 @@ export class Card extends DraggableObject {
     this.back = this.getCardBack();
     this.addChild(this.front);
     this.addChild(this.back);
-    this.pivot.set(CARD_WIDTH / 2, CARD_HEIGHT / 2);
+    //this.pivot.set(CARD_WIDTH / 2, CARD_HEIGHT / 2);
   }
 
   placeCardReverse(x: number, y: number) {
