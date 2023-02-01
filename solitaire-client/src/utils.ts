@@ -3,7 +3,7 @@ import { gsap } from "gsap";
 import { PixiPlugin } from "gsap/PixiPlugin.js";
 import { app } from "./app";
 import { Card } from "./Card";
-import { CANVAS_HEIGHT, CANVAS_WIDTH, cards, Suits } from "./constants";
+import { CANVAS_HEIGHT, CANVAS_WIDTH, cardsConstants, Suits } from "./constants";
 import { sliceDeck } from "./cardsTexture";
 import { CardContainer } from "./CardContainer";
 import { DraggableObject } from "./DraggableObject";
@@ -127,7 +127,7 @@ export function createDeckAssets() {
   let row = 50;
   ["clubs", "hearts", "spades", "diamonds"].forEach((suit) => {
     sliceDeck([], x, y, row).forEach((asset, i) => {
-      map[`${cards[i]}${suit}`] = asset;
+      map[`${cardsConstants[i]}${suit}`] = asset;
     });
     y += 660;
     row += 150;

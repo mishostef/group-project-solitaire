@@ -1,7 +1,7 @@
 
 import * as PIXI from "pixi.js";
 import { gsap } from "gsap";
-import { cards, CARD_SCALE, Suits } from "./constants";
+import { cardsConstants, CARD_SCALE, Suits } from "./constants";
 import { app } from "./app";
 import { Card } from "./Card";
 import { CardContainer } from "./CardContainer";
@@ -45,9 +45,8 @@ export class Foundations {
     }
 
     setZIndex(card: Card) {
-        card.zIndex = 5;
         
-        const index = cards.filter( (value, index) => {
+        cardsConstants.filter( (value, index) => {
             if (value === card.face) {  
                 card.zIndex = index + 1;
             } 

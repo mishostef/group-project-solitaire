@@ -14,7 +14,7 @@ export enum Suits {
 }
 
 
-export const cards = [
+export const cardsConstants = [
   "A",
   "2",
   "3",
