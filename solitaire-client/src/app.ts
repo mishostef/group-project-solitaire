@@ -57,28 +57,21 @@ function showBoard() {
   initSection.style.display = "none";
   gameSection.style.display = "block";
 
+  //loadFoundations();
   //test();
-  const interactivebg = new InteractiveBackground();
-  app.stage.addChild(interactivebg);
 
+  const card = new Card("K", Suits.hearts);
+  //clearScreen(app);
   loadFoundations();
-  test();
-
-
-
-  
-//   const card = new Card("K", Suits.hearts);
-//   //clearScreen(app);
-//   loadFoundations();
-//   //card.placeCardReverse(300, 300);
-//   const card2 = new Card("Q", Suits.hearts);
-//   //card2.placeCard(500, 500);
-//   const card3 = new Card("A", Suits.clubs);
-//   const container = new CardContainer(2, [card, card2, card3]);
-//   app.stage.addChild(container.draggableContainer);
-
+  //card.placeCardReverse(300, 300);
+  const card2 = new Card("Q", Suits.hearts);
+  //card2.placeCard(500, 500);
+  const card3 = new Card("A", Suits.clubs);
+  const container = new CardContainer(2, [card, card2, card3]);
+  app.stage.addChild(container.draggableContainer);
+  const next = new Card("J", Suits.spades);
+  container.addCards([next]);
 }
-
 function showInit() {
   initSection.style.display = "block";
   gameSection.style.display = "none";

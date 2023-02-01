@@ -178,3 +178,31 @@ export class InteractiveBackground extends Container {
 
   }
 }
+
+
+// isCursorInContainer(x, y) {
+//   return (
+//     x <= this.draggableContainer.x + CARD_WIDTH / 2 &&
+//     x >= this.draggableContainer.x - CARD_WIDTH / 2 &&
+//     y <=
+//       this.draggableContainer.y +
+//         CARD_OFFSET * this.cards.length +
+//         CANVAS_HEIGHT / 2 &&
+//     y >= this.draggableContainer.y
+//   );
+// }
+//  limitXY(x: number, y: number) {
+//   if (x > app.view.width) {
+//     x = app.view.width - CARD_WIDTH;
+//   }
+//   if (x < 0) {
+//     x = CARD_WIDTH;
+//   }
+//   if (y > app.view.height) {
+//     y = app.view.height - app.view.width;
+//   }
+//   if (y < 0) {
+//     y = app.view.width;
+//   }
+//   return { x, y };
+// }

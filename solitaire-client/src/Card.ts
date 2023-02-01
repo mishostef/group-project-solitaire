@@ -1,6 +1,13 @@
 import * as PIXI from "pixi.js";
 import { Container, DisplayObject } from "pixi.js";
-import { CARD_HEIGHT, CARD_SCALE, CARD_WIDTH, Face, Suits } from "./constants";
+import {
+  CANVAS_WIDTH,
+  CARD_HEIGHT,
+  CARD_SCALE,
+  CARD_WIDTH,
+  Face,
+  Suits,
+} from "./constants";
 import { createDeckAssets } from "./utils";
 import { gsap } from "gsap";
 import { DraggableObject } from "./DraggableObject";
@@ -26,6 +33,7 @@ export class Card extends DraggableObject {
     this.back = this.getCardBack();
     this.addChild(this.front);
     this.addChild(this.back);
+    this.pivot.set(CARD_WIDTH / 2, CARD_HEIGHT / 2);
   }
 
   placeCardReverse(x: number, y: number) {
@@ -34,7 +42,7 @@ export class Card extends DraggableObject {
       app.stage.addChild(this);
       this.isPlaced = true;
     }
-    this.flip();
+    // this.flip();
   }
 
   placeCard(x: number, y: number) {
