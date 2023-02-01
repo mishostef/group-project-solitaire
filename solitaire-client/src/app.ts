@@ -14,6 +14,7 @@ import { CARD_SCALE } from "./constants";
 import { loadFoundations } from "./FoundationsZone";
 import { Card } from "./Card";
 import { Suits } from "./constants";
+import { StockZone } from "./StockZone";
 gsap.registerPlugin(PixiPlugin);
 PixiPlugin.registerPIXI(PIXI);
 
@@ -67,10 +68,10 @@ function showBoard() {
   const card2 = new Card("Q", Suits.hearts);
   //card2.placeCard(500, 500);
   const card3 = new Card("A", Suits.clubs);
-  const container = new CardContainer(2, [card, card2, card3]);
-  app.stage.addChild(container.draggableContainer);
+  //const container = new CardContainer(2, [card, card2, card3]);
   const next = new Card("J", Suits.spades);
-  container.addCards([next]);
+  //container.addCards([next]);
+  const stockZone = new StockZone([card, card2, next]);
 }
 function showInit() {
   initSection.style.display = "block";
