@@ -22,43 +22,51 @@ export class Foundations {
     addCard(card: Card) {
          
         card.interactive = true;
+        const startCardX = card.x;
+        const startCardY = card.y;
 
         card.on('pointertap', () => {
-            if (card.suit === 0) {
-                this.x = 800;
-            } else if (card.suit === 1) {
-                this.x = 900;
-            } else if (card.suit === 2) {
-                this.x = 600;
-            } else if (card.suit == 3) {
-                this.x = 700;
-            } 
-           gsap.to(card, { pixi:{x: this.x, y: this.y}, duration: 0.8 });
-        })
 
-        if( this.suit == card.suit) {
-            this.cards.push(card);
-            console.log('add Card', this.cards)
-        }
+            if (this.getIndex(card) === this.cards.length) {
+                if (card.suit === 0) {
+                    this.x = 800;
+                } else if (card.suit === 1) {
+                    this.x = 900;
+                } else if (card.suit === 2) {
+                    this.x = 600;
+                } else if (card.suit == 3) {
+                    this.x = 700;
+                } 
+               
+                if (this.suit === card.suit) {
+                    this.cards.push(card);   
+                }
+
+                gsap.to(card, { pixi:{x: this.x, y: this.y}, duration: 0.8 });
+                card.interactive = false;
+            } else {
+                gsap.to(card, { pixi:{x: startCardX, y: startCardY}, duration: 0.3 });
+            }
+
+        });
 
         this.setZIndex(card)
     }
 
     setZIndex(card: Card) {
-        
-        cardsConstants.filter( (value, index) => {
-            if (value === card.face) {  
-                card.zIndex = index + 1;
-            } 
-        });
-        
-
+                card.zIndex = this.getIndex(card) + 1;
     }
 
-
-
+    getIndex(card: Card) {
+        let index:number;
+        cardsConstants.filter( (value, arrIndex) => {
+            if (value === card.face) {  
+                index = arrIndex;
+            } 
+        }); 
+        return index;
+    }   
 }
-
 
 
 export function loadFoundations() {

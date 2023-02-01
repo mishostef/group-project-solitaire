@@ -79,35 +79,34 @@ export function test() {
 
   const card4 = new Card("A", Suits.diamonds);
   card4.placeCard(120, 300);
-  card4.sortableChildren = true;
-  //card4.zIndex = 5;
-  //app.stage.removeChild(card4);
   
   const card5 = new Card("2", Suits.diamonds);
   card5.placeCard(220, 300);
   
   const card6 = new Card("3", Suits.diamonds);
   card6.placeCard(320, 300);
-  //app.stage.removeChild(card4);
-  
+
   const card7 = new Card("4", Suits.diamonds);
   card7.placeCard(420, 300);
 
-  console.log(card4.suit);
-  console.log(card5.suit);
-  console.log(card6.suit);
-  console.log(card7.suit);
-  //app.stage.removeChild(card5);
 
-  //app.stage.addChild(card5, card4)
+  const card8 = new Card("A", Suits.hearts);
+  card8.placeCard(620, 300);
+  
+  const card9 = new Card("2", Suits.hearts);
+  card9.placeCard(720, 300);
 
 
-  const spadesFoundation = new Foundations(Suits.spades);
-  spadesFoundation.addCard(card4);
-  spadesFoundation.addCard(card5);
-  spadesFoundation.addCard(card6);
-  spadesFoundation.addCard(card7);
 
+  const diamondsFoundation = new Foundations(Suits.diamonds);
+  diamondsFoundation.addCard(card4);
+  diamondsFoundation.addCard(card5);
+  diamondsFoundation.addCard(card6);
+  diamondsFoundation.addCard(card7);
+
+  const heartsFoundation = new Foundations(Suits.hearts);
+  heartsFoundation.addCard(card8);
+  heartsFoundation.addCard(card9);
 
 
   const container = new CardContainer(2, [card, card2, card3]);
