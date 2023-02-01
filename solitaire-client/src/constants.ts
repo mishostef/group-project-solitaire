@@ -13,7 +13,8 @@ export enum Suits {
   spades,
 }
 
-export const cards = [
+
+export const cardsConstants = [
   "A",
   "2",
   "3",

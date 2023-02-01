@@ -17,11 +17,11 @@ export class CardContainer {
   staticContainer: Container;
   dragging = false;
 
-  constructor(public rowNumber: number, crds) {
+  constructor(public rowNumber: number, cards) {
     if (rowNumber < 1) {
       throw new RangeError("Row must be positive and lower than 8");
     }
-    this.cards = crds;
+    this.cards = cards;
     this.draggableContainer = new Container();
     this.staticContainer = new Container();
     app.stage.addChild(this.draggableContainer);
@@ -47,7 +47,8 @@ export class CardContainer {
     }
     const lastCard = this.cards[this.cards.length - 1];
     lastCard.showface();
-    this.addEvents(this.cards);
+    //this.addEvents(this.cards);
+    this.addEvents(lastCard);
   }
 
   private addEvents(cards: any) {

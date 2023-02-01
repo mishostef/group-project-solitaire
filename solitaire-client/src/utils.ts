@@ -3,11 +3,12 @@ import { gsap } from "gsap";
 import { PixiPlugin } from "gsap/PixiPlugin.js";
 import { app } from "./app";
 import { Card } from "./Card";
-import { CANVAS_HEIGHT, CANVAS_WIDTH, cards, Suits } from "./constants";
+import { CANVAS_HEIGHT, CANVAS_WIDTH, cardsConstants, Suits } from "./constants";
 import { sliceDeck } from "./cardsTexture";
 import { CardContainer } from "./CardContainer";
 import { DraggableObject } from "./DraggableObject";
 import { Container } from "pixi.js";
+import { Foundations } from "./FoundationsZone";
 
 gsap.registerPlugin(PixiPlugin);
 PixiPlugin.registerPIXI(PIXI);
@@ -61,20 +62,57 @@ export function clearScreen(app) {
 }
 
 export function test() {
-  const card = new Card("K", Suits.clubs);
+  const card = new Card("2", Suits.clubs);
+  console.log(card);
   //clearScreen(app);
-  card.placeCardReverse(120, 300);
+  card.placeCardReverse(20, 300);
 
-  const card4 = new Card("K", Suits.clubs);
-  card4.placeCardReverse(120, 330);
-
-  const card2 = new Card("K", Suits.hearts);
+  
+  const card2 = new Card("3", Suits.hearts);
   card2.placeCard(350, 300);
-  const card3 = new Card("K", Suits.spades);
+  
+  const card3 = new Card("4", Suits.spades);
   card3.placeCard(600, 300);
+
+
+
+
+  const card4 = new Card("A", Suits.diamonds);
+  card4.placeCard(120, 300);
+  
+  const card5 = new Card("2", Suits.diamonds);
+  card5.placeCard(220, 300);
+  
+  const card6 = new Card("3", Suits.diamonds);
+  card6.placeCard(320, 300);
+
+  const card7 = new Card("4", Suits.diamonds);
+  card7.placeCard(420, 300);
+
+
+  const card8 = new Card("A", Suits.hearts);
+  card8.placeCard(620, 300);
+  
+  const card9 = new Card("2", Suits.hearts);
+  card9.placeCard(720, 300);
+
+
+
+  const diamondsFoundation = new Foundations(Suits.diamonds);
+  diamondsFoundation.addCard(card4);
+  diamondsFoundation.addCard(card5);
+  diamondsFoundation.addCard(card6);
+  diamondsFoundation.addCard(card7);
+
+  const heartsFoundation = new Foundations(Suits.hearts);
+  heartsFoundation.addCard(card8);
+  heartsFoundation.addCard(card9);
+
 
   const container = new CardContainer(2, [card, card2, card3]);
   app.stage.addChild(container.draggableContainer);
+
+
   // gsap.to(card2, { pixi: { skewX: 30, x: "+=50",  }, duration: 2 });
   // gsap.to(card2, { pixi: { skewY: 30, x: "+=50",  }, duration: 2 });
   // card2.pivot.set(-50,100);
@@ -88,7 +126,7 @@ export function createDeckAssets() {
   let row = 50;
   ["clubs", "hearts", "spades", "diamonds"].forEach((suit) => {
     sliceDeck([], x, y, row).forEach((asset, i) => {
-      map[`${cards[i]}${suit}`] = asset;
+      map[`${cardsConstants[i]}${suit}`] = asset;
     });
     y += 660;
     row += 150;
