@@ -11,7 +11,7 @@ import {
 } from "./utils";
 import { CardContainer } from "./CardContainer";
 import { CARD_SCALE } from "./constants";
-import { loadFoundations } from "./FoundationsZone";
+import { Foundations, loadFoundations } from "./FoundationsZone";
 import { Card } from "./Card";
 import { Suits } from "./constants";
 gsap.registerPlugin(PixiPlugin);
@@ -64,16 +64,18 @@ function showBoard() {
   loadFoundations();
   test();
 
+
+
   
-  const card = new Card("K", Suits.hearts);
-  //clearScreen(app);
-  loadFoundations();
-  //card.placeCardReverse(300, 300);
-  const card2 = new Card("Q", Suits.hearts);
-  //card2.placeCard(500, 500);
-  const card3 = new Card("A", Suits.clubs);
-  const container = new CardContainer(2, [card, card2, card3]);
-  app.stage.addChild(container.draggableContainer);
+//   const card = new Card("K", Suits.hearts);
+//   //clearScreen(app);
+//   loadFoundations();
+//   //card.placeCardReverse(300, 300);
+//   const card2 = new Card("Q", Suits.hearts);
+//   //card2.placeCard(500, 500);
+//   const card3 = new Card("A", Suits.clubs);
+//   const container = new CardContainer(2, [card, card2, card3]);
+//   app.stage.addChild(container.draggableContainer);
 
 }
 

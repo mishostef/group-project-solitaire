@@ -1,7 +1,53 @@
 
 import * as PIXI from "pixi.js";
-import { CARD_SCALE } from "./constants";
+import { gsap } from "gsap";
+import { CARD_SCALE, Suits } from "./constants";
 import { app } from "./app";
+import { Card } from "./Card";
+import { CardContainer } from "./CardContainer";
+
+
+export class Foundations {
+    cards: Card[] = [];
+    suit: Suits;
+    x = 0;
+    y = 100;
+
+    constructor(suit: Suits) {
+        this.suit = suit;
+    }
+
+    addCard(card: Card) {
+        console.log('card.suit', card.suit)
+
+        //app.stage.removeChild(card);        
+        
+        console.log(this.x)
+        card.interactive = true;
+        card.on('pointertap', () => {
+            if (card.suit === 0) {
+                this.x = 600;
+            } else if (card.suit === 1) {
+                this.x = 700;
+            } else if (card.suit === 2) {
+                this.x = 400;
+            } else if (card.suit == 3) {
+                this.x = 500;
+            } 
+           gsap.to(card, { pixi:{x: this.x, y: this.y}, duration: 0.8 });
+        })
+
+        if( this.suit == card.suit) {
+            this.cards.push(card);
+            console.log('add Card', this.cards)
+        }
+        //app.stage.addChild(card);      
+    }
+
+
+
+}
+
 
 
 export function loadFoundations() {

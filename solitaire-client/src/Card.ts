@@ -34,7 +34,7 @@ export class Card extends DraggableObject {
       app.stage.addChild(this);
       this.isPlaced = true;
     }
-   // this.flip();
+    this.flip();
   }
 
   placeCard(x: number, y: number) {
