@@ -57,11 +57,9 @@ function showBoard() {
   initSection.style.display = "none";
   gameSection.style.display = "block";
 
-
   //loadFoundations();
   //test();
 
-  
   const card = new Card("K", Suits.hearts);
   //clearScreen(app);
   loadFoundations();
@@ -71,9 +69,9 @@ function showBoard() {
   const card3 = new Card("A", Suits.clubs);
   const container = new CardContainer(2, [card, card2, card3]);
   app.stage.addChild(container.draggableContainer);
-
+  const next = new Card("J", Suits.spades);
+  container.addCards([next]);
 }
-
 function showInit() {
   initSection.style.display = "block";
   gameSection.style.display = "none";

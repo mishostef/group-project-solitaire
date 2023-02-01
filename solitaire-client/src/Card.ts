@@ -13,7 +13,7 @@ import { gsap } from "gsap";
 import { DraggableObject } from "./DraggableObject";
 import { app } from "./app";
 
-export class Card extends Container {
+export class Card extends DraggableObject {
   private back: DisplayObject;
   private front: DisplayObject;
   private isPlaced = false;
