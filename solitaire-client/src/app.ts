@@ -72,6 +72,8 @@ function showBoard() {
   const card3 = new Card("A", Suits.clubs);
  //const container = new CardContainer(2, [card, card2, card3]);
  // app.stage.addChild(container.draggableContainer);
+
+  // app.stage.addChild(container.draggableContainer);
   const next = new Card("J", Suits.spades);
   //container.addCards([next]);
   const stockZone = new StockZone([card, card2, next]);

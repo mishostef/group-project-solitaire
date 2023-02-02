@@ -1,6 +1,5 @@
 import { Container } from "pixi.js";
 import { Card } from "./Card";
-import { gsap } from "gsap";
 import {
   CANVAS_HEIGHT,
   CANVAS_WIDTH,
@@ -8,7 +7,6 @@ import {
   CARD_SCALE,
   CARD_WIDTH,
 } from "./constants";
-import { DraggableObject } from "./DraggableObject";
 import { app } from "./app";
 const CARD_OFFSET = (CARD_HEIGHT * CARD_SCALE) / 4;
 export class CardContainer {
@@ -30,15 +28,13 @@ export class CardContainer {
       this.draggableContainer.width / 2,
       this.draggableContainer.height / 2
     );
+    const containersInitialX = (CANVAS_WIDTH * rowNumber) / 7;
+    const containersInitialY = CANVAS_HEIGHT * 0.5;
     this.draggableContainer.position.set(
-      (CANVAS_WIDTH * rowNumber) / 7,
-      CANVAS_HEIGHT * 0.5
+      containersInitialX,
+      containersInitialY
     );
-    this.staticContainer.position.set(
-      (CANVAS_WIDTH * rowNumber) / 7,
-      CANVAS_HEIGHT * 0.5
-    );
-    //all but the last one are reversed
+    this.staticContainer.position.set(containersInitialX, containersInitialY);
     for (let i = 0; i < this.cards.length; i++) {
       const card = this.cards[i];
       card.pivot.set(CARD_WIDTH / 2, CARD_HEIGHT / 2);
@@ -55,20 +51,17 @@ export class CardContainer {
     this.draggableContainer.interactive = true;
     this.staticContainer.interactive = true;
     this.staticContainer.on("mousedown", (e) => {
-      console.log(e.globalY);
-      const target = e.target;
-      const index = this.cards.lastIndexOf(target as Card);
+      const containerTopY =
+        this.staticContainer.position.y -
+        CARD_HEIGHT / 2 -
+        (CARD_SCALE * CARD_HEIGHT) / 2;
+      const deltaY = e.globalY - containerTopY;
+      const index = Math.floor(deltaY / CARD_OFFSET);
       this.dragging = true;
       this.cards.forEach((card, i) => {
         if (i >= index) {
           this.draggableContainer.addChild(card);
         }
-        console.log("position:", this.draggableContainer.position);
-        console.log("pivot:", this, this.draggableContainer.pivot);
-        console.log(
-          this.draggableContainer.width,
-          this.draggableContainer.height
-        );
       });
     });
     this.draggableContainer.on("mouseup", (e) => {
@@ -83,12 +76,14 @@ export class CardContainer {
       if (this.dragging) {
         this.draggableContainer.position.set(
           x + CARD_WIDTH / 2,
-          y + CARD_HEIGHT / 2
+          y +
+            CARD_HEIGHT / 2 -
+            (CARD_SCALE * CARD_HEIGHT) / 2 - //
+            (this.draggableContainer.children.length * CARD_OFFSET) / 2
         );
         this.draggableContainer.children.forEach((card, i) => {
           this.draggableContainer.addChild(card);
         });
-        console.log(cards);
       }
     });
   }
