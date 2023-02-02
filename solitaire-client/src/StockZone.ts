@@ -50,7 +50,7 @@ export class StockZone extends Container {
   }
 
   addDragEvents(card: Card) {
-    this.on("globalmousemove", (e) => {
+    card.on("globalmousemove", (e) => {
       if (this.dragging) {
         console.log(card.position);
         console.log(card.getGlobalPosition().x - card.x);

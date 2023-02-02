@@ -62,23 +62,29 @@ export class CardContainer {
       this.cards.forEach((card, i) => {
         if (i >= index) {
           this.draggableContainer.addChild(card);
-          // card.pivot.set(
-          //   this.draggableContainer.x - CARD_WIDTH / 2,
-          //   this.draggableContainer.y - CARD_HEIGHT / 2
-          // );
         }
         console.log("position:", this.draggableContainer.position);
         console.log("pivot:", this, this.draggableContainer.pivot);
-        console.log(this.draggableContainer.width,this.draggableContainer.height)
+        console.log(
+          this.draggableContainer.width,
+          this.draggableContainer.height
+        );
       });
     });
     this.draggableContainer.on("mouseup", (e) => {
       this.dragging = false;
     });
+    this.draggableContainer.on("mousedown", () => {
+      this.dragging = true;
+    });
     this.draggableContainer.on("globalmousemove", (e) => {
       let [x, y] = [e.globalX, e.globalY];
-      this.draggableContainer.position.set(e.globalX, e.globalY);
+
       if (this.dragging) {
+        this.draggableContainer.position.set(
+          x + CARD_WIDTH / 2,
+          y + CARD_HEIGHT / 2
+        );
         this.draggableContainer.children.forEach((card, i) => {
           this.draggableContainer.addChild(card);
         });
