@@ -22,8 +22,8 @@ export class CardContainer {
     this.cards = cards;
     this.draggableContainer = new Container();
     this.staticContainer = new Container();
-    app.stage.addChild(this.draggableContainer);
     app.stage.addChild(this.staticContainer); ///
+    app.stage.addChild(this.draggableContainer);
     this.draggableContainer.pivot.set(
       this.draggableContainer.width / 2,
       this.draggableContainer.height / 2
@@ -43,49 +43,51 @@ export class CardContainer {
     }
     const lastCard = this.cards[this.cards.length - 1];
     lastCard.showFace();
-    //this.addEvents(this.cards);
-    this.addEvents(lastCard);
+    this.addEvents();
   }
 
-  private addEvents(cards: any) {
+  private addEvents() {
     this.draggableContainer.interactive = true;
     this.staticContainer.interactive = true;
-    this.staticContainer.on("mousedown", (e) => {
-      const containerTopY =
-        this.staticContainer.position.y -
-        CARD_HEIGHT / 2 -
-        (CARD_SCALE * CARD_HEIGHT) / 2;
-      const deltaY = e.globalY - containerTopY;
-      const index = Math.floor(deltaY / CARD_OFFSET);
-      this.dragging = true;
-      this.cards.forEach((card, i) => {
-        if (i >= index) {
-          this.draggableContainer.addChild(card);
-        }
-      });
-    });
-    this.draggableContainer.on("mouseup", (e) => {
+    this.staticContainer.on("mousedown", this.handleMouseDown.bind(this));
+    this.draggableContainer.on("mouseup", () => {
       this.dragging = false;
     });
     this.draggableContainer.on("mousedown", () => {
       this.dragging = true;
     });
-    this.draggableContainer.on("globalmousemove", (e) => {
-      let [x, y] = [e.globalX, e.globalY];
-
-      if (this.dragging) {
-        this.draggableContainer.position.set(
-          x + CARD_WIDTH / 2,
-          y +
-            CARD_HEIGHT / 2 -
-            (CARD_SCALE * CARD_HEIGHT) / 2 - //
-            (this.draggableContainer.children.length * CARD_OFFSET) / 2
-        );
-        this.draggableContainer.children.forEach((card, i) => {
-          this.draggableContainer.addChild(card);
-        });
+    this.draggableContainer.on(
+      "globalmousemove",
+      this.handleMouseMove.bind(this)
+    );
+  }
+  private handleMouseDown(e) {
+    const containerTopY =
+      this.staticContainer.position.y -
+      CARD_HEIGHT / 2 -
+      (CARD_SCALE * CARD_HEIGHT) / 2;
+    const deltaY = e.globalY - containerTopY;
+    const index = Math.floor(deltaY / CARD_OFFSET);
+    this.dragging = true;
+    this.cards.forEach((card, i) => {
+      if (i >= index) {
+        this.draggableContainer.addChild(card);
       }
     });
+  }
+
+  private handleMouseMove(e) {
+    let [x, y] = [e.globalX, e.globalY];
+
+    if (this.dragging) {
+      this.draggableContainer.position.set(
+        x + CARD_WIDTH / 2,
+        y +
+          CARD_HEIGHT / 2 -
+          (CARD_SCALE * CARD_HEIGHT) / 2 - //
+          (this.draggableContainer.children.length * CARD_OFFSET) / 2
+      );
+    }
   }
   public addCards(newCards: Card[]) {
     newCards.forEach((newCard, i) => {

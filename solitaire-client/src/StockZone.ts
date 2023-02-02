@@ -3,7 +3,8 @@ import { app } from "./app";
 import { Card } from "./Card";
 import { CARD_HEIGHT, CARD_SCALE, CARD_WIDTH } from "./constants";
 import { gsap } from "gsap";
-
+const Initial_X = 500;
+const Initial_Y = 500;
 export class StockZone extends Container {
   cardDeck: Card[];
   dragging: boolean = false;
@@ -13,7 +14,7 @@ export class StockZone extends Container {
     super();
     this.cardDeck = cards;
     this.interactive = true;
-    this.position.set(500, 500);
+    this.position.set(Initial_X, Initial_Y);
     this.movable = new Container();
     this.cardDeck.forEach((card, i) => {
       card.pivot.set(CARD_WIDTH / 2, CARD_HEIGHT / 2);
@@ -56,9 +57,9 @@ export class StockZone extends Container {
         console.log(card.getGlobalPosition().x - card.x);
         console.log(card.getGlobalPosition().y - card.y);
         card.position.set(
-          e.globalX - 500 + CARD_WIDTH / 2,
-          e.globalY - 500 + CARD_HEIGHT / 2
-        ); //500,500
+          e.globalX - Initial_X + CARD_WIDTH / 2,
+          e.globalY - Initial_Y + CARD_HEIGHT / 2
+        );
       }
     });
     this.on("mouseup", function (e) {
