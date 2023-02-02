@@ -89,6 +89,7 @@ export class CardContainer {
       );
     }
   }
+
   public addCards(newCards: Card[]) {
     newCards.forEach((newCard, i) => {
       this.cards.push(newCard);
@@ -101,4 +102,6 @@ export class CardContainer {
       newCard.showFace();
     });
   }
+
+  merge(cardsToMerge: Container) {}
 }
