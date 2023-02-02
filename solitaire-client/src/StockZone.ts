@@ -72,7 +72,7 @@ export class StockZone extends Container {
     const duration = 0.5;
     const tl = gsap.timeline();
     await tl.to(card, { pixi: { x: "+=100" }, duration });
-    card && card.showface();
+    card && card.showFace();
   }
 
   async rewind(card: Card) {

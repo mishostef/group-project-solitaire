@@ -9,6 +9,7 @@ import { CardContainer } from "./CardContainer";
 import { DraggableObject } from "./DraggableObject";
 import { Container } from "pixi.js";
 import { Foundations } from "./FoundationsZone";
+import { StockZone } from "./StockZone2";
 
 gsap.registerPlugin(PixiPlugin);
 PixiPlugin.registerPIXI(PIXI);
@@ -62,17 +63,14 @@ export function clearScreen(app) {
 }
 
 export function test() {
-  const card = new Card("2", Suits.clubs);
-  console.log(card);
-  //clearScreen(app);
-  card.placeCardReverse(20, 300);
-
+  const card = new Card("6", Suits.clubs);
+  card.placeCardReverse(0, 0);
   
-  const card2 = new Card("3", Suits.hearts);
-  card2.placeCard(350, 300);
+  const card2 = new Card("7", Suits.hearts);
+  card2.placeCardReverse(0, 0);
   
-  const card3 = new Card("4", Suits.spades);
-  card3.placeCard(600, 300);
+  const card3 = new Card("8", Suits.spades);
+  card3.placeCardReverse(0, 0);
 
 
 
@@ -109,8 +107,12 @@ export function test() {
   heartsFoundation.addCard(card9);
 
 
-  const container = new CardContainer(2, [card, card2, card3]);
-  app.stage.addChild(container.draggableContainer);
+  // const container = new CardContainer(2, [card, card2, card3]);
+  // app.stage.addChild(container.draggableContainer);
+
+  const stockZone = new StockZone([card, card2, card3]);
+
+
 
 
   // gsap.to(card2, { pixi: { skewX: 30, x: "+=50",  }, duration: 2 });
