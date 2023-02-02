@@ -38,7 +38,7 @@ export class CardContainer {
       card.position.set(0, CARD_OFFSET * i);
     }
     const lastCard = this.cards[this.cards.length - 1];
-    lastCard.showface();
+    lastCard.showFace();
     //this.addEvents(this.cards);
     this.addEvents(lastCard);
   }
@@ -83,7 +83,7 @@ export class CardContainer {
         0,
         CARD_OFFSET * this.draggableContainer.children.length
       );
-      newCard.showface();
+      newCard.showFace();
     });
   }
 }

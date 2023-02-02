@@ -84,7 +84,7 @@ export class Card extends DraggableObject {
     });
   }
 
-  showface() {
+  showFace() {
     const duration = 0.3;
     const tl = gsap.timeline();
     this.front.alpha = 0;
