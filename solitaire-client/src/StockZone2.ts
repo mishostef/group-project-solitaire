@@ -22,14 +22,12 @@ export class StockZone2  {
   
   
   createStockContainer(stock: Card[]) {
-
          
       let index = 1;
 
-
       this.repeat.interactive = true;
       this.repeat.on('pointertap', () => {
-        console.log('empty card clicked');
+        console.log('repeat card clicked');
         
         this.repeatStock(stock);
       })
@@ -71,20 +69,25 @@ export class StockZone2  {
     card.on('pointertap', (e) => {
       //console.log('card in waste clicked')
       tl.to(card, { pixi: {x: 600, y: 100} })
+     
     })
-
-  //  console.log('waste in waste', this.waste);
 
   }
 
   repeatStock(stock: Card[]) {
     
-    let index = 9;
+    let index = 1;
 
 
     stock.forEach( card => {
       console.log(card.face)
-      card.placeCardReverse(100, 100);
+      //card.placeCardReverse(0, 0);
+      //card.showBack();
+
+      const tl = gsap.timeline();
+     tl.to(card, { pixi: { x: 100, y: 100 }, duration: 5, onStart:(() => card.showBack())});
+
+
       card.zIndex = index;
       index++;
     })
@@ -119,66 +122,3 @@ export class StockZone2  {
 
 }
 
-
-
-
-// createStockContainer(initialStock: Card[]) {
-
-//   let currentStock = [...initialStock]
-//   let index = 1;
-
-//   for (let i = initialStock.length - 1 ; i >= 0 ; i--) {
-
-    
-//     initialStock[i].position.set(100, 100);
-//     initialStock[i].interactive = true;
-    
-//     initialStock[i].on("pointertap", (e) => {
-  
-      
-//      initialStock[i].zIndex = index;
-//       index++;
-    
-//       this.moveToWaste(initialStock[i]);
-//       currentStock.pop();
-
-//       if (i === 0) {
-        
-//         this.moveToStock(initialStock);
-
-//         }
-      
-//   });
-// }
-
-//   initialStock = currentStock;
-
-//  //this.stock = [];
-// }
-
-
-// moveToWaste(card: Card) {
-//     const duration = 0.5;
-//     const tl = gsap.timeline();
-//     tl.to(card, { pixi: { x: 200, y: 100 }, duration, onStart:(() => card.showFace())});
-//     this.waste.push(card);
-//    console.log('waste in waste', this.waste);
-
-//   }
-
-//   moveToStock(newStock: Card[]) {
-//     this.waste = [];
-//     let currentStock = [...newStock]
-
-//     for (let i = newStock.length - 1 ; i >= 0 ; i--) {
-      
-//       currentStock[i].position.set(100, 100);
-//       currentStock[i].showBack();
-
-      
-//     }
-
-//     this.createStockContainer(newStock);
-//     console.log('waste in stock', this.waste);
-
-//   }
