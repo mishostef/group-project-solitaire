@@ -96,7 +96,7 @@ export class Card extends Container {
     });
   }
 
-  showback(duration = 0.3) {
+  showBack(duration = 0.3) {
     const tl = gsap.timeline();
     this.back.alpha = 0;
     gsap.set(this.back, { pixi: { skewY: 90 } });

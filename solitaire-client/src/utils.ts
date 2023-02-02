@@ -9,7 +9,9 @@ import { CardContainer } from "./CardContainer";
 import { DraggableObject } from "./DraggableObject";
 import { Container } from "pixi.js";
 import { Foundations } from "./FoundationsZone";
-import { StockZone } from "./StockZone2";
+import { StockZone } from "./StockZone";
+import { StockZone2 as StockZone2 }  from "./StockZone2";
+
 
 gsap.registerPlugin(PixiPlugin);
 PixiPlugin.registerPIXI(PIXI);
@@ -63,15 +65,7 @@ export function clearScreen(app) {
 }
 
 export function test() {
-  const card = new Card("6", Suits.clubs);
-  card.placeCardReverse(0, 0);
   
-  const card2 = new Card("7", Suits.hearts);
-  card2.placeCardReverse(0, 0);
-  
-  const card3 = new Card("8", Suits.spades);
-  card3.placeCardReverse(0, 0);
-
 
 
 
@@ -110,7 +104,7 @@ export function test() {
   // const container = new CardContainer(2, [card, card2, card3]);
   // app.stage.addChild(container.draggableContainer);
 
-  const stockZone = new StockZone([card, card2, card3]);
+  
 
 
 

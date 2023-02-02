@@ -82,8 +82,8 @@ export class StockZone extends Container {
     const tl = gsap.timeline();
     tl.set(others, { pixi: { x: "-=100" } });
     const prev = this.cardDeck[this.cardDeck.indexOf(card) - 1];
-    prev && prev.showback(0);
+    prev && prev.showBack(0);
     await tl.to(card, { pixi: { x: "-=100" }, duration });
-    card && card.showback();
+    card && card.showBack();
   }
 }
