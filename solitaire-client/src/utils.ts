@@ -104,11 +104,6 @@ export function test() {
   // const container = new CardContainer(2, [card, card2, card3]);
   // app.stage.addChild(container.draggableContainer);
 
-  
-
-
-
-
   // gsap.to(card2, { pixi: { skewX: 30, x: "+=50",  }, duration: 2 });
   // gsap.to(card2, { pixi: { skewY: 30, x: "+=50",  }, duration: 2 });
   // card2.pivot.set(-50,100);
