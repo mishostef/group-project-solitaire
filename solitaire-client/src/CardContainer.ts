@@ -14,6 +14,7 @@ const CARD_OFFSET = (CARD_HEIGHT * CARD_SCALE) / 4;
 export class CardContainer {
   cards: Card[];
   draggableContainer: Container;
+  staticContainer: Container;
   dragging = false;
 
   constructor(public rowNumber: number, cards) {
@@ -22,6 +23,9 @@ export class CardContainer {
     }
     this.cards = cards;
     this.draggableContainer = new Container();
+    this.staticContainer = new Container();
+    app.stage.addChild(this.draggableContainer);
+    app.stage.addChild(this.staticContainer); ///
     this.draggableContainer.pivot.set(
       this.draggableContainer.width / 2,
       this.draggableContainer.height / 2
@@ -30,11 +34,15 @@ export class CardContainer {
       (CANVAS_WIDTH * rowNumber) / 7,
       CANVAS_HEIGHT * 0.5
     );
+    this.staticContainer.position.set(
+      (CANVAS_WIDTH * rowNumber) / 7,
+      CANVAS_HEIGHT * 0.5
+    );
     //all but the last one are reversed
     for (let i = 0; i < this.cards.length; i++) {
       const card = this.cards[i];
       card.pivot.set(CARD_WIDTH / 2, CARD_HEIGHT / 2);
-      this.draggableContainer.addChild(card);
+      this.staticContainer.addChild(card);
       card.position.set(0, CARD_OFFSET * i);
     }
     const lastCard = this.cards[this.cards.length - 1];
@@ -45,31 +53,40 @@ export class CardContainer {
 
   private addEvents(cards: any) {
     this.draggableContainer.interactive = true;
-    let index = -1;
-    this.draggableContainer.on("mousedown", (e) => {
+    this.staticContainer.interactive = true;
+    this.staticContainer.on("mousedown", (e) => {
       console.log(e.globalY);
       const target = e.target;
-      console.log('target',e.target)
-      index = this.cards.lastIndexOf(target as Card);
+      const index = this.cards.lastIndexOf(target as Card);
       this.dragging = true;
+      this.cards.forEach((card, i) => {
+        if (i >= index) {
+          this.draggableContainer.addChild(card);
+        }
+        console.log("position:", this.draggableContainer.position);
+        console.log("pivot:", this, this.draggableContainer.pivot);
+        console.log(
+          this.draggableContainer.width,
+          this.draggableContainer.height
+        );
+      });
     });
     this.draggableContainer.on("mouseup", (e) => {
       this.dragging = false;
     });
+    this.draggableContainer.on("mousedown", () => {
+      this.dragging = true;
+    });
     this.draggableContainer.on("globalmousemove", (e) => {
       let [x, y] = [e.globalX, e.globalY];
+
       if (this.dragging) {
-        //  this.draggableContainer.position.set(e.globalX, e.globalY);
-        // this.draggableContainer.removeChildren();
-        this.cards.forEach((card, i) => {
-          if (i >= index) {
-            this.draggableContainer.addChild(card);
-            card.pivot.set(
-              this.draggableContainer.x,
-              this.draggableContainer.y - i * CARD_OFFSET
-            );
-            card.position.set(e.globalX, e.globalY);
-          }
+        this.draggableContainer.position.set(
+          x + CARD_WIDTH / 2,
+          y + CARD_HEIGHT / 2
+        );
+        this.draggableContainer.children.forEach((card, i) => {
+          this.draggableContainer.addChild(card);
         });
         console.log(cards);
       }
@@ -78,10 +95,11 @@ export class CardContainer {
   public addCards(newCards: Card[]) {
     newCards.forEach((newCard, i) => {
       this.cards.push(newCard);
-      this.draggableContainer.addChild(newCard);
+      this.staticContainer.addChild(newCard);
+      newCard.pivot.set(CARD_WIDTH / 2, CARD_HEIGHT / 2);
       newCard.position.set(
         0,
-        CARD_OFFSET * this.draggableContainer.children.length
+        CARD_OFFSET * (this.staticContainer.children.length - 1 + i)
       );
       newCard.showFace();
     });

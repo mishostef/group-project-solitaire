@@ -13,7 +13,7 @@ import { gsap } from "gsap";
 import { DraggableObject } from "./DraggableObject";
 import { app } from "./app";
 
-export class Card extends DraggableObject {
+export class Card extends Container {
   private back: DisplayObject;
   private front: DisplayObject;
   private isPlaced = false;
@@ -33,7 +33,7 @@ export class Card extends DraggableObject {
     this.back = this.getCardBack();
     this.addChild(this.front);
     this.addChild(this.back);
-    //this.pivot.set(CARD_WIDTH / 2, CARD_HEIGHT / 2);
+    // this.pivot.set(CARD_WIDTH / 2, CARD_HEIGHT / 2);
   }
 
   placeCardReverse(x: number, y: number) {
@@ -96,6 +96,16 @@ export class Card extends DraggableObject {
     });
   }
 
+  showback(duration = 0.3) {
+    const tl = gsap.timeline();
+    this.back.alpha = 0;
+    gsap.set(this.back, { pixi: { skewY: 90 } });
+    tl.to(this.front, { pixi: { skewY: -90 }, duration }); //
+    tl.to(this.back, {
+      pixi: { skewY: 0, alpha: 1 },
+      duration,
+    });
+  }
   getCardBack() {
     const backTexture = PIXI.Texture.from("assets/back.png");
     const back = new PIXI.Sprite(backTexture);
