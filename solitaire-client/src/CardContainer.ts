@@ -14,7 +14,8 @@ export class CardContainer {
   draggableContainer: Container;
   staticContainer: Container;
   dragging = false;
-
+  private containersInitialX: number;
+  private containersInitialY: number;
   constructor(public rowNumber: number, cards) {
     if (rowNumber < 1) {
       throw new RangeError("Row must be positive and lower than 8");
@@ -28,13 +29,16 @@ export class CardContainer {
       this.draggableContainer.width / 2,
       this.draggableContainer.height / 2
     );
-    const containersInitialX = (CANVAS_WIDTH * rowNumber) / 7;
-    const containersInitialY = CANVAS_HEIGHT * 0.5;
+    this.containersInitialX = (CANVAS_WIDTH * rowNumber) / 7;
+    this.containersInitialY = CANVAS_HEIGHT * 0.5;
     this.draggableContainer.position.set(
-      containersInitialX,
-      containersInitialY
+      this.containersInitialX,
+      this.containersInitialY
     );
-    this.staticContainer.position.set(containersInitialX, containersInitialY);
+    this.staticContainer.position.set(
+      this.containersInitialX,
+      this.containersInitialY
+    );
     for (let i = 0; i < this.cards.length; i++) {
       const card = this.cards[i];
       card.pivot.set(CARD_WIDTH / 2, CARD_HEIGHT / 2);
@@ -103,5 +107,10 @@ export class CardContainer {
     });
   }
 
-  merge(cardsToMerge: Container) {}
+  public returnDraggableContainer() {
+    this.draggableContainer.position.set(
+      this.containersInitialX,
+      this.containersInitialY
+    );
+  }
 }
