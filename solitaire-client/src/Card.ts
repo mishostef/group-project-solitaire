@@ -18,6 +18,7 @@ export class Card extends Container {
   private front: DisplayObject;
   private isPlaced = false;
   private frontMask: any;
+  public movedFromStock = false;
 
   constructor(public face: Face, public suit: Suits) {
     super();

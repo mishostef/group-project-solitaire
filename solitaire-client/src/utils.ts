@@ -9,8 +9,8 @@ import { CardContainer } from "./CardContainer";
 import { DraggableObject } from "./DraggableObject";
 import { Container } from "pixi.js";
 import { Foundations } from "./FoundationsZone";
-import { StockZone } from "./StockZone";
-import { StockZone2 as StockZone2 }  from "./StockZone2";
+
+
 
 
 gsap.registerPlugin(PixiPlugin);
