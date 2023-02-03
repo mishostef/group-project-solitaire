@@ -18,6 +18,7 @@ export class Card extends Container {
   private front: DisplayObject;
   private isPlaced = false;
   private frontMask: any;
+  public isBack = true;
 
   constructor(public face: Face, public suit: Suits) {
     super();
@@ -42,7 +43,7 @@ export class Card extends Container {
       app.stage.addChild(this);
       this.isPlaced = true;
     }
-     //this.flip();
+    //this.flip();
   }
 
   placeCard(x: number, y: number) {
@@ -84,27 +85,33 @@ export class Card extends Container {
     });
   }
 
-  showFace() {
-    const duration = 0.3;
-    const tl = gsap.timeline();
-    this.front.alpha = 0;
-    gsap.set(this.front, { pixi: { skewY: 90 } });
-    tl.to(this.back, { pixi: { skewY: -90 }, duration });
-    tl.to(this.front, {
-      pixi: { skewY: 0, alpha: 1 },
-      duration,
-    });
+  showFace(duration = 0.3) {
+    if (this.isBack) {
+      //const duration = 0.3;
+      const tl = gsap.timeline();
+      this.front.alpha = 0;
+      gsap.set(this.front, { pixi: { skewY: 90 } });
+      tl.to(this.back, { pixi: { skewY: -90 }, duration });
+      tl.to(this.front, {
+        pixi: { skewY: 0, alpha: 1 },
+        duration,
+      });
+      this.isBack = false;
+    }
   }
 
   showBack(duration = 0.3) {
-    const tl = gsap.timeline();
-    this.back.alpha = 0;
-    gsap.set(this.back, { pixi: { skewY: 90 } });
-    tl.to(this.front, { pixi: { skewY: -90 }, duration }); //
-    tl.to(this.back, {
-      pixi: { skewY: 0, alpha: 1 },
-      duration,
-    });
+    if (!this.isBack) {
+      const tl = gsap.timeline();
+      this.back.alpha = 0;
+      gsap.set(this.back, { pixi: { skewY: 90 } });
+      tl.to(this.front, { pixi: { skewY: -90 }, duration }); //
+      tl.to(this.back, {
+        pixi: { skewY: 0, alpha: 1 },
+        duration,
+      });
+      this.isBack = true;
+    }
   }
   getCardBack() {
     const backTexture = PIXI.Texture.from("assets/back.png");

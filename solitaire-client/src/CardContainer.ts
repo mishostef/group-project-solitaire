@@ -46,7 +46,9 @@ export class CardContainer {
       card.position.set(0, CARD_OFFSET * i);
     }
     const lastCard = this.cards[this.cards.length - 1];
-    lastCard.showFace();
+    if (lastCard.isBack) {
+      lastCard.showFace();
+    }
     this.addEvents();
   }
 
@@ -94,8 +96,9 @@ export class CardContainer {
     }
   }
 
-  public addCards(newCards: Card[]) {
-    newCards.forEach((newCard, i) => {
+  public async addCards(newCards: Card[]) {
+    for (let i = 0; i < newCards.length; i++) {
+      const newCard = newCards[i];
       this.cards.push(newCard);
       this.staticContainer.addChild(newCard);
       newCard.pivot.set(CARD_WIDTH / 2, CARD_HEIGHT / 2);
@@ -103,8 +106,8 @@ export class CardContainer {
         0,
         CARD_OFFSET * (this.staticContainer.children.length - 1 + i)
       );
-      newCard.showFace();
-    });
+      newCard.showFace(0);
+    }
   }
 
   public returnDraggableContainer() {
