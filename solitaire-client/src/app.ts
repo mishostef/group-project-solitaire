@@ -70,27 +70,23 @@ function showBoard() {
   const card2 = new Card("Q", Suits.hearts);
   //card2.placeCard(500, 500);
   const card3 = new Card("A", Suits.clubs);
-  card3.placeCard(100,100)
-//   const next = new Card("J", Suits.spades);
-//  const container = new CardContainer(2, [card, card2, card3, next]);
- 
+  //card3.placeCard(100, 100);
+  //   const next = new Card("J", Suits.spades);
+  //  const container = new CardContainer(2, [card, card2, card3, next]);
+
   //container.addCards([next]);
   //const stockZone = new StockZone([card, card2, next]);
 
-
   const card4 = new Card("6", Suits.clubs);
   card4.placeCardReverse(0, 0);
-  
+
   const card5 = new Card("7", Suits.hearts);
   card5.placeCardReverse(0, 0);
-  
+
   const card6 = new Card("8", Suits.spades);
   card6.placeCardReverse(0, 0);
 
   const StockZon = new StockZone([card4, card5, card6]);
-
-
-
 
   const container = new CardContainer(2, [card, card2, card3]);
   const next = new Card("J", Suits.spades);
@@ -117,19 +113,55 @@ function showBoard() {
   app.ticker.add(update);
   function update() {
     const allContainers = [container, container2];
-    const dragging = allContainers.find((container) => container.dragging);
-    const others = allContainers.filter((c) => c != dragging);
+    const dragging = allContainers.find(
+      (container) => container.dragging == true
+    );
+    if (dragging) {
+      console.log("-----------------------------------");
+      const others = allContainers.filter((c) => c != dragging);
+      for (let i = 0; i < others.length; i++) {
+        if (isOverlapping(dragging, others, i)) {
+          dragging.staticContainer.removeChild(
+            ...dragging.draggableContainer.children
+          );
+          others[i].addCards(dragging.draggableContainer.children as Card[]);
+          if (
+            others[i].staticContainer.children[
+              others[i].staticContainer.children.length - 1
+            ].x == others[i].staticContainer.children[0].x &&
+            others[i].staticContainer.children[
+              others[i].staticContainer.children.length - 1
+            ].y == others[i].staticContainer.children[0].y
+          ) {
+            dragging.dragging = false;
+          }
+        }
 
-    if (
-      dragging &&
-      others[0] &&
-      dragging.draggableContainer.position.x >=
-        others[0].staticContainer.position.x - (CARD_WIDTH * CARD_SCALE) / 2 &&
-      dragging.draggableContainer.position.x <=
-        others[0].staticContainer.position.x + (CARD_WIDTH * CARD_SCALE) / 2
-    ) {
-      others[0].addCards(dragging.draggableContainer.children as Card[]);
+        console.log("target dragging=", others[i].dragging);
+        console.log("target dr", others[i].draggableContainer);
+        console.log("target st", others[i].staticContainer);
+        break;
+      }
+      //dragging.returnDraggableContainer();
+      console.log("dragging dragging", dragging.dragging);
+      console.log("dragging dr", dragging.draggableContainer);
+      console.log("dragging static", dragging.staticContainer);
     }
+  }
+
+  function isOverlapping(
+    dragging: CardContainer,
+    others: CardContainer[],
+    i: number
+  ) {
+    return (
+      dragging &&
+      others[i] &&
+      dragging.draggableContainer.position.x >=
+        others[i].staticContainer.position.x - (CARD_WIDTH * CARD_SCALE) / 2 &&
+      dragging.draggableContainer.position.x <=
+        others[i].staticContainer.position.x + (CARD_WIDTH * CARD_SCALE) / 2
+    );
   }
 }
 function showInit() {
