@@ -108,9 +108,10 @@ export class CardContainer {
   }
 
   public returnDraggableContainer() {
-    this.draggableContainer.position.set(
-      this.containersInitialX,
-      this.containersInitialY
-    );
+    if (!this.dragging)
+      this.draggableContainer.position.set(
+        this.containersInitialX,
+        this.containersInitialY
+      );
   }
 }

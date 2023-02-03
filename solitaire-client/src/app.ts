@@ -70,7 +70,7 @@ function showBoard() {
   const card2 = new Card("Q", Suits.hearts);
   //card2.placeCard(500, 500);
   const card3 = new Card("A", Suits.clubs);
-  card3.placeCard(100, 100);
+  //card3.placeCard(100, 100);
   //   const next = new Card("J", Suits.spades);
   //  const container = new CardContainer(2, [card, card2, card3, next]);
 
@@ -117,6 +117,7 @@ function showBoard() {
       (container) => container.dragging == true
     );
     if (dragging) {
+      console.log("-----------------------------------");
       const others = allContainers.filter((c) => c != dragging);
       for (let i = 0; i < others.length; i++) {
         if (isOverlapping(dragging, others, i)) {
@@ -124,13 +125,27 @@ function showBoard() {
             ...dragging.draggableContainer.children
           );
           others[i].addCards(dragging.draggableContainer.children as Card[]);
+          if (
+            others[i].staticContainer.children[
+              others[i].staticContainer.children.length - 1
+            ].x == others[i].staticContainer.children[0].x &&
+            others[i].staticContainer.children[
+              others[i].staticContainer.children.length - 1
+            ].y == others[i].staticContainer.children[0].y
+          ) {
+            dragging.dragging = false;
+          }
         }
-        console.log(others[i]);
+
+        console.log("target dragging=", others[i].dragging);
+        console.log("target dr", others[i].draggableContainer);
+        console.log("target st", others[i].staticContainer);
         break;
       }
-      // dragging.returnDraggableContainer();
-      console.log("dragging ", dragging.draggableContainer);
-      console.log("dragging st", dragging.staticContainer);
+      //dragging.returnDraggableContainer();
+      console.log("dragging dragging", dragging.dragging);
+      console.log("dragging dr", dragging.draggableContainer);
+      console.log("dragging static", dragging.staticContainer);
     }
   }
 
