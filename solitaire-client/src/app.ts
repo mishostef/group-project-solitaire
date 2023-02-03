@@ -15,7 +15,7 @@ import { Foundations, loadFoundations } from "./FoundationsZone";
 import { Card } from "./Card";
 import { Suits } from "./constants";
 import { StockZone } from "./StockZone";
-import { StockZone2 } from "./StockZone2";
+
 gsap.registerPlugin(PixiPlugin);
 PixiPlugin.registerPIXI(PIXI);
 
@@ -86,7 +86,7 @@ function showBoard() {
   const card6 = new Card("8", Suits.spades);
   card6.placeCardReverse(0, 0);
 
-  const StockZon = new StockZone2([card4, card5, card6]);
+  const StockZon = new StockZone([card4, card5, card6]);
 
   const container = new CardContainer(2, [card, card2, card3]);
   const next = new Card("J", Suits.spades);

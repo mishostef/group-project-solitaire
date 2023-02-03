@@ -1,89 +1,131 @@
-import { Container, DisplayObject } from "pixi.js";
+import * as PIXI from "pixi.js";
 import { app } from "./app";
 import { Card } from "./Card";
-import { CARD_HEIGHT, CARD_SCALE, CARD_WIDTH } from "./constants";
+import { cardsConstants, CARD_HEIGHT, CARD_SCALE, CARD_WIDTH } from "./constants";
 import { gsap } from "gsap";
-const Initial_X = 500;
-const Initial_Y = 500;
-export class StockZone extends Container {
-  cardDeck: Card[];
-  dragging: boolean = false;
-  current: Card = null;
-  movable: Container;
+
+export class StockZone  {
+  stock: Card[];
+  repeatCard: PIXI.Sprite;
+  reverse = true;
+
   constructor(cards: Card[]) {
-    super();
-    this.cardDeck = cards;
-    this.interactive = true;
-    this.position.set(Initial_X, Initial_Y);
-    this.movable = new Container();
-    this.cardDeck.forEach((card, i) => {
-      card.pivot.set(CARD_WIDTH / 2, CARD_HEIGHT / 2);
-      this.addChild(card);
-      console.log("i=", i);
-      card.zIndex = i;
-    });
-    app.stage.addChild(this);
-    this.addClickHandler();
+   
+    this.stock = cards;
+    this.loadRepeatCard();
+    this.loadEmptyCard();
+    this.createStockContainer();
+
+  }
+  
+  
+  createStockContainer() {
+         
+      let index = 1;
+      let isStockEmpty;
+
+      this.repeatCard.interactive = true;
+      this.repeatCard.on('pointertap', () => {
+
+
+        if (isStockEmpty.length > 0 ) {
+          
+          this.repeatStock();
+        }
+    })
+    
+    for (let i = this.stock.length - 1 ; i >= 0; i--) {
+      
+      if ( this.stock[i].x === 100 || this.stock[i].x === 200 || this.stock[i].x === 0) {
+        this.stock[i].movedFromStock = false;
+      } else {
+        this.stock[i].movedFromStock = true;
+      }
+      isStockEmpty = this.stock.filter( card => card.movedFromStock === false )
+        
+          if( this.stock[i].movedFromStock === false) {
+      
+            this.stock[i].placeCardReverse(100,100);
+            this.stock[i].interactive = true;
+            
+            this.stock[i].on("pointertap", (e) => {
+
+                this.stock[i].zIndex = index;
+                index++;
+                
+                this.moveToWaste(this.stock[i], i);
+
+            })
+
+          }
+        }
+    
   }
 
-  private addClickHandler() {
-    let i = 0;
-    let prev: Card = null;
-    this.on("pointertap", async (e) => {
-      this.dragging = false;
-      if (i == this.cardDeck.length) {
-        await this.rewind(prev);
-        i = 0;
-        prev = null;
-        return;
-      }
-      const current = this.cardDeck.shift();
-      this.addDragEvents(current);
-      if (prev) {
-        current.zIndex = prev.zIndex + 1;
-      }
-      this.move(current);
-      i++;
-      prev = current;
-      this.cardDeck.push(current);
-      this.sortChildren();
-    });
-  }
-
-  addDragEvents(card: Card) {
-    card.on("globalmousemove", (e) => {
-      if (this.dragging) {
-        console.log(card.position);
-        console.log(card.getGlobalPosition().x - card.x);
-        console.log(card.getGlobalPosition().y - card.y);
-        card.position.set(
-          e.globalX - Initial_X + CARD_WIDTH / 2,
-          e.globalY - Initial_Y + CARD_HEIGHT / 2
-        );
-      }
-    });
-    this.on("mouseup", function (e) {
-      this.dragging = false;
-    });
-    this.on("mousedown", (e) => {
-      this.dragging = true;
-    });
-  }
-  async move(card: Card) {
+  moveToWaste(card: Card, i: number) {
     const duration = 0.5;
     const tl = gsap.timeline();
-    await tl.to(card, { pixi: { x: "+=100" }, duration });
-    card && card.showFace();
+    tl.to(card, { pixi: { x: 200, y: 100 }, duration, onStart:(() => card.showFace())});
+
+    card.on('pointertap', (e) => {
+      tl.to(card, { pixi: {x: 600, y: 100}, duration})
+      card.movedFromStock = true;  
+    })
+
   }
 
-  async rewind(card: Card) {
-    const others = this.cardDeck.filter((x) => x !== card);
-    const duration = 3;
-    const tl = gsap.timeline();
-    tl.set(others, { pixi: { x: "-=100" } });
-    const prev = this.cardDeck[this.cardDeck.indexOf(card) - 1];
-    prev && prev.showBack(0);
-    await tl.to(card, { pixi: { x: "-=100" }, duration });
-    card && card.showBack();
+  repeatStock() {
+    
+    let index = 1;
+
+    this.stock.forEach( card => {
+      if (card.movedFromStock === false ) {
+
+        const tl = gsap.timeline();
+        tl.to(card, { pixi: { x: 100, y: 100 }, duration: 3, onStart:(() => card.showBack())});
+  
+        card.zIndex = index;
+        index++;
+      }
+ 
+    })
+
+    this.createStockContainer();
   }
+
+
+  loadRepeatCard() {
+    const repeatTexture = PIXI.Texture.from("assets/repeat.png");
+    this.repeatCard = new PIXI.Sprite(repeatTexture);
+    this.repeatCard.scale.set(CARD_SCALE);
+    this.repeatCard.position.set(100, 100)
+    this.repeatCard.anchor.set(0.5);
+    this.repeatCard.zIndex = -1;
+    app.stage.addChild(this.repeatCard);
+
+  }
+
+  loadEmptyCard() {
+    const emptyCardTexture = PIXI.Texture.from("assets/emptyCard.png");
+    const emptyCard = new PIXI.Sprite(emptyCardTexture);
+    emptyCard.scale.set(CARD_SCALE - 0.01);
+    emptyCard.position.set(200, 100)
+    emptyCard.anchor.set(0.5);
+    emptyCard.zIndex = -1;
+    app.stage.addChild(emptyCard);
+
+  }
+
 }
+
+
+
+
+
+
+
+
+
+
+
+

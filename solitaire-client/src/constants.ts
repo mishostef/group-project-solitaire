@@ -27,7 +27,7 @@ export const cardsConstants = [
   "10",
   "J",
   "Q",
-  "K",
+  "K"
 ];
 export type Face =
   | "A"
@@ -42,4 +42,5 @@ export type Face =
   | "10"
   | "J"
   | "Q"
-  | "K";
+  | "K"
+

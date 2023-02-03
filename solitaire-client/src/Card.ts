@@ -19,6 +19,7 @@ export class Card extends Container {
   private isPlaced = false;
   private frontMask: any;
   public isBack = true;
+  public movedFromStock = false;
 
   constructor(public face: Face, public suit: Suits) {
     super();
