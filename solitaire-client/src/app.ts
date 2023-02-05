@@ -128,12 +128,7 @@ function showBoard() {
           );
           others[i].addCards(dragging.draggableContainer.children as Card[]);
           if (
-            others[i].staticContainer.children[
-              others[i].staticContainer.children.length - 1
-            ].x == others[i].staticContainer.children[0].x &&
-            others[i].staticContainer.children[
-              others[i].staticContainer.children.length - 1
-            ].y == others[i].staticContainer.children[0].y
+            isAnimationOver(others, i)
           ) {
             dragging.dragging = false;
             // dragging.draggableContainer.removeChildren(); ///
@@ -161,6 +156,11 @@ function showBoard() {
     );
   }
 }
+function isAnimationOver(others: CardContainer[], i: number) {
+  return others[i].staticContainer.children[others[i].staticContainer.children.length - 1].x == others[i].staticContainer.children[0].x &&
+    others[i].staticContainer.children[others[i].staticContainer.children.length - 1].y == others[i].staticContainer.children[0].y;
+}
+
 function showInit() {
   initSection.style.display = "block";
   gameSection.style.display = "none";

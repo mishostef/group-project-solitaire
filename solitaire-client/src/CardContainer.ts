@@ -78,33 +78,48 @@ export class CardContainer {
         this.draggableContainer.addChild(card);
       }
     });
-    this.draggableContainer.pivot.set(
-      this.draggableContainer.width / 2,
-      this.draggableContainer.height / 2
-    );
+
+    this.draggableContainer.children.forEach((card: Card, i) => {
+      card.pivot.set(
+        this.draggableContainer.x - card.width / 2,
+        this.draggableContainer.y - card.height / 2
+      );
+      card.position.set(
+        this.draggableContainer.x,
+        this.draggableContainer.y + i * CARD_OFFSET
+      );
+    });
   }
 
   private handleMouseMove(e) {
     let [x, y] = [e.globalX, e.globalY];
 
     if (this.dragging) {
+      this.draggableContainer.pivot.set(
+        this.draggableContainer.width / 2,
+        this.draggableContainer.height / 2
+      );
       this.draggableContainer.position.set(x, y);
     }
   }
   private AddCrds() {
     for (let i = 0; i < this.cards.length; i++) {
       const card = this.cards[i];
-      card.pivot.set(
-        this.staticContainer.x - card.width / 2,
-        this.staticContainer.y - card.height / 2
-      );
-      card.position.set(
-        this.staticContainer.x,
-        this.staticContainer.y + i * CARD_OFFSET
-      );
+      this.setCardPivot(card, i);
       this.staticContainer.addChild(card);
     }
   }
+  private setCardPivot(card: Card, i: number) {
+    card.pivot.set(
+      this.staticContainer.x - card.width / 2,
+      this.staticContainer.y - card.height / 2
+    );
+    card.position.set(
+      this.staticContainer.x,
+      this.staticContainer.y + i * CARD_OFFSET
+    );
+  }
+
   public async addCards(newCards: Card[]) {
     for (let i = 0; i < newCards.length; i++) {
       const newCard = newCards[i];
