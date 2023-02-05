@@ -78,16 +78,8 @@ export class CardContainer {
         this.draggableContainer.addChild(card);
       }
     });
-
     this.draggableContainer.children.forEach((card: Card, i) => {
-      card.pivot.set(
-        this.draggableContainer.x - card.width / 2,
-        this.draggableContainer.y - card.height / 2
-      );
-      card.position.set(
-        this.draggableContainer.x,
-        this.draggableContainer.y + i * CARD_OFFSET
-      );
+      this.setCardPivot(card, i, this.draggableContainer);
     });
   }
 
@@ -105,19 +97,13 @@ export class CardContainer {
   private AddCrds() {
     for (let i = 0; i < this.cards.length; i++) {
       const card = this.cards[i];
-      this.setCardPivot(card, i);
+      this.setCardPivot(card, i, this.staticContainer);
       this.staticContainer.addChild(card);
     }
   }
-  private setCardPivot(card: Card, i: number) {
-    card.pivot.set(
-      this.staticContainer.x - card.width / 2,
-      this.staticContainer.y - card.height / 2
-    );
-    card.position.set(
-      this.staticContainer.x,
-      this.staticContainer.y + i * CARD_OFFSET
-    );
+  private setCardPivot(card: Card, i: number, container) {
+    card.pivot.set(container.x - card.width / 2, container.y - card.height / 2);
+    card.position.set(container.x, container.y + i * CARD_OFFSET);
   }
 
   public async addCards(newCards: Card[]) {
