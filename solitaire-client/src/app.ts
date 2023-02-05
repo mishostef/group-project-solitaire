@@ -27,7 +27,8 @@ export const app = new PIXI.Application({
 
 document.body.appendChild(app.view as HTMLCanvasElement);
 app.stage.sortableChildren = true;
-
+var rect = app.view.getBoundingClientRect();
+console.log("rect", rect.x, rect.y);
 // Create Cards Deck
 createDeckAssets();
 
@@ -77,16 +78,16 @@ function showBoard() {
   //container.addCards([next]);
   //const stockZone = new StockZone([card, card2, next]);
 
-  const card4 = new Card("6", Suits.clubs);
-  card4.placeCardReverse(0, 0);
+  // const card4 = new Card("6", Suits.clubs);
+  // card4.placeCardReverse(0, 0);
 
-  const card5 = new Card("7", Suits.hearts);
-  card5.placeCardReverse(0, 0);
+  // const card5 = new Card("7", Suits.hearts);
+  // card5.placeCardReverse(0, 0);
 
-  const card6 = new Card("8", Suits.spades);
-  card6.placeCardReverse(0, 0);
+  // const card6 = new Card("8", Suits.spades);
+  // card6.placeCardReverse(0, 0);
 
-  const StockZon = new StockZone([card4, card5, card6]);
+  //const StockZon = new StockZone([card4, card5, card6]);
 
   const container = new CardContainer(2, [card, card2, card3]);
   const next = new Card("J", Suits.spades);
@@ -95,8 +96,10 @@ function showBoard() {
   const card7 = new Card("7", Suits.clubs);
   const card8 = new Card("10", Suits.diamonds);
   const card9 = new Card("K", Suits.spades);
-  const container2 = new CardContainer(5, [card7, card8]);
-  container2.addCards([card9]);
+
+  const container2 = new CardContainer(7, [card7, card8]);
+  console.log(container2.staticContainer);
+  //container2.addCards([card9]);
   // const stockZone = new StockZone([card, card2, next]);
 
   // const card4 = new Card("6", Suits.clubs);
@@ -117,7 +120,6 @@ function showBoard() {
       (container) => container.dragging == true
     );
     if (dragging) {
-      console.log("-----------------------------------");
       const others = allContainers.filter((c) => c != dragging);
       for (let i = 0; i < others.length; i++) {
         if (isOverlapping(dragging, others, i)) {
@@ -134,18 +136,13 @@ function showBoard() {
             ].y == others[i].staticContainer.children[0].y
           ) {
             dragging.dragging = false;
+            // dragging.draggableContainer.removeChildren(); ///
+            // dragging.returnDraggableContainer();
           }
         }
-
-        console.log("target dragging=", others[i].dragging);
-        console.log("target dr", others[i].draggableContainer);
-        console.log("target st", others[i].staticContainer);
         break;
       }
       //dragging.returnDraggableContainer();
-      console.log("dragging dragging", dragging.dragging);
-      console.log("dragging dr", dragging.draggableContainer);
-      console.log("dragging static", dragging.staticContainer);
     }
   }
 
