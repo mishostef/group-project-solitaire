@@ -1,5 +1,5 @@
 import * as PIXI from "pixi.js";
-import { Container, DisplayObject } from "pixi.js";
+import { Container, DisplayObject, Sprite } from "pixi.js";
 import {
   CANVAS_WIDTH,
   CARD_HEIGHT,
@@ -15,7 +15,7 @@ import { app } from "./app";
 
 export class Card extends Container {
   private back: DisplayObject;
-  private front: DisplayObject;
+  private front: Sprite;
   private isPlaced = false;
   private frontMask: any;
   public isBack = true;
@@ -25,17 +25,15 @@ export class Card extends Container {
     super();
     this.face = face;
     this.suit = suit;
-    this.front = createDeckAssets()[`${face}${Suits[suit]}`];
-
+    this.front = createDeckAssets()[`${face}${Suits[suit]}`] as PIXI.Sprite;
+    this.front.anchor.set(0.5);
     this.frontMask = this.getMask();
-    this.frontMask.position.set(this.x, this.y);
     this.addChild(this.frontMask);
     this.front.mask = this.frontMask;
 
     this.back = this.getCardBack();
     this.addChild(this.front);
     this.addChild(this.back);
-    // this.pivot.set(CARD_WIDTH / 2, CARD_HEIGHT / 2);
   }
 
   placeCardReverse(x: number, y: number) {

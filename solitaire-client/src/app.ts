@@ -10,7 +10,7 @@ import {
   test,
 } from "./utils";
 import { CardContainer } from "./CardContainer";
-import { CANVAS_WIDTH, CARD_SCALE, CARD_WIDTH } from "./constants";
+import { CANVAS_WIDTH, CARD_HEIGHT, CARD_SCALE, CARD_WIDTH } from "./constants";
 import { Foundations, loadFoundations } from "./FoundationsZone";
 import { Card } from "./Card";
 import { Suits } from "./constants";
@@ -66,6 +66,12 @@ function showBoard() {
   test();
 
   const card = new Card("K", Suits.hearts);
+  const card777 = new Card("K", Suits.hearts);
+  app.stage.addChild(card777);
+  card777.position.set(
+    (CARD_WIDTH * CARD_SCALE) / 2,
+    (CARD_HEIGHT * CARD_SCALE) / 2
+  );
   //clearScreen(app);
   //loadFoundations();
   //card.placeCardReverse(300, 300);
@@ -85,21 +91,24 @@ function showBoard() {
   // const card5 = new Card("7", Suits.hearts);
   // card5.placeCardReverse(0, 0);
 
-  // const card6 = new Card("8", Suits.spades);
+  const card6 = new Card("8", Suits.spades);
   // card6.placeCardReverse(0, 0);
 
   //const StockZon = new StockZone([card4, card5, card6]);
 
-  const container = new CardContainer(2, [card, card2, card3]);
+  const container = new CardContainer(2); //, card2, card3]);
+  console.log("static container: ", container.staticContainer.position);
   const next = new Card("J", Suits.spades);
-  container.addCards([next]);
+  container.addCards([card2, card3, next, card6]);
 
   const card7 = new Card("7", Suits.clubs);
   const card8 = new Card("10", Suits.diamonds);
   const card9 = new Card("K", Suits.spades);
 
-  const container2 = new CardContainer(7, [card7, card8]);
+  const container2 = new CardContainer(7);
   console.log(container2.staticContainer);
+
+  container.addCards([card]);
   //container2.addCards([card9]);
   // const stockZone = new StockZone([card, card2, next]);
 

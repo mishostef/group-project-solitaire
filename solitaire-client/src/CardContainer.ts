@@ -16,19 +16,15 @@ export class CardContainer {
   dragging = false;
   private containersInitialX: number;
   private containersInitialY: number;
-  constructor(public rowNumber: number, cards) {
+  constructor(public rowNumber: number) {
     if (rowNumber < 1) {
       throw new RangeError("Row must be positive and lower than 8");
     }
-    this.cards = cards;
+    this.cards = [];
     this.draggableContainer = new Container();
     this.staticContainer = new Container();
     app.stage.addChild(this.staticContainer); ///
     app.stage.addChild(this.draggableContainer);
-    // this.draggableContainer.pivot.set(
-    //   this.draggableContainer.width / 2,
-    //   this.draggableContainer.height / 2
-    // );
     this.containersInitialX = (CANVAS_WIDTH * rowNumber) / 8;
     this.containersInitialY = CANVAS_HEIGHT * 0.5;
     this.draggableContainer.position.set(
@@ -39,12 +35,6 @@ export class CardContainer {
       this.containersInitialX,
       this.containersInitialY
     );
-    this.AddCrds();
-    const lastCard = this.cards[this.cards.length - 1];
-    if (lastCard.isBack) {
-      lastCard.showFace();
-    }
-
     this.addEvents();
   }
 
@@ -64,6 +54,9 @@ export class CardContainer {
     );
   }
   private handleMouseDown(e) {
+    if (!this.draggableContainer) {
+      this.draggableContainer = new Container();
+    }
     console.log(e.globalX, e.globalY);
     console.log(this.staticContainer.x, this.staticContainer.y);
     console.log(this.staticContainer.children[0]);
@@ -78,15 +71,15 @@ export class CardContainer {
         this.draggableContainer.addChild(card);
       }
     });
-    this.draggableContainer.children.forEach((card: Card, i) => {
-      this.setCardPivot(card, i, this.draggableContainer);
-    });
+    this.draggableContainer.children.forEach((card: Card, i) => {});
   }
 
   private handleMouseMove(e) {
     let [x, y] = [e.globalX, e.globalY];
 
     if (this.dragging) {
+      const itemsToRemove = this.draggableContainer.children.length;
+      this.cards.splice(this.cards.length - itemsToRemove, itemsToRemove);
       this.draggableContainer.pivot.set(
         this.draggableContainer.width / 2,
         this.draggableContainer.height / 2
@@ -94,30 +87,13 @@ export class CardContainer {
       this.draggableContainer.position.set(x, y);
     }
   }
-  private AddCrds() {
-    for (let i = 0; i < this.cards.length; i++) {
-      const card = this.cards[i];
-      this.setCardPivot(card, i, this.staticContainer);
+  public addCards(cards: Card[]) {
+    for (let i = 0; i < cards.length; i++) {
+      const card = cards[i];
+      this.cards.push(card);
       this.staticContainer.addChild(card);
+      card.position.set(0, this.cards.length * CARD_OFFSET);
     }
-  }
-  private setCardPivot(card: Card, i: number, container) {
-    card.pivot.set(container.x - card.width / 2, container.y - card.height / 2);
-    card.position.set(container.x, container.y + i * CARD_OFFSET);
-  }
-
-  public async addCards(newCards: Card[]) {
-    this.cards.push(...newCards);
-    const mapped = newCards.map((card, i) => {
-      this.setCardPivot(
-        card,
-        this.staticContainer.children.length + i,
-        this.staticContainer
-      );
-      card.showFace(0);
-      return card;
-    });
-    this.staticContainer.addChild(...mapped);
   }
 
   public returnDraggableContainer() {
