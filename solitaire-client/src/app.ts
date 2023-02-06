@@ -11,11 +11,12 @@ import {
 } from "./utils";
 import { CardContainer } from "./CardContainer";
 import { CANVAS_WIDTH, CARD_HEIGHT, CARD_SCALE, CARD_WIDTH } from "./constants";
-import { Foundations, loadFoundations } from "./FoundationsZone";
+import { Foundations } from "./FoundationsZone";
 import { Card } from "./Card";
 import { Suits } from "./constants";
 import { StockZone } from "./StockZone";
 import { TARGETS } from "pixi.js";
+import { loadFoundationsEmptyCards, loadStockEmptyCard } from "./cardsTexture";
 
 gsap.registerPlugin(PixiPlugin);
 PixiPlugin.registerPIXI(PIXI);
@@ -66,12 +67,6 @@ function showBoard() {
   test();
 
   const card = new Card("K", Suits.hearts);
-  const card777 = new Card("K", Suits.hearts);
-  app.stage.addChild(card777);
-  card777.position.set(
-    (CARD_WIDTH * CARD_SCALE) / 2,
-    (CARD_HEIGHT * CARD_SCALE) / 2
-  );
   //clearScreen(app);
   //loadFoundations();
   //card.placeCardReverse(300, 300);
@@ -91,15 +86,14 @@ function showBoard() {
   // const card5 = new Card("7", Suits.hearts);
   // card5.placeCardReverse(0, 0);
 
-  const card6 = new Card("8", Suits.spades);
+  // const card6 = new Card("8", Suits.spades);
   // card6.placeCardReverse(0, 0);
 
   //const StockZon = new StockZone([card4, card5, card6]);
 
-  const container = new CardContainer(2); //, card2, card3]);
-  console.log("static container: ", container.staticContainer.position);
+  const container = new CardContainer(2);
   const next = new Card("J", Suits.spades);
-  container.addCards([card2, card3, next, card6]);
+  container.addCards([next]);
 
   const card7 = new Card("7", Suits.clubs);
   const card8 = new Card("10", Suits.diamonds);
@@ -107,8 +101,6 @@ function showBoard() {
 
   const container2 = new CardContainer(7);
   console.log(container2.staticContainer);
-
-  container.addCards([card]);
   //container2.addCards([card9]);
   // const stockZone = new StockZone([card, card2, next]);
 
@@ -145,39 +137,43 @@ function showBoard() {
             console.log("target", others[i]);
           }
         }
-        break;
       }
     }
+  
+    function isOverlapping(
+      dragging: CardContainer,
+      others: CardContainer[],
+      i: number
+    ) {
+      return (
+        dragging &&
+        others[i] &&
+        dragging.draggableContainer.position.x >=
+          others[i].staticContainer.position.x - (CARD_WIDTH * CARD_SCALE) / 2 &&
+        dragging.draggableContainer.position.x <=
+          others[i].staticContainer.position.x + (CARD_WIDTH * CARD_SCALE) / 2
+      );
+    }
   }
-
-  function isOverlapping(
-    dragging: CardContainer,
-    others: CardContainer[],
-    i: number
-  ) {
+  function isAnimationOver(others: CardContainer[], i: number) {
+    if (others[i].staticContainer.children) return true;
     return (
-      dragging &&
-      others[i] &&
-      dragging.draggableContainer.position.x >=
-        others[i].staticContainer.position.x - (CARD_WIDTH * CARD_SCALE) / 2 &&
-      dragging.draggableContainer.position.x <=
-        others[i].staticContainer.position.x + (CARD_WIDTH * CARD_SCALE) / 2
+      others[i].staticContainer.children[
+        others[i].staticContainer.children.length - 1
+      ].x == others[i].staticContainer.children[0].x &&
+      others[i].staticContainer.children[
+        others[i].staticContainer.children.length - 1
+      ].y == others[i].staticContainer.children[0].y
     );
   }
-}
-function isAnimationOver(others: CardContainer[], i: number) {
-  if (others[i].staticContainer.children) return true;
-  return (
-    others[i].staticContainer.children[
-      others[i].staticContainer.children.length - 1
-    ].x == others[i].staticContainer.children[0].x &&
-    others[i].staticContainer.children[
-      others[i].staticContainer.children.length - 1
-    ].y == others[i].staticContainer.children[0].y
-  );
+  
+  function showInit() {
+    initSection.style.display = "block";
+    gameSection.style.display = "none";
+  }
+  
+
+
 }
 
-function showInit() {
-  initSection.style.display = "block";
-  gameSection.style.display = "none";
-}
+

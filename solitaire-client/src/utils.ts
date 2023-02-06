@@ -9,12 +9,15 @@ import { CardContainer } from "./CardContainer";
 import { DraggableObject } from "./DraggableObject";
 import { Container } from "pixi.js";
 import { Foundations } from "./FoundationsZone";
+import { StockZone } from "./StockZone";
 
 
 
 
 gsap.registerPlugin(PixiPlugin);
 PixiPlugin.registerPIXI(PIXI);
+
+export const flipCardSound = new Audio('/assets/flipCard.mp3');
 
 export function createBox(
   x: number,
@@ -66,9 +69,6 @@ export function clearScreen(app) {
 
 export function test() {
   
-
-
-
   const card4 = new Card("A", Suits.diamonds);
   card4.placeCard(120, 300);
   
@@ -89,12 +89,27 @@ export function test() {
   card9.placeCard(720, 300);
 
 
+  const card14 = new Card("5", Suits.diamonds);
+  card14.placeCardReverse(0, 0);
+
+  const card15 = new Card("7", Suits.hearts);
+  card15.placeCardReverse(0, 0);
+
+  const card16 = new Card("8", Suits.spades);
+  card16.placeCardReverse(0, 0);
+
+  const StockZon = new StockZone([card14, card15, card16]);
+
+
 
   const diamondsFoundation = new Foundations(Suits.diamonds);
   diamondsFoundation.addCard(card4);
   diamondsFoundation.addCard(card5);
   diamondsFoundation.addCard(card6);
   diamondsFoundation.addCard(card7);
+  diamondsFoundation.addCard(card14);
+
+ // console.log(diamondsFoundation)
 
   const heartsFoundation = new Foundations(Suits.hearts);
   heartsFoundation.addCard(card8);
@@ -122,6 +137,7 @@ export function createDeckAssets() {
     y += 660;
     row += 150;
   });
+
   return map;
 }
 export function createInteractiveBg() {
