@@ -57,7 +57,9 @@ function start() {
   
   // Create Cards Deck
   createDeckAssets();
-
+  loadFoundationsEmptyCards();
+  loadStockEmptyCard();
+  
   
   const initForm = document.querySelector("form");
   const initSection = document.getElementById("init");
@@ -87,62 +89,42 @@ function start() {
   function showBoard() {
     initSection.style.display = "none";
     gameSection.style.display = "block";
-    
-    loadFoundationsEmptyCards();
-    loadStockEmptyCard();
-    
   
  
     test();
   
     const card = new Card("K", Suits.hearts);
-    //clearScreen(app);
-    //loadFoundations();
-    //card.placeCardReverse(300, 300);
+    const card777 = new Card("K", Suits.hearts);
+    app.stage.addChild(card777);
+    card777.position.set(
+      (CARD_WIDTH * CARD_SCALE) / 2,
+      (CARD_HEIGHT * CARD_SCALE) / 2
+    );
+
     const card2 = new Card("Q", Suits.hearts);
-    //card2.placeCard(500, 500);
+    
     const card3 = new Card("A", Suits.clubs);
-    //card3.placeCard(100, 100);
-    //   const next = new Card("J", Suits.spades);
-    //  const container = new CardContainer(2, [card, card2, card3, next]);
+
   
-    //container.addCards([next]);
-    //const stockZone = new StockZone([card, card2, next]);
-  
-    // const card4 = new Card("6", Suits.clubs);
-    // card4.placeCardReverse(0, 0);
-  
-    // const card5 = new Card("7", Suits.hearts);
-    // card5.placeCardReverse(0, 0);
-  
-    // const card6 = new Card("8", Suits.spades);
-    // card6.placeCardReverse(0, 0);
-  
-    // const StockZon = new StockZone([card4, card5, card6]);
-  
-    const container = new CardContainer(2, [card, card2, card3]);
+     const card6 = new Card("8", Suits.spades);
+
+    const container = new CardContainer(2);
+    console.log("static container: ", container.staticContainer.position);
+
     const next = new Card("J", Suits.spades);
-    container.addCards([next]);
+    container.addCards([card2, card3, next, card6]);
   
     const card7 = new Card("7", Suits.clubs);
     const card8 = new Card("10", Suits.diamonds);
     const card9 = new Card("K", Suits.spades);
   
-    const container2 = new CardContainer(7, [card7, card8]);
+    const container2 = new CardContainer(7);
     console.log(container2.staticContainer);
-    //container2.addCards([card9]);
-    // const stockZone = new StockZone([card, card2, next]);
-  
-    // const card4 = new Card("6", Suits.clubs);
-    // card4.placeCardReverse(0, 0);
-  
-    // const card5 = new Card("7", Suits.hearts);
-    // card5.placeCardReverse(0, 0);
-  
-    // const card6 = new Card("8", Suits.spades);
-    // card6.placeCardReverse(0, 0);
-  
-    // const StockZon = new StockZone2([card4, card5, card6]);
+
+    container.addCards([card]);
+
+
+
   
     app.ticker.add(update);
     function update() {
