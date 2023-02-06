@@ -32,6 +32,8 @@ app.stage.sortableChildren = true;
 init().then(start);
 
 
+
+
 async function init() {
   await PIXI.Assets.load('assets/22331.jpg');
   await PIXI.Assets.load('assets/back.png');
@@ -42,6 +44,7 @@ async function init() {
   await PIXI.Assets.load('assets/spade.png');
   await PIXI.Assets.load('assets/emptyCard.png');
   await PIXI.Assets.load('assets/repeat.png');
+
 }
 
 
