@@ -8,7 +8,7 @@ import {
   Face,
   Suits,
 } from "./constants";
-import { createDeckAssets } from "./utils";
+import { createDeckAssets, flipCardSound } from "./utils";
 import { gsap } from "gsap";
 import { DraggableObject } from "./DraggableObject";
 import { app } from "./app";
@@ -44,6 +44,8 @@ export class Card extends Container {
       app.stage.addChild(this);
       this.isPlaced = true;
     }
+
+    flipCardSound.play();
     //this.flip();
   }
 
@@ -72,6 +74,8 @@ export class Card extends Container {
   }
 
   flip() {
+    flipCardSound.play();
+
     const duration = 0.3;
     const tl = gsap.timeline();
     this.front.alpha = 0;
@@ -87,6 +91,8 @@ export class Card extends Container {
   }
 
   showFace(duration = 0.3) {
+    flipCardSound.play();
+
     if (this.isBack) {
       //const duration = 0.3;
       const tl = gsap.timeline();
@@ -102,6 +108,8 @@ export class Card extends Container {
   }
 
   showBack(duration = 0.3) {
+    flipCardSound.play();
+
     if (!this.isBack) {
       const tl = gsap.timeline();
       this.back.alpha = 0;

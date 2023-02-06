@@ -16,6 +16,8 @@ import { Foundations } from "./FoundationsZone";
 gsap.registerPlugin(PixiPlugin);
 PixiPlugin.registerPIXI(PIXI);
 
+export const flipCardSound = new Audio('/assets/flipCard.mp3');
+
 export function createBox(
   x: number,
   y: number,
@@ -122,6 +124,7 @@ export function createDeckAssets() {
     y += 660;
     row += 150;
   });
+
   return map;
 }
 export function createInteractiveBg() {

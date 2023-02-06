@@ -31,6 +31,7 @@ app.stage.sortableChildren = true;
 // Create Cards Deck
 createDeckAssets();
 
+
 const initForm = document.querySelector("form");
 const initSection = document.getElementById("init");
 const gameSection = document.getElementById("game");
