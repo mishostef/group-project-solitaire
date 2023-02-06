@@ -10,7 +10,7 @@ import {
   test,
 } from "./utils";
 import { CardContainer } from "./CardContainer";
-import { CANVAS_WIDTH, CARD_SCALE, CARD_WIDTH } from "./constants";
+import { CANVAS_WIDTH, CARD_HEIGHT, CARD_SCALE, CARD_WIDTH } from "./constants";
 import { Foundations } from "./FoundationsZone";
 import { Card } from "./Card";
 import { Suits } from "./constants";
@@ -206,5 +206,3 @@ function start() {
 
 
 }
-
-
