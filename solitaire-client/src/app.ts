@@ -11,11 +11,12 @@ import {
 } from "./utils";
 import { CardContainer } from "./CardContainer";
 import { CANVAS_WIDTH, CARD_SCALE, CARD_WIDTH } from "./constants";
-import { Foundations, loadFoundations } from "./FoundationsZone";
+import { Foundations } from "./FoundationsZone";
 import { Card } from "./Card";
 import { Suits } from "./constants";
 import { StockZone } from "./StockZone";
 import { TARGETS } from "pixi.js";
+import { loadFoundationsEmptyCards, loadStockEmptyCard } from "./cardsTexture";
 
 gsap.registerPlugin(PixiPlugin);
 PixiPlugin.registerPIXI(PIXI);
@@ -56,6 +57,8 @@ function start() {
   
   // Create Cards Deck
   createDeckAssets();
+  loadFoundationsEmptyCards();
+  loadStockEmptyCard();
   
   
   const initForm = document.querySelector("form");
@@ -87,7 +90,7 @@ function start() {
     initSection.style.display = "none";
     gameSection.style.display = "block";
   
-    loadFoundations();
+ 
     test();
   
     const card = new Card("K", Suits.hearts);
@@ -113,7 +116,7 @@ function start() {
     // const card6 = new Card("8", Suits.spades);
     // card6.placeCardReverse(0, 0);
   
-    //const StockZon = new StockZone([card4, card5, card6]);
+    // const StockZon = new StockZone([card4, card5, card6]);
   
     const container = new CardContainer(2, [card, card2, card3]);
     const next = new Card("J", Suits.spades);
