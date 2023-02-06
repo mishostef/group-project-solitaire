@@ -15,6 +15,7 @@ import { Foundations, loadFoundations } from "./FoundationsZone";
 import { Card } from "./Card";
 import { Suits } from "./constants";
 import { StockZone } from "./StockZone";
+import { TARGETS } from "pixi.js";
 
 gsap.registerPlugin(PixiPlugin);
 PixiPlugin.registerPIXI(PIXI);
@@ -127,17 +128,16 @@ function showBoard() {
             ...dragging.draggableContainer.children
           );
           others[i].addCards(dragging.draggableContainer.children as Card[]);
-          if (
-            isAnimationOver(others, i)
-          ) {
+          if (isAnimationOver(others, i)) {
             dragging.dragging = false;
-            // dragging.draggableContainer.removeChildren(); ///
-            // dragging.returnDraggableContainer();
+            dragging.draggableContainer.removeChildren(); ///
+            dragging.returnDraggableContainer();
+            console.log("dragging", dragging);
+            console.log("target", others[i]);
           }
         }
         break;
       }
-      //dragging.returnDraggableContainer();
     }
   }
 
@@ -157,8 +157,15 @@ function showBoard() {
   }
 }
 function isAnimationOver(others: CardContainer[], i: number) {
-  return others[i].staticContainer.children[others[i].staticContainer.children.length - 1].x == others[i].staticContainer.children[0].x &&
-    others[i].staticContainer.children[others[i].staticContainer.children.length - 1].y == others[i].staticContainer.children[0].y;
+  if (others[i].staticContainer.children) return true;
+  return (
+    others[i].staticContainer.children[
+      others[i].staticContainer.children.length - 1
+    ].x == others[i].staticContainer.children[0].x &&
+    others[i].staticContainer.children[
+      others[i].staticContainer.children.length - 1
+    ].y == others[i].staticContainer.children[0].y
+  );
 }
 
 function showInit() {
