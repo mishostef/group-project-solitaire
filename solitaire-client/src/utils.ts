@@ -92,29 +92,31 @@ export function test() {
   const card14 = new Card("5", Suits.diamonds);
   card14.placeCardReverse(0, 0);
 
-  const card15 = new Card("7", Suits.hearts);
+  const card15 = new Card("6", Suits.diamonds);
   card15.placeCardReverse(0, 0);
 
-  const card16 = new Card("8", Suits.spades);
+  const card16 = new Card("3", Suits.hearts);
   card16.placeCardReverse(0, 0);
 
-  const StockZon = new StockZone([card14, card15, card16]);
-
-
-
+  
+  
+  
   const diamondsFoundation = new Foundations(Suits.diamonds);
   diamondsFoundation.addCard(card4);
   diamondsFoundation.addCard(card5);
   diamondsFoundation.addCard(card6);
   diamondsFoundation.addCard(card7);
   diamondsFoundation.addCard(card14);
-
- // console.log(diamondsFoundation)
-
+  diamondsFoundation.addCard(card15);
+  
+  // console.log(diamondsFoundation)
+  
   const heartsFoundation = new Foundations(Suits.hearts);
   heartsFoundation.addCard(card8);
   heartsFoundation.addCard(card9);
-
+  heartsFoundation.addCard(card16);
+  
+  const StockZon = new StockZone([card14, card15, card16]);
 
   // const container = new CardContainer(2, [card, card2, card3]);
   // app.stage.addChild(container.draggableContainer);

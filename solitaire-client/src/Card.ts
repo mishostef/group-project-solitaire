@@ -43,7 +43,7 @@ export class Card extends Container {
       this.isPlaced = true;
     }
 
-    flipCardSound.play();
+    //flipCardSound.play();
     //this.flip();
   }
 
@@ -72,7 +72,7 @@ export class Card extends Container {
   }
 
   flip() {
-    flipCardSound.play();
+    //flipCardSound.play();
 
     const duration = 0.3;
     const tl = gsap.timeline();
@@ -89,7 +89,7 @@ export class Card extends Container {
   }
 
   showFace(duration = 0.3) {
-    flipCardSound.play();
+    //flipCardSound.play();
 
     if (this.isBack) {
       //const duration = 0.3;

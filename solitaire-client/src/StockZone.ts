@@ -13,7 +13,6 @@ export class StockZone  {
    
     this.stock = cards;
     this.loadRepeatCard();
-    this.loadEmptyCard();
     this.createStockContainer();
 
   }
@@ -68,7 +67,7 @@ export class StockZone  {
     tl.to(card, { pixi: { x: 200, y: 100 }, duration, onStart:(() => card.showFace())});
 
     card.on('pointertap', (e) => {
-      tl.to(card, { pixi: {x: 600, y: 100}, duration})
+      tl.to(card, { pixi: {x: 400, y: 100}, duration})
       card.movedFromStock = true;  
     })
 
@@ -105,16 +104,7 @@ export class StockZone  {
 
   }
 
-  loadEmptyCard() {
-    const emptyCardTexture = PIXI.Texture.from("assets/emptyCard.png");
-    const emptyCard = new PIXI.Sprite(emptyCardTexture);
-    emptyCard.scale.set(CARD_SCALE - 0.01);
-    emptyCard.position.set(200, 100)
-    emptyCard.anchor.set(0.5);
-    emptyCard.zIndex = -1;
-    app.stage.addChild(emptyCard);
 
-  }
 
 }
 

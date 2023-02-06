@@ -58,12 +58,13 @@ export class Foundations {
     }
 
     getIndex(card: Card) {
-        let index:number;
+        let index: number;
         cardsConstants.filter( (value, arrIndex) => {
             if (value === card.face) {  
                 index = arrIndex;
             } 
         }); 
+        console.log(index)
         return index;
     }   
 }

@@ -29,39 +29,22 @@ export const app = new PIXI.Application({
 
 document.body.appendChild(app.view as HTMLCanvasElement);
 app.stage.sortableChildren = true;
-var rect = app.view.getBoundingClientRect();
-console.log("rect", rect.x, rect.y);
-// Create Cards Deck
-createDeckAssets();
 
-const initForm = document.querySelector("form");
-const initSection = document.getElementById("init");
-const gameSection = document.getElementById("game");
+init().then(start);
 
-let connection = null;
 
-initForm.addEventListener("submit", async (event) => {
-  event.preventDefault();
-  const { nickname } = Object.fromEntries(
-    new FormData(event.target as HTMLFormElement)
-  );
 
-  connection = new Connection(nickname as string);
-  await connection.open();
-  engine(connection);
-  showBoard();
 
-  connection.send("startGame");
-});
-
-document.getElementById("disconnect").addEventListener("click", () => {
-  connection?.disconnect();
-  showInit();
-});
-
-function showBoard() {
-  initSection.style.display = "none";
-  gameSection.style.display = "block";
+async function init() {
+  await PIXI.Assets.load('assets/22331.jpg');
+  await PIXI.Assets.load('assets/back.png');
+  await PIXI.Assets.load('assets/backAmusnet.png');
+  await PIXI.Assets.load('assets/club.png');
+  await PIXI.Assets.load('assets/diamond.png');
+  await PIXI.Assets.load('assets/heart.png');
+  await PIXI.Assets.load('assets/spade.png');
+  await PIXI.Assets.load('assets/emptyCard.png');
+  await PIXI.Assets.load('assets/repeat.png');
 
   loadFoundationsEmptyCards();
   test();
@@ -79,63 +62,109 @@ function showBoard() {
 
   container1.addCards([card, card2, card3]);
   //const stockZone = new StockZone([card, card2, next]);
+}
 
-  // const card4 = new Card("6", Suits.clubs);
-  // card4.placeCardReverse(0, 0);
 
-  // const card5 = new Card("7", Suits.hearts);
-  // card5.placeCardReverse(0, 0);
 
-  // const card6 = new Card("8", Suits.spades);
-  // card6.placeCardReverse(0, 0);
+function start() {
 
-  //const StockZon = new StockZone([card4, card5, card6]);
-
-  const container = new CardContainer(2);
-  const next = new Card("J", Suits.spades);
-  container.addCards([next]);
-
-  const card7 = new Card("7", Suits.clubs);
-  const card8 = new Card("10", Suits.diamonds);
-  const card9 = new Card("K", Suits.spades);
-
-  const container2 = new CardContainer(7);
-  console.log(container2.staticContainer);
-  //container2.addCards([card9]);
-  // const stockZone = new StockZone([card, card2, next]);
-
-  // const card4 = new Card("6", Suits.clubs);
-  // card4.placeCardReverse(0, 0);
-
-  // const card5 = new Card("7", Suits.hearts);
-  // card5.placeCardReverse(0, 0);
-
-  // const card6 = new Card("8", Suits.spades);
-  // card6.placeCardReverse(0, 0);
-
-  // const StockZon = new StockZone2([card4, card5, card6]);
-
-  app.ticker.add(update);
-  function update() {
-    const allContainers = [container, container2];
-    const dragging = allContainers.find(
-      (container) => container.dragging == true
+  let rect = app.view.getBoundingClientRect();
+  console.log("rect", rect.x, rect.y);
+  
+  // Create Cards Deck
+  createDeckAssets();
+  loadFoundationsEmptyCards();
+  loadStockEmptyCard();
+  
+  
+  const initForm = document.querySelector("form");
+  const initSection = document.getElementById("init");
+  const gameSection = document.getElementById("game");
+  
+  let connection = null;
+  
+  initForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const { nickname } = Object.fromEntries(
+      new FormData(event.target as HTMLFormElement)
     );
-    if (dragging) {
-      const others = allContainers.filter((c) => c != dragging);
-      for (let i = 0; i < others.length; i++) {
-        if (isOverlapping(dragging, others, i)) {
-          dragging.staticContainer.removeChild(
-            ...dragging.draggableContainer.children
-          );
-          others[i].addCards(dragging.draggableContainer.children as Card[]);
-          if (isAnimationOver(others, i)) {
-            dragging.dragging = false;
-            dragging.draggableContainer.removeChildren(); ///
-            dragging.returnDraggableContainer();
-            console.log("dragging", dragging);
-            console.log("target", others[i]);
+  
+    connection = new Connection(nickname as string);
+    await connection.open();
+    engine(connection);
+    showBoard();
+  
+    connection.send("startGame");
+  });
+  
+  document.getElementById("disconnect").addEventListener("click", () => {
+    connection?.disconnect();
+    showInit();
+  });
+  
+  function showBoard() {
+    initSection.style.display = "none";
+    gameSection.style.display = "block";
+  
+ 
+    test();
+  
+    const card = new Card("K", Suits.hearts);
+    const card777 = new Card("K", Suits.hearts);
+    app.stage.addChild(card777);
+    card777.position.set(
+      (CARD_WIDTH * CARD_SCALE) / 2,
+      (CARD_HEIGHT * CARD_SCALE) / 2
+    );
+
+    const card2 = new Card("Q", Suits.hearts);
+    
+    const card3 = new Card("A", Suits.clubs);
+
+  
+     const card6 = new Card("8", Suits.spades);
+
+    const container = new CardContainer(2);
+    console.log("static container: ", container.staticContainer.position);
+
+    const next = new Card("J", Suits.spades);
+    container.addCards([card2, card3, next, card6]);
+  
+    const card7 = new Card("7", Suits.clubs);
+    const card8 = new Card("10", Suits.diamonds);
+    const card9 = new Card("K", Suits.spades);
+  
+    const container2 = new CardContainer(7);
+    console.log(container2.staticContainer);
+
+    container.addCards([card]);
+
+
+
+  
+    app.ticker.add(update);
+    function update() {
+      const allContainers = [container, container2];
+      const dragging = allContainers.find(
+        (container) => container.dragging == true
+      );
+      if (dragging) {
+        const others = allContainers.filter((c) => c != dragging);
+        for (let i = 0; i < others.length; i++) {
+          if (isOverlapping(dragging, others, i)) {
+            dragging.staticContainer.removeChild(
+              ...dragging.draggableContainer.children
+            );
+            others[i].addCards(dragging.draggableContainer.children as Card[]);
+            if (isAnimationOver(others, i)) {
+              dragging.dragging = false;
+              dragging.draggableContainer.removeChildren(); ///
+              dragging.returnDraggableContainer();
+              console.log("dragging", dragging);
+              console.log("target", others[i]);
+            }
           }
+          break;
         }
       }
     }
