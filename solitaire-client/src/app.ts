@@ -57,9 +57,7 @@ function start() {
   
   // Create Cards Deck
   createDeckAssets();
-  loadFoundationsEmptyCards();
-  loadStockEmptyCard();
-  
+
   
   const initForm = document.querySelector("form");
   const initSection = document.getElementById("init");
@@ -89,6 +87,10 @@ function start() {
   function showBoard() {
     initSection.style.display = "none";
     gameSection.style.display = "block";
+    
+    loadFoundationsEmptyCards();
+    loadStockEmptyCard();
+    
   
  
     test();
