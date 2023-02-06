@@ -102,7 +102,7 @@ export class Card extends Container {
       tl.to(this.front, {
         pixi: { skewY: 0, alpha: 1 },
         duration,
-      });
+      }); //.then(()=>tl.pause());
       this.isBack = false;
     }
   }
