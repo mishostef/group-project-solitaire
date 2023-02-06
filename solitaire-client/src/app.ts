@@ -63,7 +63,7 @@ function showBoard() {
   initSection.style.display = "none";
   gameSection.style.display = "block";
 
-  loadFoundations();
+  loadFoundationsEmptyCards();
   test();
 
   const card = new Card("K", Suits.hearts);
@@ -75,9 +75,9 @@ function showBoard() {
   const card3 = new Card("A", Suits.clubs);
   //card3.placeCard(100, 100);
   //   const next = new Card("J", Suits.spades);
-  //  const container = new CardContainer(2, [card, card2, card3, next]);
+  const container1 = new CardContainer(2);
 
-  //container.addCards([next]);
+  container1.addCards([card, card2, card3]);
   //const stockZone = new StockZone([card, card2, next]);
 
   // const card4 = new Card("6", Suits.clubs);
@@ -139,7 +139,7 @@ function showBoard() {
         }
       }
     }
-  
+
     function isOverlapping(
       dragging: CardContainer,
       others: CardContainer[],
@@ -149,7 +149,8 @@ function showBoard() {
         dragging &&
         others[i] &&
         dragging.draggableContainer.position.x >=
-          others[i].staticContainer.position.x - (CARD_WIDTH * CARD_SCALE) / 2 &&
+          others[i].staticContainer.position.x -
+            (CARD_WIDTH * CARD_SCALE) / 2 &&
         dragging.draggableContainer.position.x <=
           others[i].staticContainer.position.x + (CARD_WIDTH * CARD_SCALE) / 2
       );
@@ -166,14 +167,13 @@ function showBoard() {
       ].y == others[i].staticContainer.children[0].y
     );
   }
-  
+
   function showInit() {
     initSection.style.display = "block";
     gameSection.style.display = "none";
   }
-  
-
-
 }
 
-
+function showInit() {
+  throw new Error("Function not implemented.");
+}
