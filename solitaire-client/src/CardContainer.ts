@@ -54,36 +54,35 @@ export class CardContainer {
     );
   }
   private handleMouseDown(e) {
-    if (!this.draggableContainer) {
+    if (this.draggableContainer == null) {
       this.draggableContainer = new Container();
     }
     console.log(e.globalX, e.globalY);
     console.log(this.staticContainer.x, this.staticContainer.y);
     console.log(this.staticContainer.children[0]);
-    const deltaY = e.globalY - this.staticContainer.y;
+    const deltaY =
+      e.globalY - (this.staticContainer.y - (CARD_HEIGHT * CARD_SCALE) / 2);
     let index = Math.floor(deltaY / CARD_OFFSET);
+
     if (index > this.cards.length - 1) {
       index = this.cards.length - 1;
     }
     this.dragging = true;
+    console.log(this.draggableContainer);
     this.cards.forEach((card, i) => {
       if (i >= index) {
         this.draggableContainer.addChild(card);
+        card.position.set(0, i * CARD_OFFSET);
       }
+      (this.draggableContainer.pivot.y = this.draggableContainer.width / 2),
+        this.draggableContainer.height / 2;
     });
-    this.draggableContainer.children.forEach((card: Card, i) => {});
   }
 
   private handleMouseMove(e) {
     let [x, y] = [e.globalX, e.globalY];
 
     if (this.dragging) {
-      const itemsToRemove = this.draggableContainer.children.length;
-      this.cards.splice(this.cards.length - itemsToRemove, itemsToRemove);
-      this.draggableContainer.pivot.set(
-        this.draggableContainer.width / 2,
-        this.draggableContainer.height / 2
-      );
       this.draggableContainer.position.set(x, y);
     }
   }
@@ -92,15 +91,12 @@ export class CardContainer {
       const card = cards[i];
       this.cards.push(card);
       this.staticContainer.addChild(card);
-      card.position.set(0, this.cards.length * CARD_OFFSET);
+      card.position.set(0, (this.cards.length - 1) * CARD_OFFSET);
     }
   }
 
-  public returnDraggableContainer() {
-    if (!this.dragging)
-      this.draggableContainer.position.set(
-        this.containersInitialX,
-        this.containersInitialY
-      );
+  public updateState() {
+    const itemsToRemove = this.draggableContainer.children.length;
+    this.cards.splice(this.cards.length - itemsToRemove, itemsToRemove);
   }
 }

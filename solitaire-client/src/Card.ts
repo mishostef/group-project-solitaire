@@ -30,7 +30,6 @@ export class Card extends Container {
     this.frontMask = this.getMask();
     this.addChild(this.frontMask);
     this.front.mask = this.frontMask;
-
     this.back = this.getCardBack();
     this.addChild(this.front);
     this.addChild(this.back);
