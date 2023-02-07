@@ -15,8 +15,9 @@ import { Foundations } from "./FoundationsZone";
 import { Card } from "./Card";
 import { Suits } from "./constants";
 import { StockZone } from "./StockZone";
-import { TARGETS } from "pixi.js";
+import { Container, Point, TARGETS } from "pixi.js";
 import { loadFoundationsEmptyCards, loadStockEmptyCard } from "./cardsTexture";
+import src from "gsap/src";
 
 gsap.registerPlugin(PixiPlugin);
 PixiPlugin.registerPIXI(PIXI);
@@ -55,9 +56,6 @@ async function init() {
 }
 
 function start() {
-  // let rect = app.view.getBoundingClientRect();
-  // console.log("rect", rect.x, rect.y);
-
   // Create Cards Deck
   createDeckAssets();
   loadFoundationsEmptyCards();
@@ -107,51 +105,47 @@ function start() {
     const card8 = new Card("10", Suits.diamonds);
     const card9 = new Card("K", Suits.spades);
     card9.showFace();
-    const container2 = new CardContainer(7);
-    console.log(container2.staticContainer);
+    const container2 = new CardContainer(5);
 
     container2.addCards([card7, card8, card9]);
 
     app.ticker.add(update);
 
-    function update() {
+    function update(time) {
       const allContainers = [container, container2];
       const starting = allContainers.find(
         (container) => container.dragging == true
       );
-      if (starting) {
+      if (starting && starting.dragging) {
         const others = allContainers.filter((c) => c != starting);
         for (let i = 0; i < others.length; i++) {
           const target = others[i];
           if (isOverlapping(starting, target)) {
-            // dragging.staticContainer.removeChild(
-            //   ...dragging.draggableContainer.children
-            // );
-            target.addCards(starting.draggableContainer.children as Card[]);
-            console.log("in update:");
-            console.log("starting:", starting);
-            console.log("target: ", target);
-            if (isAnimationOver(target)) {
-              // starting.staticContainer.removeChild(
-              //   ...starting.draggableContainer.children
-              // );
-              starting.cards = target.cards.filter((c) =>
-                starting.draggableContainer.children.includes(c)
-              );
-
-              starting.dragging = false;
-
-              //dragging.draggableContainer.removeChildren(); ///
-              //dragging.returnDraggableContainer();
-              //dragging.draggableContainer.destroy();
-            }
-            console.log("starting over", starting, "children:", starting.cards);
-            console.log("target over", target, "chidren:", target.cards);
+            starting.draggableContainer.position.set(
+              target.staticContainer.position.x,
+              target.staticContainer.position.y
+            );
+            merge(starting, target);
             break;
           }
         }
       }
     }
+
+    function merge(starting: CardContainer, target: CardContainer) {
+      const cardsToMove = starting.draggableContainer.children;
+      const x = starting.cards.splice(
+        starting.cards.length - cardsToMove.length,
+        cardsToMove.length
+      );
+      target.addCards(x);
+      starting.dragging = false;
+      starting.draggableContainer.position.set(
+        starting.staticContainer.x,
+        starting.staticContainer.y
+      );
+    }
+
     function isOverlapping(dragging: CardContainer, target: CardContainer) {
       return (
         dragging &&
@@ -163,21 +157,9 @@ function start() {
       );
     }
   }
-  function isAnimationOver(target) {
-    const lastchildX =
-      target.staticContainer.children[
-        target.staticContainer.children.length - 1
-      ].x;
-    const firstChildX = target.staticContainer.children[0].x;
-    return lastchildX == firstChildX;
-  }
 
   function showInit() {
     initSection.style.display = "block";
     gameSection.style.display = "none";
   }
-}
-
-function showInit() {
-  throw new Error("Function not implemented.");
 }

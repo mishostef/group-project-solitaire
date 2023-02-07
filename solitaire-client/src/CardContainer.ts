@@ -98,5 +98,7 @@ export class CardContainer {
   public updateState() {
     const itemsToRemove = this.draggableContainer.children.length;
     this.cards.splice(this.cards.length - itemsToRemove, itemsToRemove);
+    this.staticContainer.removeChildren();
+    this.addCards(this.cards);
   }
 }
