@@ -113,57 +113,63 @@ function start() {
     container2.addCards([card7, card8, card9]);
 
     app.ticker.add(update);
+
     function update() {
       const allContainers = [container, container2];
-      const dragging = allContainers.find(
+      const starting = allContainers.find(
         (container) => container.dragging == true
       );
-      if (dragging) {
-        const others = allContainers.filter((c) => c != dragging);
+      if (starting) {
+        const others = allContainers.filter((c) => c != starting);
         for (let i = 0; i < others.length; i++) {
-          if (isOverlapping(dragging, others, i)) {
-            dragging.updateState();
-            console.log("in update", dragging);
-            others[i].addCards(dragging.draggableContainer.children as Card[]);
-            if (isAnimationOver(others, i)) {
-              dragging.dragging = false;
-              dragging.draggableContainer.removeChildren(); ///
-              console.log("dragging", dragging);
-              console.log("target", others[i]);
-              dragging.draggableContainer.destroy(); //
+          const target = others[i];
+          if (isOverlapping(starting, target)) {
+            // dragging.staticContainer.removeChild(
+            //   ...dragging.draggableContainer.children
+            // );
+            target.addCards(starting.draggableContainer.children as Card[]);
+            console.log("in update:");
+            console.log("starting:", starting);
+            console.log("target: ", target);
+            if (isAnimationOver(target)) {
+              // starting.staticContainer.removeChild(
+              //   ...starting.draggableContainer.children
+              // );
+              starting.cards = target.cards.filter((c) =>
+                starting.draggableContainer.children.includes(c)
+              );
+
+              starting.dragging = false;
+
+              //dragging.draggableContainer.removeChildren(); ///
+              //dragging.returnDraggableContainer();
+              //dragging.draggableContainer.destroy();
             }
+            console.log("starting over", starting, "children:", starting.cards);
+            console.log("target over", target, "chidren:", target.cards);
+            break;
           }
-          break;
         }
       }
     }
-
-    function isOverlapping(
-      dragging: CardContainer,
-      others: CardContainer[],
-      i: number
-    ) {
+    function isOverlapping(dragging: CardContainer, target: CardContainer) {
       return (
         dragging &&
-        others[i] &&
+        target &&
         dragging.draggableContainer.position.x >=
-          others[i].staticContainer.position.x -
-            (CARD_WIDTH * CARD_SCALE) / 2 &&
+          target.staticContainer.position.x - (CARD_WIDTH * CARD_SCALE) / 2 &&
         dragging.draggableContainer.position.x <=
-          others[i].staticContainer.position.x + (CARD_WIDTH * CARD_SCALE) / 2
+          target.staticContainer.position.x + (CARD_WIDTH * CARD_SCALE) / 2
       );
     }
   }
-  function isAnimationOver(others: CardContainer[], i: number) {
-    if (others[i].staticContainer.children) return true;
-    return (
-      others[i].staticContainer.children[
-        others[i].staticContainer.children.length - 1
-      ].x == others[i].staticContainer.children[0].x &&
-      others[i].staticContainer.children[
-        others[i].staticContainer.children.length - 1
-      ].y == others[i].staticContainer.children[0].y
-    );
+  function isAnimationOver(target) {
+    const lastchildX =
+      target.staticContainer.children[
+        target.staticContainer.children.length - 1
+      ].x;
+    const firstChildX = target.staticContainer.children[0].x;
+    return lastchildX == firstChildX;
   }
 
   function showInit() {
