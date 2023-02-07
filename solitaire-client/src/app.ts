@@ -5,7 +5,6 @@ import { gsap } from "gsap";
 import { PixiPlugin } from "gsap/PixiPlugin.js";
 import {
   clearScreen,
-  createDeckAssets,
   InteractiveBackground,
   test,
 } from "./utils";
@@ -43,15 +42,6 @@ async function init() {
   await PIXI.Assets.load("assets/emptyCard.png");
   await PIXI.Assets.load("assets/repeat.png");
 
-  loadFoundationsEmptyCards();
-  test();
-
-  // const card = new Card("K", Suits.hearts);
-  // const card2 = new Card("Q", Suits.hearts);
-  // const card3 = new Card("A", Suits.clubs);
-  // const container1 = new CardContainer(2);
-
-  // container1.addCards([card, card2, card3]);
 }
 
 function start() {
@@ -59,9 +49,9 @@ function start() {
   // console.log("rect", rect.x, rect.y);
 
   // Create Cards Deck
-  createDeckAssets();
-  loadFoundationsEmptyCards();
-  loadStockEmptyCard();
+  // const map = createDeckAssets();
+  // console.log("MAP", map['Aclubs'])
+
 
   const initForm = document.querySelector("form");
   const initSection = document.getElementById("init");
@@ -92,22 +82,27 @@ function start() {
     initSection.style.display = "none";
     gameSection.style.display = "block";
 
-    // test();
+    loadFoundationsEmptyCards();
+    loadStockEmptyCard();
+    test();
     const card2 = new Card("Q", Suits.hearts);
 
     const card3 = new Card("A", Suits.clubs);
 
     const card6 = new Card("8", Suits.spades);
     card6.showFace();
-    const container = new CardContainer(2);
+    card3.showFace();
+    card2.showFace();
+    const container = new CardContainer(1);
     const next = new Card("J", Suits.spades);
+    next.showFace();
     container.addCards([card2, card3, next, card6]);
 
     const card7 = new Card("7", Suits.clubs);
     const card8 = new Card("10", Suits.diamonds);
     const card9 = new Card("K", Suits.spades);
     card9.showFace();
-    const container2 = new CardContainer(7);
+    const container2 = new CardContainer(3);
     console.log(container2.staticContainer);
 
     container2.addCards([card7, card8, card9]);
@@ -138,6 +133,7 @@ function start() {
               starting.cards = target.cards.filter((c) =>
                 starting.draggableContainer.children.includes(c)
               );
+
 
               starting.dragging = false;
 
