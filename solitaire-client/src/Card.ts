@@ -19,7 +19,7 @@ export class Card extends Container {
   private isPlaced = false;
   private frontMask: any;
   public isBack = true;
-  public movedFromStock = false;
+  //public movedFromStock = false;
   private map = createDeckAssets();
 
   constructor(public face: Face, public suit: Suits) {
