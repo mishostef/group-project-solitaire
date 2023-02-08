@@ -74,8 +74,8 @@ export class CardContainer {
         this.draggableContainer.addChild(card);
         card.position.set(0, i * CARD_OFFSET);
       }
-      (this.draggableContainer.pivot.y = this.draggableContainer.width / 2),
-        this.draggableContainer.height / 2;
+      // (this.draggableContainer.pivot.y = this.draggableContainer.width / 2),
+      //   this.draggableContainer.height / 2;
     });
   }
 
