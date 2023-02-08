@@ -26,7 +26,7 @@ export class CardContainer {
     app.stage.addChild(this.staticContainer); ///
     app.stage.addChild(this.draggableContainer);
     this.containersInitialX = (CANVAS_WIDTH * rowNumber) / 8;
-    this.containersInitialY = CANVAS_HEIGHT * 0.5;
+    this.containersInitialY = 500;
     this.draggableContainer.position.set(
       this.containersInitialX,
       this.containersInitialY
@@ -70,6 +70,7 @@ export class CardContainer {
     this.dragging = true;
     console.log(this.draggableContainer);
     this.cards.forEach((card, i) => {
+      
       if (i >= index) {
         this.draggableContainer.addChild(card);
         card.position.set(0, i * CARD_OFFSET);
@@ -93,6 +94,11 @@ export class CardContainer {
       this.staticContainer.addChild(card);
       card.position.set(0, (this.cards.length - 1) * CARD_OFFSET);
     }
+  }
+
+  public removeCardFromContainer(card: Card) {
+    this.cards.pop();
+    this.staticContainer.removeChild(card)
   }
 
   public updateState() {

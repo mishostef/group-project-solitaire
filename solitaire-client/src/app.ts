@@ -5,7 +5,6 @@ import { gsap } from "gsap";
 import { PixiPlugin } from "gsap/PixiPlugin.js";
 import {
   clearScreen,
-  createDeckAssets,
   InteractiveBackground,
   test,
 } from "./utils";
@@ -44,15 +43,6 @@ async function init() {
   await PIXI.Assets.load("assets/emptyCard.png");
   await PIXI.Assets.load("assets/repeat.png");
 
-  loadFoundationsEmptyCards();
-  test();
-
-  // const card = new Card("K", Suits.hearts);
-  // const card2 = new Card("Q", Suits.hearts);
-  // const card3 = new Card("A", Suits.clubs);
-  // const container1 = new CardContainer(2);
-
-  // container1.addCards([card, card2, card3]);
 }
 
 function start() {
@@ -86,25 +76,65 @@ function start() {
     showInit();
   });
 
+
+  const diamondsFoundation = new Foundations(Suits.diamonds);
+  const clubFoundation = new Foundations(Suits.clubs);
+  const heartsFoundation = new Foundations(Suits.hearts);
+  const spadesFoundation = new Foundations(Suits.spades);
+
   function showBoard() {
     initSection.style.display = "none";
     gameSection.style.display = "block";
 
-    // test();
-    const card2 = new Card("Q", Suits.hearts);
+    loadFoundationsEmptyCards();
+    loadStockEmptyCard();
+    test();
 
-    const card3 = new Card("A", Suits.clubs);
+ // ~~~~~~~~~~~  create Stock Zone  ~~~~~~~~~~~~~~~~~~~~~~~~
+  const card14 = new Card("A", Suits.diamonds);
+  card14.placeCardReverse(0, 0);
 
-    const card6 = new Card("8", Suits.spades);
+  const card15 = new Card("6", Suits.diamonds);
+  card15.placeCardReverse(0, 0);
+
+  const card16 = new Card("3", Suits.hearts);
+  card16.placeCardReverse(0, 0);
+
+  const StockZon = new StockZone([card14, card15, card16]);
+  
+  
+  // ~~~~~~~~~~~  move to Foundation Zone  ~~~~~~~~~~~~~~~~~~~~~~~~
+  
+  clubFoundation.addCard(card14)
+  //container.removeCardFromContainer(card6)
+
+  //---------------------------------------------------------------
+
+  
+  const card2 = new Card("Q", Suits.hearts);
+
+  const card3 = new Card("A", Suits.clubs);
+    
+  const card6 = new Card("A", Suits.spades);
     card6.showFace();
-    const container = new CardContainer(2);
+    card3.showFace();
+    card2.showFace();
+    const container = new CardContainer(1);
     const next = new Card("J", Suits.spades);
+    next.showFace();
     container.addCards([card2, card3, next, card6]);
+    
+
+
+    
+
 
     const card7 = new Card("7", Suits.clubs);
     const card8 = new Card("10", Suits.diamonds);
     const card9 = new Card("K", Suits.spades);
     card9.showFace();
+    const container2 = new CardContainer(3);
+    console.log(container2.staticContainer);
     const container2 = new CardContainer(5);
 
     container2.addCards([card7, card8, card9]);

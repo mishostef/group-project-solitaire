@@ -70,49 +70,52 @@ export function clearScreen(app) {
 }
 
 export function test() {
-  const card4 = new Card("A", Suits.diamonds);
-  card4.placeCard(120, 300);
+  
+  // const card4 = new Card("A", Suits.diamonds);
+  // card4.placeCard(120, 300);
+  
+  // const card5 = new Card("2", Suits.diamonds);
+  // card5.placeCard(220, 300);
+  
+  // const card6 = new Card("3", Suits.diamonds);
+  // card6.placeCard(320, 300);
 
-  const card5 = new Card("2", Suits.diamonds);
-  card5.placeCard(220, 300);
+  // const card7 = new Card("4", Suits.diamonds);
+  // card7.placeCard(420, 300);
 
-  const card6 = new Card("3", Suits.diamonds);
-  card6.placeCard(320, 300);
 
-  const card7 = new Card("4", Suits.diamonds);
-  card7.placeCard(420, 300);
+  // const card8 = new Card("A", Suits.hearts);
+  // card8.placeCard(620, 300);
+  
+  // const card9 = new Card("2", Suits.hearts);
+  // card9.placeCard(720, 300);
 
-  const card8 = new Card("A", Suits.hearts);
-  card8.placeCard(620, 300);
 
-  const card9 = new Card("2", Suits.hearts);
-  card9.placeCard(720, 300);
+  // const card14 = new Card("5", Suits.diamonds);
+  // card14.placeCardReverse(0, 0);
 
-  const card14 = new Card("5", Suits.diamonds);
-  card14.placeCardReverse(0, 0);
+  // const card15 = new Card("6", Suits.diamonds);
+  // card15.placeCardReverse(0, 0);
 
-  const card15 = new Card("6", Suits.diamonds);
-  card15.placeCardReverse(0, 0);
-
-  const card16 = new Card("3", Suits.hearts);
-  card16.placeCardReverse(0, 0);
-
-  const diamondsFoundation = new Foundations(Suits.diamonds);
-  diamondsFoundation.addCard(card4);
-  diamondsFoundation.addCard(card5);
-  diamondsFoundation.addCard(card6);
-  diamondsFoundation.addCard(card7);
-  diamondsFoundation.addCard(card14);
-  diamondsFoundation.addCard(card15);
-
-  // console.log(diamondsFoundation)
-
-  const heartsFoundation = new Foundations(Suits.hearts);
-  heartsFoundation.addCard(card8);
-  heartsFoundation.addCard(card9);
-  heartsFoundation.addCard(card16);
-
-  const StockZon = new StockZone([card14, card15, card16]);
+  // const card16 = new Card("3", Suits.hearts);
+  // card16.placeCardReverse(0, 0);
+  
+  // const diamondsFoundation = new Foundations(Suits.diamonds);
+  // diamondsFoundation.addCard(card4);
+  // diamondsFoundation.addCard(card5);
+  // diamondsFoundation.addCard(card6);
+  // diamondsFoundation.addCard(card7);
+  // diamondsFoundation.addCard(card14);
+  // diamondsFoundation.addCard(card15);
+  
+  // // console.log(diamondsFoundation)
+  
+  // const heartsFoundation = new Foundations(Suits.hearts);
+  // heartsFoundation.addCard(card8);
+  // heartsFoundation.addCard(card9);
+  // heartsFoundation.addCard(card16);
+  
+  //const StockZon = new StockZone([card14, card15, card16]);
 
   // const container = new CardContainer(2, [card, card2, card3]);
   // app.stage.addChild(container.draggableContainer);
@@ -161,6 +164,11 @@ export class InteractiveBackground extends Container {
 
     this.addChild(container.draggableContainer);
     app.stage.addChild(container.draggableContainer);
+  const card2 = new Card("Q", Suits.hearts);
+  const card3 = new Card("A", Suits.clubs);
+  const container = new CardContainer(2);
+  this.addChild(container.draggableContainer);
+  app.stage.addChild(container.draggableContainer);
     this.bg = new PIXI.Graphics();
     this.bg.beginFill(0);
     this.bg.drawRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);

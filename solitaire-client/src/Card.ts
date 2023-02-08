@@ -19,13 +19,14 @@ export class Card extends Container {
   private isPlaced = false;
   private frontMask: any;
   public isBack = true;
-  public movedFromStock = false;
+  //public movedFromStock = false;
+  private map = createDeckAssets();
 
   constructor(public face: Face, public suit: Suits) {
     super();
     this.face = face;
     this.suit = suit;
-    this.front = createDeckAssets()[`${face}${Suits[suit]}`] as PIXI.Sprite;
+    this.front = this.map[`${face}${Suits[suit]}`] as PIXI.Sprite;
     this.front.anchor.set(0.5);
     this.frontMask = this.getMask();
     this.addChild(this.frontMask);
