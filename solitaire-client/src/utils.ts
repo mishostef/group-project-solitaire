@@ -164,11 +164,6 @@ export class InteractiveBackground extends Container {
 
     this.addChild(container.draggableContainer);
     app.stage.addChild(container.draggableContainer);
-  const card2 = new Card("Q", Suits.hearts);
-  const card3 = new Card("A", Suits.clubs);
-  const container = new CardContainer(2);
-  this.addChild(container.draggableContainer);
-  app.stage.addChild(container.draggableContainer);
     this.bg = new PIXI.Graphics();
     this.bg.beginFill(0);
     this.bg.drawRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);

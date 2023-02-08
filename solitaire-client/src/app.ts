@@ -46,10 +46,6 @@ async function init() {
 }
 
 function start() {
-  // Create Cards Deck
-  createDeckAssets();
-  loadFoundationsEmptyCards();
-  loadStockEmptyCard();
 
   const initForm = document.querySelector("form");
   const initSection = document.getElementById("init");
@@ -135,7 +131,7 @@ function start() {
     card9.showFace();
     const container2 = new CardContainer(3);
     console.log(container2.staticContainer);
-    const container2 = new CardContainer(5);
+   
 
     container2.addCards([card7, card8, card9]);
 
