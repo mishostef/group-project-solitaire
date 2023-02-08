@@ -16,6 +16,8 @@ export class CardContainer {
   dragging = false;
   private containersInitialX: number;
   private containersInitialY: number;
+  public draggableLength = 0;
+  public isReturningCards = true;
   constructor(public rowNumber: number) {
     if (rowNumber < 1) {
       throw new RangeError("Row must be positive and lower than 8");
@@ -44,6 +46,17 @@ export class CardContainer {
     this.staticContainer.on("mousedown", this.handleMouseDown.bind(this));
     this.draggableContainer.on("mouseup", () => {
       this.dragging = false;
+      if (this.draggableLength != 0) {
+        this.draggableContainer.position.set(
+          this.staticContainer.x,
+          this.staticContainer.y
+        );
+        const x = this.cards.splice(
+          this.cards.length - this.draggableLength,
+          this.draggableLength
+        );
+        this.addCards(x);
+      }
     });
     this.draggableContainer.on("mousedown", () => {
       this.dragging = true;
@@ -70,18 +83,18 @@ export class CardContainer {
     this.dragging = true;
     console.log(this.draggableContainer);
     this.cards.forEach((card, i) => {
+      let cntr = 0;
       if (i >= index) {
         this.draggableContainer.addChild(card);
-        card.position.set(0, i * CARD_OFFSET);
+        card.position.set(0, (i - index) * CARD_OFFSET);
       }
-      // (this.draggableContainer.pivot.y = this.draggableContainer.width / 2),
-      //   this.draggableContainer.height / 2;
+      this.draggableLength = this.draggableContainer.children.length;
     });
+    console.log(this.draggableContainer);
   }
 
   private handleMouseMove(e) {
     let [x, y] = [e.globalX, e.globalY];
-
     if (this.dragging) {
       this.draggableContainer.position.set(x, y);
     }
