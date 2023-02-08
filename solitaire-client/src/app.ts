@@ -87,21 +87,25 @@ function start() {
     test();
 
  // ~~~~~~~~~~~  create Stock Zone  ~~~~~~~~~~~~~~~~~~~~~~~~
+  // const card13 = new Card(null, Suits.null);
+  // card13.placeCardReverse(0, 0);
+
   const card14 = new Card("A", Suits.diamonds);
   card14.placeCardReverse(0, 0);
 
-  const card15 = new Card("6", Suits.diamonds);
+  const card15 = new Card("2", Suits.diamonds);
   card15.placeCardReverse(0, 0);
 
   const card16 = new Card("3", Suits.hearts);
   card16.placeCardReverse(0, 0);
 
+  //const StockZon = new StockZone([card13, card14, card15, card16]);
   const StockZon = new StockZone([card14, card15, card16]);
   
   
   // ~~~~~~~~~~~  move to Foundation Zone  ~~~~~~~~~~~~~~~~~~~~~~~~
   
-  clubFoundation.addCard(card14)
+  //clubFoundation.addCard(card14)
   //container.removeCardFromContainer(card6)
 
   //---------------------------------------------------------------
