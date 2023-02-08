@@ -81,7 +81,6 @@ export class CardContainer {
       index = this.cards.length - 1;
     }
     this.dragging = true;
-    console.log(this.draggableContainer);
     this.cards.forEach((card, i) => {
       let cntr = 0;
       if (i >= index) {
@@ -90,7 +89,6 @@ export class CardContainer {
       }
       this.draggableLength = this.draggableContainer.children.length;
     });
-    console.log(this.draggableContainer);
   }
 
   private handleMouseMove(e) {
