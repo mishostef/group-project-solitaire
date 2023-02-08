@@ -6,6 +6,7 @@ import {
   CARD_HEIGHT,
   CARD_SCALE,
   CARD_WIDTH,
+  Suits,
 } from "./constants";
 import { gsap } from "gsap";
 
@@ -14,6 +15,7 @@ export class StockZone {
   repeatCard: PIXI.Sprite;
   reverse = true;
   waste: Card[] = [];
+  countCreateStockContainer = 0;
 
   constructor(cards: Card[]) {
     this.stock = cards;
@@ -52,10 +54,14 @@ export class StockZone {
           stock[i].zIndex = index;
           index++;
 
-          console.log("zIndex", stock[i].zIndex);
-          console.log("face", stock[i].face);
+          //console.log("zIndex", stock[i].zIndex);
+          //console.log("face", stock[i].face);
 
           stock[i].movedFromStock = true;
+
+          // stock[i].face = "A";
+          // stock[i].suit = Suits.diamonds;
+          
           this.moveToWaste(stock[i], index);
 
           console.log("Waste: ", this.waste)
@@ -64,10 +70,17 @@ export class StockZone {
 
     }
 
+      this.countCreateStockContainer++;
   }
+
 
   moveToWaste(card: Card, index) {
 
+
+    if(this.countCreateStockContainer == 1) {
+
+      card.changeFaceAndSuit("A", Suits.hearts, 200, 100);
+    }
     this.waste.push(card);
 
     card.zIndex = index;
@@ -77,7 +90,7 @@ export class StockZone {
     tl.to(card, {
       pixi: { x: 200, y: 100 },
       duration,
-      onStart: () => card.showFace(),
+      onStart: () => card.showFace(0.5),
     });
 
   }
@@ -85,7 +98,6 @@ export class StockZone {
   repeatStock() {
  
     let index = 1;
-
     this.waste.forEach((card) => {
       const tl = gsap.timeline();
       tl.to(card, {

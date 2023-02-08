@@ -15,12 +15,12 @@ import { app } from "./app";
 
 export class Card extends Container {
   private back: DisplayObject;
-  private front: Sprite | null;
+  public front: Sprite | null;
   private isPlaced = false;
   private frontMask: any;
   public isBack = true;
   public movedFromStock = false;
-  private map = createDeckAssets();
+  public map = createDeckAssets();
 
   constructor(public face: Face, public suit: Suits) {
     super();
@@ -138,4 +138,22 @@ export class Card extends Container {
     back.anchor.set(0.5);
     return back;
   }
+
+  changeFaceAndSuit(newFace: Face, newSuit: Suits, x, y) {
+    
+    this.face = newFace;
+    this.suit = newSuit;
+    this.front = this.map[`${newFace}${Suits[newSuit]}`];
+    this.front.anchor.set(0.5);
+    this.front.position.set(x,y);
+    
+    this.frontMask = this.getMask();
+    this.front.mask = this.frontMask;
+    this.addChild(this.frontMask);
+    
+    app.stage.addChild(this.front);
+
+  }
+
+
 }

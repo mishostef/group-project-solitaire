@@ -45,4 +45,5 @@ export type Face =
   | "J"
   | "Q"
   | "K"
+  | null
 
