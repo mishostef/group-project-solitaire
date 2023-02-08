@@ -11,6 +11,7 @@ export enum Suits {
   clubs,
   hearts,
   spades,
+  null
 }
 
 
@@ -27,7 +28,8 @@ export const cardsConstants = [
   "10",
   "J",
   "Q",
-  "K"
+  "K",
+  null
 ];
 export type Face =
   | "A"
@@ -43,4 +45,5 @@ export type Face =
   | "J"
   | "Q"
   | "K"
+  | null
 
