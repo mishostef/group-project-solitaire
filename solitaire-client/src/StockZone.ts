@@ -23,14 +23,9 @@ export class StockZone {
 
   createStockContainer(stock) {
     this.waste = [];
-    console.log("WWW", this.waste)
+
     let index = 1;
     let isStockEmpty;
-
-    // console.log("WWWWW", this.waste)
-    // console.log(this.stock ==stock)
-
-    //let stockLength = stock.length;
 
     this.repeatCard.interactive = true;
     this.repeatCard.on("pointertap", () => {
@@ -63,9 +58,10 @@ export class StockZone {
           stock[i].movedFromStock = true;
           this.moveToWaste(stock[i], index);
 
-          //this.waste.push(stock[i]);
+          console.log("Waste: ", this.waste)
         });
       }
+
     }
 
   }
@@ -87,8 +83,7 @@ export class StockZone {
   }
 
   repeatStock() {
-    // this.stock = [];
-
+ 
     let index = 1;
 
     this.waste.forEach((card) => {
@@ -104,7 +99,6 @@ export class StockZone {
 
       card.movedFromStock = false;
       this.stock.push(card);
-      //this.waste.pop();
 
     });
 
@@ -122,6 +116,8 @@ export class StockZone {
     app.stage.addChild(this.repeatCard);
   }
 }
+
+
 
 // export class StockZone2  {
 //   stock: Card[];
