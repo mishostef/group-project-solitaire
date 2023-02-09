@@ -79,30 +79,29 @@ function start() {
     loadStockEmptyCard();
     test();
 
- // ~~~~~~~~~~~  create Stock Zone  ~~~~~~~~~~~~~~~~~~~~~~~~
- const card12 = new Card(null, Suits.null);
- card12.placeCardReverse(0, 0);
+    // ~~~~~~~~~~~  create Stock Zone  ~~~~~~~~~~~~~~~~~~~~~~~~
+    const card12 = new Card(null, Suits.null);
+    card12.placeCardReverse(0, 0);
 
-  const card13 = new Card(null, Suits.null);
-  card13.placeCardReverse(0, 0);
+    const card13 = new Card(null, Suits.null);
+    card13.placeCardReverse(0, 0);
 
-  // const card14 = new Card("A", Suits.diamonds);
-  // card14.placeCardReverse(0, 0);
+    // const card14 = new Card("A", Suits.diamonds);
+    // card14.placeCardReverse(0, 0);
 
-  // const card15 = new Card("2", Suits.diamonds);
-  // card15.placeCardReverse(0, 0);
+    // const card15 = new Card("2", Suits.diamonds);
+    // card15.placeCardReverse(0, 0);
 
-  // const card16 = new Card("3", Suits.hearts);
-  // card16.placeCardReverse(0, 0);
+    // const card16 = new Card("3", Suits.hearts);
+    // card16.placeCardReverse(0, 0);
 
-  const StockZon = new StockZone([card12, card13]);
-  //const StockZon = new StockZone([card14, card15, card16]);
-  
-  
-  // ~~~~~~~~~~~  move to Foundation Zone  ~~~~~~~~~~~~~~~~~~~~~~~~
-  
-  //clubFoundation.addCard(card14)
-  //container.removeCardFromContainer(card6)
+    const StockZon = new StockZone([card12, card13]);
+    //const StockZon = new StockZone([card14, card15, card16]);
+
+    // ~~~~~~~~~~~  move to Foundation Zone  ~~~~~~~~~~~~~~~~~~~~~~~~
+
+    //clubFoundation.addCard(card14)
+    //container.removeCardFromContainer(card6)
 
     //---------------------------------------------------------------
 
@@ -140,44 +139,17 @@ function start() {
           const others = allContainers.filter((c) => c != starting);
           for (let i = 0; i < others.length; i++) {
             const target = others[i];
-            if (isOverlapping(starting, target)) {
+            if (target && starting.isOverlapping(target)) {
               starting.draggableContainer.position.set(
                 target.staticContainer.position.x,
                 target.staticContainer.position.y
               );
-              merge(starting, target);
+              starting.merge(target);
               break;
             }
           }
         }
       }
-    }
-
-    function merge(starting: CardContainer, target: CardContainer) {
-      const cardsToMove = starting.draggableContainer.children;
-
-      const draggedCards = starting.cards.splice(
-        starting.cards.length - cardsToMove.length,
-        cardsToMove.length
-      );
-      target.addCards(draggedCards);
-      starting.dragging = false;
-      starting.draggableContainer.position.set(
-        starting.staticContainer.x,
-        starting.staticContainer.y
-      );
-      starting.draggableLength = 0;
-    }
-
-    function isOverlapping(dragging: CardContainer, target: CardContainer) {
-      return (
-        dragging &&
-        target &&
-        dragging.draggableContainer.position.x >=
-          target.staticContainer.position.x - (CARD_WIDTH * CARD_SCALE) / 2 &&
-        dragging.draggableContainer.position.x <=
-          target.staticContainer.position.x + (CARD_WIDTH * CARD_SCALE) / 2
-      );
     }
   }
 

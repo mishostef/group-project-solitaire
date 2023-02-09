@@ -4,5 +4,5 @@ export interface ICard {
   faceUp: boolean;
 }
 export interface IStock {
-  piles: IStock;
+  piles: ICard[];
 }

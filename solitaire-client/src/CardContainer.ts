@@ -14,10 +14,11 @@ export class CardContainer {
   draggableContainer: Container;
   staticContainer: Container;
   dragging = false;
-  private containersInitialX: number;
-  private containersInitialY: number;
+  public containersInitialX: number;
+  public containersInitialY: number;
   public draggableLength = 0;
   public isReturningCards = true;
+
   constructor(public rowNumber: number) {
     if (rowNumber < 1) {
       throw new RangeError("Row must be positive and lower than 8");
@@ -25,7 +26,7 @@ export class CardContainer {
     this.cards = [];
     this.draggableContainer = new Container();
     this.staticContainer = new Container();
-    app.stage.addChild(this.staticContainer); ///
+    app.stage.addChild(this.staticContainer);
     app.stage.addChild(this.draggableContainer);
     this.containersInitialX = (CANVAS_WIDTH * rowNumber) / 8;
     this.containersInitialY = 400;
@@ -70,9 +71,6 @@ export class CardContainer {
     if (this.draggableContainer == null) {
       this.draggableContainer = new Container();
     }
-    console.log(e.globalX, e.globalY);
-    console.log(this.staticContainer.x, this.staticContainer.y);
-    console.log(this.staticContainer.children[0]);
     const deltaY =
       e.globalY - (this.staticContainer.y - (CARD_HEIGHT * CARD_SCALE) / 2);
     let index = Math.floor(deltaY / CARD_OFFSET);
@@ -82,7 +80,6 @@ export class CardContainer {
     }
     this.dragging = true;
     this.cards.forEach((card, i) => {
-      let cntr = 0;
       if (i >= index) {
         this.draggableContainer.addChild(card);
         card.position.set(0, (i - index) * CARD_OFFSET);
@@ -111,10 +108,28 @@ export class CardContainer {
     this.staticContainer.removeChild(card);
   }
 
-  public updateState() {
-    const itemsToRemove = this.draggableContainer.children.length;
-    this.cards.splice(this.cards.length - itemsToRemove, itemsToRemove);
-    this.staticContainer.removeChildren();
-    this.addCards(this.cards);
+  public merge(target: CardContainer) {
+    const cardsToMove = this.draggableContainer.children;
+
+    const draggedCards = this.cards.splice(
+      this.cards.length - cardsToMove.length,
+      cardsToMove.length
+    );
+    target.addCards(draggedCards);
+    this.dragging = false;
+    this.draggableContainer.position.set(
+      this.staticContainer.x,
+      this.staticContainer.y
+    );
+    this.draggableLength = 0;
+  }
+
+  public isOverlapping(target: CardContainer) {
+    return (
+      this.draggableContainer.position.x >=
+        target.staticContainer.position.x - (CARD_WIDTH * CARD_SCALE) / 2 &&
+      this.draggableContainer.position.x <=
+        target.staticContainer.position.x + (CARD_WIDTH * CARD_SCALE) / 2
+    );
   }
 }
