@@ -105,52 +105,53 @@ function start() {
 
     //---------------------------------------------------------------
 
-    const card2 = new Card("Q", Suits.hearts);
+    
+    // const card2 = new Card("Q", Suits.hearts);
 
-    const card3 = new Card("A", Suits.clubs);
+    // const card3 = new Card("A", Suits.clubs);
 
-    const card6 = new Card("A", Suits.spades);
-    card6.showFace();
-    card3.showFace();
-    card2.showFace();
-    const container = new CardContainer(1);
-    const next = new Card("J", Suits.spades);
-    next.showFace();
-    container.addCards([card2, card3, next, card6]);
+    // const card6 = new Card("A", Suits.spades);
+    // card6.showFace();
+    // card3.showFace();
+    // card2.showFace();
+    // const container = new CardContainer(1);
+    // const next = new Card("J", Suits.spades);
+    // next.showFace();
+    // container.addCards([card2, card3, next, card6]);
 
-    const card7 = new Card("7", Suits.clubs);
-    const card8 = new Card("10", Suits.diamonds);
-    const card9 = new Card("K", Suits.spades);
-    card9.showFace();
-    const container2 = new CardContainer(3);
-    console.log(container2.staticContainer);
+    // const card7 = new Card("7", Suits.clubs);
+    // const card8 = new Card("10", Suits.diamonds);
+    // const card9 = new Card("K", Suits.spades);
+    // card9.showFace();
+    // const container2 = new CardContainer(3);
+    // console.log(container2.staticContainer);
 
-    container2.addCards([card7, card8, card9]);
+    // container2.addCards([card7, card8, card9]);
 
-    app.ticker.add(update);
+    //app.ticker.add(update);
 
-    function update(time) {
-      const allContainers = [container, container2];
-      const starting = allContainers.find(
-        (container) => container.dragging == true
-      );
-      if (starting) {
-        if (starting.dragging) {
-          const others = allContainers.filter((c) => c != starting);
-          for (let i = 0; i < others.length; i++) {
-            const target = others[i];
-            if (target && starting.isOverlapping(target)) {
-              starting.draggableContainer.position.set(
-                target.staticContainer.position.x,
-                target.staticContainer.position.y
-              );
-              starting.merge(target);
-              break;
-            }
-          }
-        }
-      }
-    }
+    // function update() {
+    //   const allContainers = [container, container2];
+    //   const starting = allContainers.find(
+    //     (container) => container.dragging == true
+    //   );
+    //   if (starting) {
+    //     if (starting.dragging) {
+    //       const others = allContainers.filter((c) => c != starting);
+    //       for (let i = 0; i < others.length; i++) {
+    //         const target = others[i];
+    //         if (target && starting.isOverlapping(target)) {
+    //           starting.draggableContainer.position.set(
+    //             target.staticContainer.position.x,
+    //             target.staticContainer.position.y
+    //           );
+    //           starting.merge(target);
+    //           break;
+    //         }
+    //       }
+    //     }
+    //   }
+    // }
   }
 
   function showInit() {

@@ -21,20 +21,29 @@ export class Card extends Container {
   public isBack = true;
   public movedFromStock = false;
   public map = createDeckAssets();
+  public isValid = true;
 
   constructor(public face: Face, public suit: Suits) {
     super();
     this.face = face;
     this.suit = suit;
-     
-    if ( face !== null && suit !==null) {
-      this.front = this.map[`${face}${Suits[suit]}`] as PIXI.Sprite;
-      this.front.anchor.set(0.5);
-      this.frontMask = this.getMask();
-      this.addChild(this.frontMask);
-      this.front.mask = this.frontMask;
-      this.addChild(this.front);
+    console.log(this.map);
+    if (!face || !suit) {
+      this.front = this.map[`Aclubs`] as PIXI.Sprite;
+      this.isValid = false;
+    } else {
+      this.front = this.map[`${face}${suit}`] as PIXI.Sprite;
     }
+    try {
+      this.front.anchor.set(0.5);
+    } catch (error) {
+      console.log(error);
+    }
+    this.front.anchor.set(0.5);
+    this.frontMask = this.getMask();
+    this.addChild(this.frontMask);
+    this.front.mask = this.frontMask;
+    this.addChild(this.front);
 
     this.back = this.getCardBack();
     this.addChild(this.back);
@@ -80,10 +89,7 @@ export class Card extends Container {
 
     const duration = 0.3;
     const tl = gsap.timeline();
-    if (this.front) {
-
-      this.front.alpha = 0;
-    }
+    this.front.alpha = 0;
     gsap.set(this.front, { pixi: { skewY: 90 } });
     this.back.interactive = true;
     this.back.on("pointertap", () => {
@@ -101,10 +107,7 @@ export class Card extends Container {
     if (this.isBack) {
       //const duration = 0.3;
       const tl = gsap.timeline();
-      if (this.front) {
-
-        this.front.alpha = 0;
-      }
+      this.front.alpha = 0;
       gsap.set(this.front, { pixi: { skewY: 90 } });
       tl.to(this.back, { pixi: { skewY: -90 }, duration });
       tl.to(this.front, {
@@ -140,20 +143,16 @@ export class Card extends Container {
   }
 
   changeFaceAndSuit(newFace: Face, newSuit: Suits, x, y) {
-    
     this.face = newFace;
     this.suit = newSuit;
     this.front = this.map[`${newFace}${Suits[newSuit]}`];
     this.front.anchor.set(0.5);
-    this.front.position.set(x,y);
-    
+    this.front.position.set(x, y);
+
     this.frontMask = this.getMask();
     this.front.mask = this.frontMask;
     this.addChild(this.frontMask);
-    
+
     app.stage.addChild(this.front);
-
   }
-
-
 }
