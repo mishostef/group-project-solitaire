@@ -10,7 +10,6 @@ import {
 } from "./constants";
 import { createDeckAssets, flipCardSound } from "./utils";
 import { gsap } from "gsap";
-import { DraggableObject } from "./DraggableObject";
 import { app } from "./app";
 
 export class Card extends Container {
@@ -20,31 +19,27 @@ export class Card extends Container {
   private frontMask: any;
   public isBack = true;
   public movedFromStock = false;
-  public map = createDeckAssets();
+  private map = createDeckAssets();
   public isValid = true;
 
   constructor(public face: Face, public suit: Suits) {
     super();
-    this.face = face;
-    this.suit = suit;
+
     console.log(this.map);
-    if (!face || !suit) {
-      this.front = this.map[`Aclubs`] as PIXI.Sprite;
-      this.isValid = false;
+    if (face == null || suit == null || suit == Suits.null) {
+      this.face = "A"; //"10", Suits.spades
+      this.suit = Suits.clubs;
     } else {
-      this.front = this.map[`${face}${suit}`] as PIXI.Sprite;
+      this.face = face;
+      this.suit = suit;
     }
-    try {
-      this.front.anchor.set(0.5);
-    } catch (error) {
-      console.log(error);
-    }
+    console.log(`${this.face}${Suits[this.suit]}`);
+    this.front = this.map[`${this.face}${Suits[this.suit]}`] as PIXI.Sprite;
     this.front.anchor.set(0.5);
     this.frontMask = this.getMask();
     this.addChild(this.frontMask);
     this.front.mask = this.frontMask;
     this.addChild(this.front);
-
     this.back = this.getCardBack();
     this.addChild(this.back);
   }
@@ -101,11 +96,9 @@ export class Card extends Container {
     });
   }
 
-  showFace(duration = 0.3) {
+  showFace(duration = 0.3, cb?: Function) {
     //flipCardSound.play();
-
     if (this.isBack) {
-      //const duration = 0.3;
       const tl = gsap.timeline();
       this.front.alpha = 0;
       gsap.set(this.front, { pixi: { skewY: 90 } });
@@ -113,7 +106,11 @@ export class Card extends Container {
       tl.to(this.front, {
         pixi: { skewY: 0, alpha: 1 },
         duration,
-      }); //.then(()=>tl.pause());
+      }).then(() => {
+        if (cb) {
+          cb();
+        }
+      });
       this.isBack = false;
     }
   }

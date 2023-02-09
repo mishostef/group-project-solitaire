@@ -5,6 +5,7 @@ import { StockZone } from "./StockZone";
 import { app } from "./app";
 import { Card } from "./Card";
 import { Container } from "pixi.js";
+import { Suits } from "./constants";
 
 export class Game {
   foundations: Foundations[];
@@ -14,14 +15,16 @@ export class Game {
   constructor(state: IStock) {
     for (let i = 0; i < 7; i++) {
       const currentPileInfo = state.piles[i];
-      // this.piles[i] = new CardContainer(i + 1);
       const cards = currentPileInfo.cards;
       console.log("currentPileInfo.cards", cards);
       const columnCards = [];
       for (let i = 0; i < cards.length; i++) {
-        const cardInfo = cards[0];
-        console.log("cardInfo", cardInfo);
-        const card = new Card(cardInfo.face, cardInfo.suit);
+        const cardInfo = cards[i];
+        const s =
+          typeof cardInfo.suit == "string"
+            ? Suits[cardInfo.suit]
+            : cardInfo.suit;
+        const card = new Card(cardInfo.face, s);
         if (cardInfo.faceUp) {
           card.showFace(0);
         }
@@ -30,7 +33,6 @@ export class Game {
       const container = new CardContainer(i + 1);
       container.addCards(columnCards);
       this.piles.push(container);
-      //this.piles[i].addCards(currentPileInfo.cards)
     }
     app.ticker.add(this.update.bind(this));
   }
