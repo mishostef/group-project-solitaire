@@ -14,6 +14,6 @@ export function engine(connection: Connection) {
 
   function onState(state) {
     console.log("received state", state);
-    //const game = new Game(state);
+    const game = new Game(state);
   }
 }
