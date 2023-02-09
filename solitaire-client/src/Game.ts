@@ -9,11 +9,11 @@ import { Container } from "pixi.js";
 export class Game {
   foundations: Foundations[];
   stockZone: StockZone;
-  piles: CardContainer[];
+  piles: CardContainer[] = [];
 
-  constructor(stock: IStock) {
+  constructor(state: IStock) {
     for (let i = 0; i < 7; i++) {
-      const currentPileInfo = stock.piles[i];
+      const currentPileInfo = state.piles[i];
       // this.piles[i] = new CardContainer(i + 1);
       const cards = currentPileInfo.cards;
       console.log("currentPileInfo.cards", cards);
@@ -29,15 +29,15 @@ export class Game {
       }
       const container = new CardContainer(i + 1);
       container.addCards(columnCards);
-      //card.placeCard(700, 700);
+      this.piles.push(container);
       //this.piles[i].addCards(currentPileInfo.cards)
-      //  app.ticker.add(this.update);
     }
-    //  app.ticker.add(this.update);
+    app.ticker.add(this.update.bind(this));
   }
 
   update() {
     const allContainers = this.piles; //[container, container2];
+    //console.log(this.piles);
     const starting = allContainers.find(
       (container) => container.dragging == true
     );
