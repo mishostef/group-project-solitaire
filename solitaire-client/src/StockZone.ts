@@ -1,4 +1,3 @@
-import { ICard, IStock } from './interfaces';
 import * as PIXI from "pixi.js";
 import { app } from "./app";
 import { Card } from "./Card";
@@ -12,15 +11,14 @@ import {
 import { gsap } from "gsap";
 
 export class StockZone {
-  stock: IStock;
+  stock: Card[] = [];
   repeatCard: PIXI.Sprite;
   reverse = true;
-  waste = [];
+  waste: Card[] = [];
   countCreateStockContainer = 0;
 
-  constructor(cards: ICard[]) {
+  constructor(cards: Card[]) {
     this.stock = cards;
-    console.log("AAA",this.stock[0])
     this.loadRepeatCard();
     this.createStockContainer(this.stock);
   }

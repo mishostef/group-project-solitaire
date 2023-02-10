@@ -5,7 +5,6 @@ import { IState, IStock, IMoves } from "./interfaces";
 import { StockZone } from "./StockZone";
 import { app } from "./app";
 import { Card } from "./Card";
-import { Container } from "pixi.js";
 import { cardMap, Suits } from "./constants";
 ///here comes app creation etc
 
