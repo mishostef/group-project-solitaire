@@ -1,6 +1,6 @@
 import { CardContainer } from "./CardContainer";
 import { Foundations } from "./FoundationsZone";
-import { IStock } from "./interfaces";
+import { IState, IStock } from "./interfaces";
 import { StockZone } from "./StockZone";
 import { app } from "./app";
 import { Card } from "./Card";
@@ -14,12 +14,19 @@ export class Game {
   foundations: Foundations[];
   stockZone: StockZone;
   piles: CardContainer[] = [];
+  state;
+  stock;
+  
 
-  constructor(state: IStock) {
+  constructor(state: IState) {
+    this.state = state;
+    this.stock = new StockZone(state.stock.cards);
+    //console.log("stock.cards - ", this.stock)
+
     for (let i = 0; i < 7; i++) {
       const currentPileInfo = state.piles[i];
       const cards = currentPileInfo.cards;
-      console.log("currentPileInfo.cards", cards);
+     // console.log("currentPileInfo.cards", cards);
       const columnCards = [];
       for (let i = 0; i < cards.length; i++) {
         const cardInfo = cards[i];
@@ -38,6 +45,8 @@ export class Game {
       this.piles.push(container);
     }
     app.ticker.add(this.update.bind(this));
+
+
   }
 
   update() {
