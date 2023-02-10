@@ -27,8 +27,9 @@ export class Card extends Container {
 
     console.log(this.map);
     if (face == null || suit == null || suit == Suits.null) {
-      this.face = "A"; //"10", Suits.spades
+      this.face = "A";
       this.suit = Suits.clubs;
+      this.isValid = false;
     } else {
       this.face = face;
       this.suit = suit;

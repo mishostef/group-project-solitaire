@@ -1,6 +1,6 @@
 import { CardContainer } from "./CardContainer";
 import { Foundations } from "./FoundationsZone";
-import { IStock } from "./interfaces";
+import { IMoves, IStock } from "./interfaces";
 import { StockZone } from "./StockZone";
 import { app } from "./app";
 import { Card } from "./Card";
@@ -19,7 +19,7 @@ export class Game {
     for (let i = 0; i < 7; i++) {
       const currentPileInfo = state.piles[i];
       const cards = currentPileInfo.cards;
-      console.log("currentPileInfo.cards", cards);
+      //     console.log("currentPileInfo.cards", cards);
       const columnCards = [];
       for (let i = 0; i < cards.length; i++) {
         const cardInfo = cards[i];
@@ -38,6 +38,10 @@ export class Game {
       this.piles.push(container);
     }
     app.ticker.add(this.update.bind(this));
+  }
+
+  processMoves(moves:IMoves) {
+    
   }
 
   update() {
