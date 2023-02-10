@@ -1,6 +1,7 @@
 import { CardContainer } from "./CardContainer";
 import { Foundations } from "./FoundationsZone";
-import { IMoves, IState } from "./interfaces";
+import { IState, IStock, IMoves } from "./interfaces";
+
 import { StockZone } from "./StockZone";
 import { app } from "./app";
 import { Card } from "./Card";
@@ -18,6 +19,10 @@ export class Game {
 
   constructor() {
     app.ticker.add(this.update.bind(this));
+
+    // this.state = state;
+    // this.stock = new StockZone(state.stock.cards);
+    //console.log("stock.cards - ", this.stock)
   }
 
   public processState(state: IState) {

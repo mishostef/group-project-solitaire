@@ -21,11 +21,12 @@ export class Card extends Container {
   public movedFromStock = false;
   private map = createDeckAssets();
   public isValid = true;
+  public faceUp = false;
 
   constructor(public face: Face, public suit: Suits) {
     super();
 
-    console.log(this.map);
+    //console.log(this.map);
     if (face == null || suit == null || suit == Suits.null) {
       this.face = "A";
       this.suit = Suits.clubs;
@@ -34,7 +35,7 @@ export class Card extends Container {
       this.face = face;
       this.suit = suit;
     }
-    console.log(`${this.face}${Suits[this.suit]}`);
+    //console.log(`${this.face}${Suits[this.suit]}`);
     this.front = this.map[`${this.face}${Suits[this.suit]}`] as PIXI.Sprite;
     this.front.anchor.set(0.5);
     this.frontMask = this.getMask();
