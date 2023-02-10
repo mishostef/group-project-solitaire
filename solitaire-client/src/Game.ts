@@ -14,8 +14,17 @@ export class Game {
   foundations: Foundations[];
   stockZone: StockZone;
   piles: CardContainer[] = [];
+  state: IStock;
 
-  constructor(state: IStock) {
+  constructor() {
+    app.ticker.add(this.update.bind(this));
+  }
+
+  public processState(state: IStock) {
+    this.processPiles(state);
+  }
+
+  private processPiles(state: IStock) {
     for (let i = 0; i < 7; i++) {
       const currentPileInfo = state.piles[i];
       const cards = currentPileInfo.cards;
@@ -37,14 +46,14 @@ export class Game {
       container.addCards(columnCards);
       this.piles.push(container);
     }
-    app.ticker.add(this.update.bind(this));
   }
 
-  processMoves(moves:IMoves) {
-    
+  public processMoves(moves: IMoves) {
+    const pileMoves = moves.piles;
+    console.log("pileMoves: ", pileMoves);
   }
 
-  update() {
+  private update() {
     const allContainers = this.piles;
     const starting = allContainers.find(
       (container) => container.dragging == true

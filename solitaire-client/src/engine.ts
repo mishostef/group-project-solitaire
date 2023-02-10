@@ -6,6 +6,7 @@ const boardSection = document.getElementById("board");
 
 export function engine(connection: Connection) {
   const state = {};
+  const game = new Game();
 
   actionSection.innerHTML = "";
   boardSection.innerHTML = "";
@@ -14,15 +15,15 @@ export function engine(connection: Connection) {
   connection.on("moves", onMoves);
   connection.on("moveResult", onResult);
   connection.on("victory", onVictory);
-  
+
   function onState(state) {
     console.log("received state", state);
-    const game = new Game(state);
+    game.processState(state);
   }
 
   function onMoves(receivedMoves) {
     console.log("received moves", receivedMoves);
-    // mergeMoves();
+    game.processMoves(receivedMoves);
   }
 
   function onResult(data) {
