@@ -17,5 +17,3 @@ export function engine(connection: Connection) {
     const game = new Game(state);
   }
 }
-
-
