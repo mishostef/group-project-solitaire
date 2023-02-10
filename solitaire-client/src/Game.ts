@@ -1,12 +1,12 @@
 import { CardContainer } from "./CardContainer";
 import { Foundations } from "./FoundationsZone";
-import { IMoves, IStock } from "./interfaces";
+import { IMoves, IState } from "./interfaces";
 import { StockZone } from "./StockZone";
 import { app } from "./app";
 import { Card } from "./Card";
 import { Container } from "pixi.js";
 import { cardMap, Suits } from "./constants";
-///here come app creation etc
+///here comes app creation etc
 
 function CardFactory(app) {}
 
@@ -14,17 +14,17 @@ export class Game {
   foundations: Foundations[];
   stockZone: StockZone;
   piles: CardContainer[] = [];
-  state: IStock;
+  state: IState;
 
   constructor() {
     app.ticker.add(this.update.bind(this));
   }
 
-  public processState(state: IStock) {
+  public processState(state: IState) {
     this.processPiles(state);
   }
 
-  private processPiles(state: IStock) {
+  private processPiles(state: IState) {
     for (let i = 0; i < 7; i++) {
       const currentPileInfo = state.piles[i];
       const cards = currentPileInfo.cards;

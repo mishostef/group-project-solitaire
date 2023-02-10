@@ -3,7 +3,7 @@ export interface ICard {
   suit: "clubs" | "spades" | "hearts" | "diamonds" | null;
   faceUp: boolean;
 }
-export interface IStock {
+export interface IState {
   piles: { cards: ICard[] };
 }
 export interface IMoves {
