@@ -18,3 +18,12 @@ export interface IState {
   waste: { cards: [] };
   foundations: { cards: [] };
 }
+
+export interface IMoves {
+  piles: IPileMove[];
+}
+export interface IPileMove {
+  flip: boolean;
+  place: boolean;//
+  take: number[];//card indices from this column that can be taken
+}

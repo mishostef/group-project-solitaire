@@ -1,6 +1,7 @@
 import { CardContainer } from "./CardContainer";
 import { Foundations } from "./FoundationsZone";
-import { IState, IStock } from "./interfaces";
+import { IState, IStock, IMoves } from "./interfaces";
+
 import { StockZone } from "./StockZone";
 import { app } from "./app";
 import { Card } from "./Card";
@@ -14,19 +15,25 @@ export class Game {
   foundations: Foundations[];
   stockZone: StockZone;
   piles: CardContainer[] = [];
-  state;
-  stock;
-  
+  state: IStock;
 
-  constructor(state: IState) {
-    this.state = state;
-    this.stock = new StockZone(state.stock.cards);
+  constructor() {
+    app.ticker.add(this.update.bind(this));
+
+    // this.state = state;
+    // this.stock = new StockZone(state.stock.cards);
     //console.log("stock.cards - ", this.stock)
+  }
 
+  public processState(state: IStock) {
+    this.processPiles(state);
+  }
+
+  private processPiles(state: IStock) {
     for (let i = 0; i < 7; i++) {
       const currentPileInfo = state.piles[i];
       const cards = currentPileInfo.cards;
-     // console.log("currentPileInfo.cards", cards);
+      //     console.log("currentPileInfo.cards", cards);
       const columnCards = [];
       for (let i = 0; i < cards.length; i++) {
         const cardInfo = cards[i];
@@ -44,12 +51,14 @@ export class Game {
       container.addCards(columnCards);
       this.piles.push(container);
     }
-    app.ticker.add(this.update.bind(this));
-
-
   }
 
-  update() {
+  public processMoves(moves: IMoves) {
+    const pileMoves = moves.piles;
+    console.log("pileMoves: ", pileMoves);
+  }
+
+  private update() {
     const allContainers = this.piles;
     const starting = allContainers.find(
       (container) => container.dragging == true

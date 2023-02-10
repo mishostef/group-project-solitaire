@@ -6,31 +6,34 @@ const boardSection = document.getElementById("board");
 
 export function engine(connection: Connection) {
   const state = {};
+  const game = new Game();
 
   actionSection.innerHTML = "";
   boardSection.innerHTML = "";
 
   connection.on("state", onState);
-  connection.on('moves', onMoves);
-  connection.on('moveResult', onResult);
-  connection.on('victory', onVictory);
+  connection.on("moves", onMoves);
+  connection.on("moveResult", onResult);
+  connection.on("victory", onVictory);
 
   function onState(state) {
     console.log("received state", state);
-    console.log("received state", state.stock);
-    const game = new Game(state);
+    game.processState(state);
   }
 
-  function onMoves(moves) {
-
+  function onMoves(receivedMoves) {
+    console.log("received moves", receivedMoves);
+    game.processMoves(receivedMoves);
   }
 
-  function onResult(result) {
-
+  function onResult(data) {
+    console.log("on result moves:", data);
   }
-
   function onVictory() {
-    connection.send('newGame');
+    alert("Victory!");
+    connection.send("newGame");
   }
+
+
 
 }
