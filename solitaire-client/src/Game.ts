@@ -5,7 +5,10 @@ import { StockZone } from "./StockZone";
 import { app } from "./app";
 import { Card } from "./Card";
 import { Container } from "pixi.js";
-import { Suits } from "./constants";
+import { cardMap, Suits } from "./constants";
+///here come app creation etc
+
+function CardFactory(app) {}
 
 export class Game {
   foundations: Foundations[];
@@ -24,7 +27,7 @@ export class Game {
           typeof cardInfo.suit == "string"
             ? Suits[cardInfo.suit]
             : cardInfo.suit;
-        const card = new Card(cardInfo.face, s);
+        const card = new Card(cardMap[cardInfo.face], s);
         if (cardInfo.faceUp) {
           card.showFace(0);
         }
@@ -38,8 +41,7 @@ export class Game {
   }
 
   update() {
-    const allContainers = this.piles; //[container, container2];
-    //console.log(this.piles);
+    const allContainers = this.piles;
     const starting = allContainers.find(
       (container) => container.dragging == true
     );

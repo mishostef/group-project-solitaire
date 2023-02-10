@@ -68,8 +68,3 @@ export class Foundations {
         return index;
     }   
 }
-
-
-
-
-

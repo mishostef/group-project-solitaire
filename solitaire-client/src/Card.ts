@@ -50,9 +50,7 @@ export class Card extends Container {
       app.stage.addChild(this);
       this.isPlaced = true;
     }
-
     //flipCardSound.play();
-    //this.flip();
   }
 
   placeCard(x: number, y: number) {
@@ -145,11 +143,9 @@ export class Card extends Container {
     this.front = this.map[`${newFace}${Suits[newSuit]}`];
     this.front.anchor.set(0.5);
     this.front.position.set(x, y);
-
     this.frontMask = this.getMask();
     this.front.mask = this.frontMask;
     this.addChild(this.frontMask);
-
     app.stage.addChild(this.front);
   }
 }
