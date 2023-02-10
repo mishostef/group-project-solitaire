@@ -15,8 +15,10 @@ export class Game {
   stockZone: StockZone;
   piles: CardContainer[] = [];
   state: IState;
-
-  constructor() {
+  sendInfoToServer: Function;
+  move: any;
+  constructor(cb: Function) {
+    this.sendInfoToServer = cb;
     app.ticker.add(this.update.bind(this));
 
     // this.state = state;
@@ -68,6 +70,12 @@ export class Game {
         for (let i = 0; i < others.length; i++) {
           const target = others[i];
           if (target && starting.isOverlapping(target)) {
+            const move = {
+              target: target.rowNumber,
+              source: starting.rowNumber,
+              index: starting.cards.length - starting.draggableLength,
+            };
+            this.sendInfoToServer(move);
             starting.draggableContainer.position.set(
               target.staticContainer.position.x,
               target.staticContainer.position.y

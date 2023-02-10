@@ -10,7 +10,6 @@ import { Foundations } from "./FoundationsZone";
 import { Card } from "./Card";
 import { Suits } from "./constants";
 import { StockZone } from "./StockZone";
-import { Container, Point, TARGETS } from "pixi.js";
 import { loadFoundationsEmptyCards, loadStockEmptyCard } from "./cardsTexture";
 import src from "gsap/src";
 
