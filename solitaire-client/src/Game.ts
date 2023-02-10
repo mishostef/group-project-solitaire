@@ -20,7 +20,7 @@ export class Game {
       const columnCards = [];
       for (let i = 0; i < cards.length; i++) {
         const cardInfo = cards[0];
-        console.log("cardInfo", cardInfo);
+        //console.log("cardInfo", cardInfo);
         const card = new Card(cardInfo.face, cardInfo.suit);
         if (cardInfo.faceUp) {
           card.showFace(0);

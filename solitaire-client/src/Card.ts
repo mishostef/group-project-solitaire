@@ -2,6 +2,7 @@ import * as PIXI from "pixi.js";
 import { Container, DisplayObject, Sprite } from "pixi.js";
 import {
   CANVAS_WIDTH,
+  cardsConstants,
   CARD_HEIGHT,
   CARD_SCALE,
   CARD_WIDTH,
@@ -14,42 +15,25 @@ import { DraggableObject } from "./DraggableObject";
 import { app } from "./app";
 
 export class Card extends Container {
+  static map = createDeckAssets();
+  private frontMask: any;
+
   private back: DisplayObject;
   public front: Sprite | null;
   private isPlaced = false;
-  private frontMask: any;
   public isBack = true;
   public movedFromStock = false;
-  public map = createDeckAssets();
   public isValid = true;
 
   constructor(public face: Face, public suit: Suits) {
     super();
-    this.face = face;
-    this.suit = suit;
-    console.log(this.map);
-    if (!face || !suit) {
-      this.front = this.map[`Aclubs`] as PIXI.Sprite;
-      this.isValid = false;
-    } else {
-      this.front = this.map[`${face}${suit}`] as PIXI.Sprite;
-    }
-    try {
-      this.front.anchor.set(0.5);
-    } catch (error) {
-      console.log(error);
-    }
-    this.front.anchor.set(0.5);
-    this.frontMask = this.getMask();
-    this.addChild(this.frontMask);
-    this.front.mask = this.frontMask;
-    this.addChild(this.front);
-
-    this.back = this.getCardBack();
-    this.addChild(this.back);
+    this.changeFaceAndSuit(face, suit, 0, 0);
+    
   }
 
   placeCardReverse(x: number, y: number) {
+    this.changeFaceAndSuit("3", Suits.hearts, 200, 100);
+
     this.position.set(x, y);
     if (!this.isPlaced) {
       app.stage.addChild(this);
@@ -61,6 +45,8 @@ export class Card extends Container {
   }
 
   placeCard(x: number, y: number) {
+    this.changeFaceAndSuit("3", Suits.hearts, 200, 100);
+
     this.position.set(x, y);
     this.removeChild(this.back);
     if (!this.isPlaced) {
@@ -69,7 +55,7 @@ export class Card extends Container {
     }
   }
 
-  private getMask() {
+  static getMask() {
     const mask = new PIXI.Graphics();
     mask.beginFill(0);
     mask.drawRoundedRect(
@@ -102,6 +88,7 @@ export class Card extends Container {
   }
 
   showFace(duration = 0.3) {
+    this.changeFaceAndSuit("3", Suits.hearts, 200, 100);
     //flipCardSound.play();
 
     if (this.isBack) {
@@ -142,17 +129,56 @@ export class Card extends Container {
     return back;
   }
 
-  changeFaceAndSuit(newFace: Face, newSuit: Suits, x, y) {
-    this.face = newFace;
-    this.suit = newSuit;
-    this.front = this.map[`${newFace}${Suits[newSuit]}`];
-    this.front.anchor.set(0.5);
-    this.front.position.set(x, y);
+  changeFaceAndSuit(face: Face, suit: Suits | string, x: number, y: number) {
 
-    this.frontMask = this.getMask();
-    this.front.mask = this.frontMask;
-    this.addChild(this.frontMask);
+    this.face = face;
+    
+    console.log("suit:", this.suit)
 
-    app.stage.addChild(this.front);
+
+    if (this.face !== null && this.face !== undefined && this.suit !== null && this.suit !== undefined ) {
+      //this.front = Card.map[`Aclubs`] as PIXI.Sprite;
+       //this.changeFaceAndSuit("A", Suits.clubs, 0, 0)
+      //this.front = new PIXI.Sprite;
+     // this.isValid = false;
+     
+    //  if (typeof this.suit !== 'string') {
+    //    //this.front = Card.map[`${face}${Suits[suit]}`] as PIXI.Sprite;
+
+    //    //this.suit = Suits[2]
+    //  } 
+
+    this.front = Card.map[`${face}${Suits[suit]}`] as PIXI.Sprite;
+    console.log(suit)
+
+       //this.front = Card.map[`${face}${suit}`] as PIXI.Sprite;
+    
+
+     this.front.anchor.set(0.5);
+     this.frontMask = Card.getMask();
+     this.addChild(this.frontMask);
+     this.front.mask = this.frontMask;
+     this.addChild(this.front);
+     
+     this.back = this.getCardBack();
+     this.addChild(this.back);
+
+    } else {
+      this.front = this.front = Card.map[`Aclubs`] as PIXI.Sprite;
+    }
+    try {
+      //this.front.anchor.set(0.5);
+    } catch (error) {
+      console.log(error);
+    }
+   
+    
+    // this.front.anchor.set(0.5);
+
+    // this.frontMask = this.getMask();
+    // this.front.mask = this.frontMask;
+    // this.addChild(this.frontMask);
+
+    // app.stage.addChild(this.front);
   }
 }

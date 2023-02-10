@@ -77,9 +77,10 @@ export class StockZone {
   moveToWaste(card: Card, index) {
 
 
-    if(this.countCreateStockContainer == 1) {
+    if (this.countCreateStockContainer == 1) {
 
-      card.changeFaceAndSuit("A", Suits.hearts, 200, 100);
+      card.changeFaceAndSuit("3", Suits.clubs, 200, 100);
+    
     }
     this.waste.push(card);
 
