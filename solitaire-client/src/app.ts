@@ -77,7 +77,7 @@ function start() {
 
     loadFoundationsEmptyCards();
     loadStockEmptyCard();
-    test();
+    //test();
 
     // ~~~~~~~~~~~  create Stock Zone  ~~~~~~~~~~~~~~~~~~~~~~~~
     const card12 = new Card(null, Suits.null);
