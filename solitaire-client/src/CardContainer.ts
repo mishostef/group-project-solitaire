@@ -15,8 +15,8 @@ export class CardContainer extends BaseCardContainer {
   draggableContainer: Container;
   staticContainer: Container;
   dragging = false;
-  public containersInitialX: number;
-  public containersInitialY: number;
+  // public containersInitialX: number;
+  // public containersInitialY: number;
   public draggableLength = 0;
   public isReturningCards = true;
 

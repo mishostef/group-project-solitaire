@@ -15,8 +15,8 @@ export class BaseCardContainer {
   draggableContainer: Container;
   staticContainer: Container;
   dragging = false;
-  public containersInitialX: number;
-  public containersInitialY: number;
+  private containersInitialX: number;
+  private containersInitialY: number;
   public draggableLength = 0;
   public isReturningCards = true;
 
@@ -111,5 +111,17 @@ export class BaseCardContainer {
       this.draggableContainer.position.x <=
         target.staticContainer.position.x + (CARD_WIDTH * CARD_SCALE) / 2
     );
+  }
+
+  set X(newX: number) {
+    this.containersInitialX = newX;
+    this.staticContainer.x = this.containersInitialX;
+    this.draggableContainer.x = this.containersInitialX;
+  }
+
+  set Y(newY: number) {
+    this.containersInitialY = newY;
+    this.staticContainer.y = this.containersInitialX;
+    this.draggableContainer.y = this.containersInitialX;
   }
 }

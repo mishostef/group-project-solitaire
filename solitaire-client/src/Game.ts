@@ -6,20 +6,30 @@ import { StockZone } from "./StockZone";
 import { app } from "./app";
 import { Card } from "./Card";
 import { cardMap, Suits } from "./constants";
+import { StockZone1 } from "./StockZone1";
 ///here comes app creation etc
 
 function CardFactory(app) {}
 
 export class Game {
   foundations: Foundations[];
-  stockZone: StockZone;
+  stockZone: any; //StockZone;
   piles: CardContainer[] = [];
   state: IState;
   sendInfoToServer: Function;
   move: any;
   constructor(cb: Function) {
     this.sendInfoToServer = cb;
+    const card = new Card("A", Suits.spades);
+    card.showFace();
+    this.stockZone = new StockZone1([card]);
     app.ticker.add(this.update.bind(this));
+    // const move = {////for flipping in stock zone
+    //   action: "flip",
+    //   index: 23,
+    //   source: "stock",
+    //   target: null,
+    // };
 
     // this.state = state;
     // this.stock = new StockZone(state.stock.cards);
@@ -71,8 +81,9 @@ export class Game {
           const target = others[i];
           if (target && starting.isOverlapping(target)) {
             const move = {
-              target: target.rowNumber,
-              source: starting.rowNumber,
+              action: "take",
+              target: null,
+              source: `pile${starting.rowNumber}`,
               index: starting.cards.length - starting.draggableLength,
             };
             this.sendInfoToServer(move);
