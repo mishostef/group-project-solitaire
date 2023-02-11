@@ -42,7 +42,7 @@ export class BaseCardContainer {
     this.addEvents();
   }
 
-  private addEvents() {
+  protected addEvents() {
     this.draggableContainer.interactive = true;
     this.staticContainer.interactive = true;
     // this.staticContainer.on("mousedown", this.handleMouseDown.bind(this));
