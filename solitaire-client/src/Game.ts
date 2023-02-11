@@ -18,6 +18,10 @@ export class Game {
   state: IState;
   sendInfoToServer: Function;
   move: any;
+  isMovePossible: boolean | null = null;
+  source: CardContainer = null;
+  target: CardContainer = null;
+
   constructor(cb: Function) {
     this.sendInfoToServer = cb;
     const card = new Card("A", Suits.spades);
@@ -70,32 +74,41 @@ export class Game {
   }
 
   private update() {
-    const allContainers = this.piles;
+    const allContainers = [...this.piles];
     const starting = allContainers.find(
       (container) => container.dragging == true
     );
     if (starting) {
       if (starting.dragging) {
-        const others = allContainers.filter((c) => c != starting);
+        this.isMovePossible &&
+          this.target &&
+          this.mergePiles(starting, this.target);
+        const others = this.piles.filter((c) => c != starting);
         for (let i = 0; i < others.length; i++) {
           const target = others[i];
           if (target && starting.isOverlapping(target)) {
             const move = {
-              action: "take",
-              target: null,
-              source: `pile${starting.rowNumber}`,
+              action: "place",
+              target: `pile${target.rowNumber - 1}`,
+              source: `pile${starting.rowNumber - 1}`,
               index: starting.cards.length - starting.draggableLength,
             };
             this.sendInfoToServer(move);
-            starting.draggableContainer.position.set(
-              target.staticContainer.position.x,
-              target.staticContainer.position.y
-            );
-            starting.merge(target);
+            this.target = target;
             break;
           }
         }
       }
     }
+  }
+
+  private mergePiles(starting: CardContainer, target: CardContainer) {
+    starting.draggableContainer.position.set(
+      target.staticContainer.position.x,
+      target.staticContainer.position.y
+    );
+    starting.merge(target);
+    starting.cards[starting.cards.length - 1].showFace();
+    this.target = null;
   }
 }

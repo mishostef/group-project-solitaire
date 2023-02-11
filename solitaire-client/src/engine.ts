@@ -28,6 +28,7 @@ export function engine(connection: Connection) {
 
   function onResult(data) {
     console.log("on result moves:", data);
+    game.isMovePossible = data;
   }
   function onVictory() {
     alert("Victory!");

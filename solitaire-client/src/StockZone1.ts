@@ -6,7 +6,7 @@ import { gsap } from "gsap";
 
 export class StockZone1 extends BaseCardContainer {
   countCreateStockContainer = 1;
-  private waste: CardContainer;
+  public waste: CardContainer;
 
   constructor(cards: Card[]) {
     super(77);
@@ -57,9 +57,9 @@ export class StockZone1 extends BaseCardContainer {
         console.log("this.staticContainer:", this.staticContainer);
         console.log("this.waste", this.waste);
         this.waste.addCards([card]);
-        if (this.staticContainer.children.length <= 0) {
-          this.returnCardsToStock();
-        }
+        // if (this.staticContainer.children.length <= 0) {
+        //   this.returnCardsToStock();
+        // }
       },
     });
   }

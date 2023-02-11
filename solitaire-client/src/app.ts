@@ -56,7 +56,6 @@ function start() {
     await connection.open();
     engine(connection);
     showBoard();
-
     connection.send("startGame");
   });
 
