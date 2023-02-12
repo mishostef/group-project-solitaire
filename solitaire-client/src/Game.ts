@@ -9,13 +9,12 @@ import { cardMap, Suits } from "./constants";
 import { StockZone1 } from "./StockZone1";
 ///here comes app creation etc
 
-function CardFactory(app) {
-  
-}
+function CardFactory(app) {}
 
 export class Game {
   foundations: Foundations[];
   stockZone: any; //StockZone;
+  waste: CardContainer;
   piles: CardContainer[] = [];
   state: IState;
   sendInfoToServer: Function;
@@ -30,18 +29,12 @@ export class Game {
     const card2 = new Card("J", Suits.hearts);
     card.showFace();
 
-    const waste = new CardContainer(0);
-    waste.X = 200;
-    waste.Y = 100;
-    this.stockZone = new StockZone1([card, card2], waste);
+    this.waste = new CardContainer(0);
+    this.waste.X = 200;
+    this.waste.Y = 100;
+    this.stockZone = new StockZone1([card, card2], this.waste,this.sendInfoToServer);
     app.ticker.add(this.update.bind(this));
-    // const move = {////for flipping in stock zone
-    //   action: "flip",
-    //   index: 23,
-    //   source: "stock",
-    //   target: null,
-    // };
-
+ 
     // this.state = state;
     // this.stock = new StockZone(state.stock.cards);
     //console.log("stock.cards - ", this.stock)
@@ -87,7 +80,7 @@ export class Game {
   }
 
   private update() {
-    const allContainers = [...this.piles];
+    const allContainers = [...this.piles, this.waste];
     const starting = allContainers.find(
       (container) => container.dragging == true
     );
@@ -102,10 +95,14 @@ export class Game {
           if (target && starting.isOverlapping(target)) {
             app.stage.removeChild(starting.draggableContainer);
             app.stage.addChild(starting.draggableContainer);
+            let pileIndex = `pile${starting.rowNumber - 1}`;
+            if (starting.rowNumber - 1 < 0) {
+              pileIndex = "stock";
+            }
             const move = {
               action: "place",
               target: `pile${target.rowNumber - 1}`,
-              source: `pile${starting.rowNumber - 1}`,
+              source: `${pileIndex}`,
               index: starting.cards.length - starting.draggableLength,
             };
             this.sendInfoToServer(move);

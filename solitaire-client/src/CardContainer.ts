@@ -22,7 +22,14 @@ export class CardContainer extends BaseCardContainer {
     super(rowNumber);
     this.staticContainer.on("mousedown", this.handleMouseDown.bind(this));
   }
-
+  public addCards(cards: Card[]) {
+    for (let i = 0; i < cards.length; i++) {
+      const card = cards[i];
+      this.cards.push(card);
+      this.staticContainer.addChild(card);
+      card.position.set(0, (this.cards.length - 1) * CARD_OFFSET);
+    }
+  }
   private handleMouseDown(e: FederatedPointerEvent) {
     if (this.draggableContainer == null) {
       this.draggableContainer = new Container();

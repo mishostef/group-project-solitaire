@@ -1,7 +1,6 @@
 import * as PIXI from "pixi.js";
 import { Container, DisplayObject, Sprite } from "pixi.js";
 import {
-  CANVAS_WIDTH,
   CARD_HEIGHT,
   CARD_SCALE,
   CARD_WIDTH,
@@ -25,8 +24,6 @@ export class Card extends Container {
 
   constructor(public face: Face, public suit: Suits) {
     super();
-
-    //console.log(this.map);
     if (face == null || suit == null || suit == Suits.null) {
       this.face = "A";
       this.suit = Suits.clubs;
@@ -35,7 +32,6 @@ export class Card extends Container {
       this.face = face;
       this.suit = suit;
     }
-    //console.log(`${this.face}${Suits[this.suit]}`);
     this.front = this.map[`${this.face}${Suits[this.suit]}`] as PIXI.Sprite;
     this.front.anchor.set(0.5);
     this.frontMask = this.getMask();
@@ -52,7 +48,6 @@ export class Card extends Container {
       app.stage.addChild(this);
       this.isPlaced = true;
     }
-    //flipCardSound.play();
   }
 
   placeCard(x: number, y: number) {
@@ -80,7 +75,6 @@ export class Card extends Container {
   }
 
   showFace(duration = 0.3, cb?: Function) {
-    //flipCardSound.play();
     if (this.isBack) {
       const tl = gsap.timeline();
       this.front.alpha = 0;

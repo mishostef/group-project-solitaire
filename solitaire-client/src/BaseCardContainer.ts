@@ -77,7 +77,7 @@ export class BaseCardContainer {
       const card = cards[i];
       this.cards.push(card);
       this.staticContainer.addChild(card);
-      card.position.set(0, (this.cards.length - 1) * CARD_OFFSET);
+      card.position.set(0, 0);
     }
   }
   public removeCardFromContainer(card: Card) {

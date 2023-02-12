@@ -10,13 +10,14 @@ export class StockZone1 extends BaseCardContainer {
   countCreateStockContainer = 1;
   public waste: CardContainer;
   stockCard: PIXI.Sprite;
-
-  constructor(cards: Card[], waste: CardContainer) {
+  private cb: Function;
+  constructor(cards: Card[], waste: CardContainer, cb: Function) {
     super(0);
     this.X = 100;
     this.Y = 100;
     this.addCards(cards);
     this.waste = waste;
+    this.cb = cb;
   }
 
   addEvents() {
@@ -25,6 +26,14 @@ export class StockZone1 extends BaseCardContainer {
   }
   createStockContainer() {
     this.moveCardsToWaste();
+    const move = {
+      ////for flipping in stock zone
+      action: "flip",
+      index: 23,
+      source: "stock",
+      target: null,
+    };
+    this.cb(move);
   }
 
   returnCardsToStock() {
