@@ -9,7 +9,9 @@ import { cardMap, Suits } from "./constants";
 import { StockZone1 } from "./StockZone1";
 ///here comes app creation etc
 
-function CardFactory(app) {}
+function CardFactory(app) {
+  
+}
 
 export class Game {
   foundations: Foundations[];
