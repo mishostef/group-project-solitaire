@@ -25,8 +25,13 @@ export class Game {
   constructor(cb: Function) {
     this.sendInfoToServer = cb;
     const card = new Card("A", Suits.spades);
+    const card2 = new Card("J", Suits.hearts);
     card.showFace();
-    this.stockZone = new StockZone1([card]);
+
+    const waste = new CardContainer(0);
+    waste.X = 200;
+    waste.Y = 100;
+    this.stockZone = new StockZone1([card, card2], waste);
     app.ticker.add(this.update.bind(this));
     // const move = {////for flipping in stock zone
     //   action: "flip",
@@ -71,6 +76,12 @@ export class Game {
   public processMoves(moves: IMoves) {
     const pileMoves = moves.piles;
     console.log("pileMoves: ", pileMoves);
+    pileMoves.forEach((mv, index) => {
+      const currentPile = this.piles[index];
+      if (mv.flip) {
+        currentPile.flip();
+      }
+    });
   }
 
   private update() {
@@ -87,6 +98,8 @@ export class Game {
         for (let i = 0; i < others.length; i++) {
           const target = others[i];
           if (target && starting.isOverlapping(target)) {
+            app.stage.removeChild(starting.draggableContainer);
+            app.stage.addChild(starting.draggableContainer);
             const move = {
               action: "place",
               target: `pile${target.rowNumber - 1}`,
@@ -108,6 +121,13 @@ export class Game {
       target.staticContainer.position.y
     );
     starting.merge(target);
+    const move = {
+      action: "flip",
+      target: null,
+      source: `pile${starting.rowNumber - 1}`,
+      index: starting.cards.length - starting.draggableLength,
+    };
+    this.sendInfoToServer(move);
     starting.cards[starting.cards.length - 1].showFace();
     this.target = null;
   }

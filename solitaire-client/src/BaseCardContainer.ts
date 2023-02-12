@@ -21,9 +21,6 @@ export class BaseCardContainer {
   public isReturningCards = true;
 
   constructor(public rowNumber: number) {
-    if (rowNumber < 1) {
-      throw new RangeError("Row must be positive and lower than 8");
-    }
     this.cards = [];
     this.draggableContainer = new Container();
     this.staticContainer = new Container();
@@ -45,21 +42,7 @@ export class BaseCardContainer {
   protected addEvents() {
     this.draggableContainer.interactive = true;
     this.staticContainer.interactive = true;
-    // this.staticContainer.on("mousedown", this.handleMouseDown.bind(this));
-    this.draggableContainer.on("mouseup", () => {
-      this.dragging = false;
-      if (this.draggableLength != 0) {
-        this.draggableContainer.position.set(
-          this.staticContainer.x,
-          this.staticContainer.y
-        );
-        const x = this.cards.splice(
-          this.cards.length - this.draggableLength,
-          this.draggableLength
-        );
-        this.addCards(x);
-      }
-    });
+    this.draggableContainer.on("mouseup", this.handleMouseUp.bind(this));
     this.draggableContainer.on("mousedown", () => {
       this.dragging = true;
     });
@@ -69,6 +52,20 @@ export class BaseCardContainer {
     );
   }
 
+  protected handleMouseUp(e) {
+    this.dragging = false;
+    if (this.draggableLength != 0) {
+      this.draggableContainer.position.set(
+        this.staticContainer.x,
+        this.staticContainer.y
+      );
+      const x = this.cards.splice(
+        this.cards.length - this.draggableLength,
+        this.draggableLength
+      );
+      this.addCards(x);
+    }
+  }
   private handleMouseMove(e) {
     let [x, y] = [e.globalX, e.globalY];
     if (this.dragging) {
@@ -90,7 +87,6 @@ export class BaseCardContainer {
 
   public merge(target: BaseCardContainer) {
     const cardsToMove = this.draggableContainer.children;
-
     const draggedCards = this.cards.splice(
       this.cards.length - cardsToMove.length,
       cardsToMove.length
@@ -112,16 +108,27 @@ export class BaseCardContainer {
         target.staticContainer.position.x + (CARD_WIDTH * CARD_SCALE) / 2
     );
   }
-
+  get X() {
+    return this.containersInitialX;
+  }
   set X(newX: number) {
     this.containersInitialX = newX;
     this.staticContainer.x = this.containersInitialX;
     this.draggableContainer.x = this.containersInitialX;
   }
-
+  get Y() {
+    return this.containersInitialY;
+  }
   set Y(newY: number) {
     this.containersInitialY = newY;
     this.staticContainer.y = this.containersInitialX;
     this.draggableContainer.y = this.containersInitialX;
+  }
+
+  flip() {
+    const lastCard = this.staticContainer.children[
+      this.staticContainer.children.length - 1
+    ] as Card;
+    lastCard.showFace();
   }
 }

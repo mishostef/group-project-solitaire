@@ -1,4 +1,4 @@
-import { Container } from "pixi.js";
+import { Container, FederatedPointerEvent } from "pixi.js";
 import { Card } from "./Card";
 import {
   CANVAS_HEIGHT,
@@ -15,8 +15,6 @@ export class CardContainer extends BaseCardContainer {
   draggableContainer: Container;
   staticContainer: Container;
   dragging = false;
-  // public containersInitialX: number;
-  // public containersInitialY: number;
   public draggableLength = 0;
   public isReturningCards = true;
 
@@ -25,17 +23,11 @@ export class CardContainer extends BaseCardContainer {
     this.staticContainer.on("mousedown", this.handleMouseDown.bind(this));
   }
 
-  private handleMouseDown(e) {
+  private handleMouseDown(e: FederatedPointerEvent) {
     if (this.draggableContainer == null) {
       this.draggableContainer = new Container();
     }
-    const deltaY =
-      e.globalY - (this.staticContainer.y - (CARD_HEIGHT * CARD_SCALE) / 2);
-    let index = Math.floor(deltaY / CARD_OFFSET);
-
-    if (index > this.cards.length - 1) {
-      index = this.cards.length - 1;
-    }
+    let index = this.getIndex(e);
     this.dragging = true;
     this.cards.forEach((card, i) => {
       if (i >= index) {
@@ -44,5 +36,16 @@ export class CardContainer extends BaseCardContainer {
       }
       this.draggableLength = this.draggableContainer.children.length;
     });
+  }
+
+  private getIndex(e: FederatedPointerEvent) {
+    const deltaY =
+      e.globalY - (this.staticContainer.y - (CARD_HEIGHT * CARD_SCALE) / 2);
+    let index = Math.floor(deltaY / CARD_OFFSET);
+
+    if (index > this.cards.length - 1) {
+      index = this.cards.length - 1;
+    }
+    return index;
   }
 }
