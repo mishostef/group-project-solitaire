@@ -6,6 +6,7 @@ import { Card } from "./Card";
 import {
   CANVAS_HEIGHT,
   CANVAS_WIDTH,
+  cardMap,
   cardsConstants,
   Suits,
 } from "./constants";

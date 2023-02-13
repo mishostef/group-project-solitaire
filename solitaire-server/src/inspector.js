@@ -19,6 +19,6 @@ export function startInspector() {
                 output = output[token];
             }
         }
-        console.log(output);
+        console.log("output", output);
     });
 }

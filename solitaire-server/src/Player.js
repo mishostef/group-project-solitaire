@@ -26,15 +26,15 @@ export class Player {
     }
 
     onNewGame() {
-        // Placeholder to be registered from outside
+      
     }
 
     onMove(move) {
-        // Placeholder to be registered from outside
+       
     }
 
     onGetState() {
-        // Placeholder to be registered from outside
+  
     }
 
     setGameState(state) {

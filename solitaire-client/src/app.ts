@@ -1,3 +1,4 @@
+import { GameController } from './GameControler';
 import { Connection } from "./Connection";
 import { engine } from "./engine";
 import * as PIXI from "pixi.js";
@@ -40,12 +41,23 @@ async function init() {
   await PIXI.Assets.load("assets/repeat.png");
 }
 
+// async function start() {
+//   let gameController = new GameController("Toni");
+//   console.log("START!!!!!");
+//   let state = await gameController.startNewGame();
+//   console.log(state);
+//   let flipResponse = await gameController.flip();
+//   console.log("flip: ", flipResponse);
+// }
+
 function start() {
+  // let gameController = new GameController("Toni");
   const initForm = document.querySelector("form");
   const initSection = document.getElementById("init");
   const gameSection = document.getElementById("game");
 
   let connection = null;
+  let gameController = null;
 
   initForm.addEventListener("submit", async (event) => {
     event.preventDefault();
@@ -56,7 +68,11 @@ function start() {
     connection = new Connection(nickname as string);
     await connection.open();
     engine(connection);
+
+    gameController = new GameController(connection);
+
     showBoard();
+
 
     connection.send("startGame");
   });
@@ -80,22 +96,22 @@ function start() {
     //test();
 
     // ~~~~~~~~~~~  create Stock Zone  ~~~~~~~~~~~~~~~~~~~~~~~~
-    // const card12 = new Card(null, Suits.null);
-    // card12.placeCardReverse(0, 0);
+    const card12 = new Card(null, Suits.null);
+    card12.placeCardReverse(0, 0);
 
-    // const card13 = new Card(null, Suits.null);
-    // card13.placeCardReverse(0, 0);
+    const card13 = new Card(null, Suits.null);
+    card13.placeCardReverse(0, 0);
 
-    // const card14 = new Card("A", Suits.diamonds);
-    // card14.placeCardReverse(0, 0);
+    const card14 = new Card(null, Suits.null)
+    card14.placeCardReverse(0, 0);
 
-    // const card15 = new Card("2", Suits.diamonds);
-    // card15.placeCardReverse(0, 0);
+    const card15 = new Card(null, Suits.null);
+    card15.placeCardReverse(0, 0);
 
     // const card16 = new Card("3", Suits.hearts);
     // card16.placeCardReverse(0, 0);
 
-    //const StockZon = new StockZone([card12, card13]);
+    const StockZon = new StockZone(gameController, [card12, card13, card14, card15]);
     //const StockZon = new StockZone([card14, card15, card16]);
 
     // ~~~~~~~~~~~  move to Foundation Zone  ~~~~~~~~~~~~~~~~~~~~~~~~

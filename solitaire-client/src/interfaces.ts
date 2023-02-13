@@ -27,3 +27,6 @@ export interface IPileMove {
   place: boolean;//
   take: number[];//card indices from this column that can be taken
 }
+
+
+export type ZoneType = "stock" | "waste" | "foundations" | "piles"

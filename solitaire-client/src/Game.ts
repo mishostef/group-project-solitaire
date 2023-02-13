@@ -7,7 +7,6 @@ import { app } from "./app";
 import { Card } from "./Card";
 import { Container } from "pixi.js";
 import { cardMap, Suits } from "./constants";
-///here come app creation etc
 
 function CardFactory(app) {}
 
@@ -16,20 +15,23 @@ export class Game {
   stockZone: StockZone;
   piles: CardContainer[] = [];
   state: IStock;
+  stock;
+  logicState;
 
   constructor() {
     app.ticker.add(this.update.bind(this));
 
-    // this.state = state;
-    // this.stock = new StockZone(state.stock.cards);
-    //console.log("stock.cards - ", this.stock)
+    
   }
-
-  public processState(state: IStock) {
+  
+  public processState(state: IState) {
     this.processPiles(state);
+    this.processStock(state.stock);
+    //this.createLogicState(state)
   }
+  
 
-  private processPiles(state: IStock) {
+  private processPiles(state: IState) {
     for (let i = 0; i < 7; i++) {
       const currentPileInfo = state.piles[i];
       const cards = currentPileInfo.cards;
@@ -51,6 +53,17 @@ export class Game {
       container.addCards(columnCards);
       this.piles.push(container);
     }
+  }
+
+  public processStock(stockZone) {
+    //this.stock = new StockZone(stockZone.cards);
+    // this.stock = new StockZone(stockZone.cards);
+    console.log("stock.cards - ", this.stock.stock)
+  }
+
+  public connectionMessages(connection) {
+    console.log("Connection", connection)
+
   }
 
   public processMoves(moves: IMoves) {
@@ -80,4 +93,6 @@ export class Game {
       }
     }
   }
+
+
 }

@@ -21,21 +21,33 @@ export class Card extends Container {
   public movedFromStock = false;
   private map = createDeckAssets();
   public isValid = true;
-  public faceUp = false;
+  public faceUp: boolean = false;
 
   constructor(public face: Face, public suit: Suits) {
     super();
 
-    //console.log(this.map);
+    // if (face !== null && suit !== null && suit !== Suits.null &&  face !== undefined && suit !== undefined) {
+    //   this.changeFaceAndSuit(face, suit, 0, 0)
+    // } else {
+    //   this.back = this.getCardBack();
+    //   this.addChild(this.back);
+    //   this.showBack();
+    //    //this.isValid = false;
+
+    // }
+
+
     if (face == null || suit == null || suit == Suits.null) {
-      this.face = "A";
+      this.face = "A"
       this.suit = Suits.clubs;
       this.isValid = false;
     } else {
       this.face = face;
       this.suit = suit;
     }
-    //console.log(`${this.face}${Suits[this.suit]}`);
+
+
+    console.log(`${this.face}${Suits[this.suit]}`);
     this.front = this.map[`${this.face}${Suits[this.suit]}`] as PIXI.Sprite;
     this.front.anchor.set(0.5);
     this.frontMask = this.getMask();
@@ -44,7 +56,8 @@ export class Card extends Container {
     this.addChild(this.front);
     this.back = this.getCardBack();
     this.addChild(this.back);
-  }
+  //}
+}
 
   placeCardReverse(x: number, y: number) {
     this.position.set(x, y);
@@ -139,10 +152,14 @@ export class Card extends Container {
     return back;
   }
 
-  changeFaceAndSuit(newFace: Face, newSuit: Suits, x, y) {
+  changeFaceAndSuit(newFace, newSuit, x, y) {
     this.face = newFace;
     this.suit = newSuit;
     this.front = this.map[`${newFace}${Suits[newSuit]}`];
+    //this.front = this.map[`${this.face}${Suits[this.suit]}`];
+    //this.front = this.map[`${this.face}${this.suit}`] as PIXI.Sprite;
+    console.log("Front", this.front)
+    console.log("Face and Suit", `${this.face}${this.suit}`)
     this.front.anchor.set(0.5);
     this.front.position.set(x, y);
     this.frontMask = this.getMask();

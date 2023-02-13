@@ -8,7 +8,7 @@ let ws: WebSocket = null;
 export class Connection extends Emitter {
     private _nickname: string;
     private readyPromise: Promise<void>;
-    private resovleReady: () => void;
+    private resolveReady: () => void;
     private rejectReady: (error?) => void;
 
     constructor(nickname: string) {
@@ -17,7 +17,7 @@ export class Connection extends Emitter {
         this._nickname = nickname;
 
         this.readyPromise = new Promise((resolve, reject) => {
-            this.resovleReady = resolve;
+            this.resolveReady = resolve;
             this.rejectReady = reject;
         });
     }
@@ -51,7 +51,7 @@ export class Connection extends Emitter {
         if (type == 'identity') {
             if (data == true) {
                 console.log('Success');
-                this.resovleReady();
+                this.resolveReady();
             } else {
                 console.error('Error identifying');
                 ws.close();
@@ -68,7 +68,7 @@ export class Connection extends Emitter {
             this.init();
         } else {
             console.log('Reusing connection');
-            this.resovleReady();
+            this.resolveReady();
         }
 
         return this.readyPromise;

@@ -1,3 +1,4 @@
+import { GameController } from './GameControler';
 import { ICard, IStock } from './interfaces';
 import * as PIXI from "pixi.js";
 import { app } from "./app";
@@ -12,15 +13,18 @@ import {
 import { gsap } from "gsap";
 
 export class StockZone {
-  stock: IStock;
+  gameController: GameController;
+  stock = [];
+  move = {};
   repeatCard: PIXI.Sprite;
   reverse = true;
   waste = [];
   countCreateStockContainer = 0;
 
-  constructor(cards: ICard[]) {
+  constructor(gameController, cards) {
+    this.gameController = gameController;
     this.stock = cards;
-    console.log("AAA",this.stock[0])
+    console.log("Stock Card",this.stock[0])
     this.loadRepeatCard();
     this.createStockContainer(this.stock);
   }
@@ -52,17 +56,14 @@ export class StockZone {
         stock[i].interactive = true;
         stock[i].placeCardReverse(100, 100);
 
-        stock[i].on("pointertap", (e) => {
+        stock[i].on("pointertap", async (e) => {
+          
+
           stock[i].zIndex = index;
           index++;
 
-          //console.log("zIndex", stock[i].zIndex);
-          //console.log("face", stock[i].face);
-
           stock[i].movedFromStock = true;
 
-          // stock[i].face = "A";
-          // stock[i].suit = Suits.diamonds;
           
           this.moveToWaste(stock[i], index);
 
@@ -76,12 +77,16 @@ export class StockZone {
   }
 
 
-  moveToWaste(card: Card, index) {
+ async moveToWaste(card: Card, index) {
+
+    console.log("pointertap: ", this.gameController);
+    let flipResponse = await this.gameController.flip();
+    console.log("stockZone flipResponse: ", flipResponse);
 
 
     if (this.countCreateStockContainer == 1) {
 
-      card.changeFaceAndSuit("3", Suits.clubs, 200, 100);
+      card.changeFaceAndSuit(flipResponse.card.face, flipResponse.card.suit, 200, 100);
     
     }
     this.waste.push(card);
