@@ -37,10 +37,7 @@ export class Game {
     this.waste.Y = 100;
     this.stockZone = new StockZone1([card], this.waste, this.sendInfoToServer);
     app.ticker.add(this.update.bind(this));
-
-    
   }
-
 
   public processState(state: IState) {
     this.processPiles(state);
@@ -53,7 +50,6 @@ export class Game {
     this.stockZone.addCards(wasteCards);
     console.log("stockZone", this.stockZone);
   }
-  
 
   private processPiles(state: IState) {
     for (let i = 0; i < 7; i++) {
@@ -77,12 +73,11 @@ export class Game {
   public processStock(stockZone) {
     //this.stock = new StockZone(stockZone.cards);
     // this.stock = new StockZone(stockZone.cards);
-    console.log("stock.cards - ", this.stock.stock)
+    console.log("stock.cards - ", this.stock.stock);
   }
 
   public connectionMessages(connection) {
-    console.log("Connection", connection)
-
+    console.log("Connection", connection);
   }
 
   public processMoves(moves: IMoves) {
@@ -98,15 +93,12 @@ export class Game {
 
   private update() {
     if (this.data && this.data.face) {
-      console.log("in update data", this.data);
-      const card = this.createCard(this.data);
-      if (this.data.faceUp) {
-        card.showFace(0);
-      }
-      console.log("in update card=", card);
-      this.stockZone.addCards([card]);
-      this.data = null;
+      this.handleFlip();
     }
+    this.handleDragging();
+  }
+
+  private handleDragging() {
     const allContainers = [...this.piles, this.waste];
     const starting = allContainers.find(
       (container) => container.dragging == true
@@ -118,17 +110,7 @@ export class Game {
         for (let i = 0; i < others.length; i++) {
           const target = others[i];
           if (target && starting.isOverlapping(target)) {
-            app.stage.removeChild(starting.draggableContainer);
-            app.stage.addChild(starting.draggableContainer);
-            let pileIndex = this.getSource(starting);
-            const move = {
-              action: "place",
-              target: `pile${target.rowNumber - 1}`,
-              source: `${pileIndex}`,
-              index: starting.cards.length - starting.draggableLength,
-            };
-            this.sendInfoToServer(move);
-            this.target = target;
+            this.sendMergeRequest(starting, target);
             break;
           }
         }
@@ -136,6 +118,28 @@ export class Game {
     }
   }
 
+  private handleFlip() {
+    const card = this.createCard(this.data);
+    if (this.data.faceUp) {
+      card.showFace(0);
+    }
+    this.stockZone.addCards([card]);
+    this.data = null;
+  }
+
+  private sendMergeRequest(starting: CardContainer, target: CardContainer) {
+    app.stage.removeChild(starting.draggableContainer);
+    app.stage.addChild(starting.draggableContainer);
+    let pileIndex = this.getSource(starting);
+    const move = {
+      action: "place",
+      target: `pile${target.rowNumber - 1}`,
+      source: `${pileIndex}`,
+      index: starting.cards.length - starting.draggableLength,
+    };
+    this.sendInfoToServer(move);
+    this.target = target;
+  }
 
   private getSource(starting: CardContainer) {
     let pileIndex = `pile${starting.rowNumber - 1}`;
