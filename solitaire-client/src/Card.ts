@@ -1,6 +1,7 @@
 import * as PIXI from "pixi.js";
 import { Container, DisplayObject, Sprite } from "pixi.js";
 import {
+  cardMap,
   CARD_HEIGHT,
   CARD_SCALE,
   CARD_WIDTH,
@@ -45,7 +46,6 @@ export class Card extends Container {
       this.suit = suit;
     }
 
-
     console.log(`${this.face}${Suits[this.suit]}`);
     this.front = this.map[`${this.face}${Suits[this.suit]}`] as PIXI.Sprite;
     this.front.anchor.set(0.5);
@@ -53,6 +53,8 @@ export class Card extends Container {
     this.addChild(this.frontMask);
     this.front.mask = this.frontMask;
     this.addChild(this.front);
+
+
     this.back = this.getCardBack();
     this.addChild(this.back);
   //}
@@ -135,7 +137,11 @@ export class Card extends Container {
   changeFaceAndSuit(newFace, newSuit, x, y) {
     this.face = newFace;
     this.suit = newSuit;
-    this.front = this.map[`${newFace}${Suits[newSuit]}`];
+
+    const s = typeof newSuit == "string" ? Suits[newSuit] : newSuit;
+
+    this.front = this.map[`${cardMap[newFace]}${s}`];
+    console.log("TESTTTT", this.map[`${newFace}${s}`])
     //this.front = this.map[`${this.face}${Suits[this.suit]}`];
     //this.front = this.map[`${this.face}${this.suit}`] as PIXI.Sprite;
     console.log("Front", this.front)

@@ -1,3 +1,4 @@
+import { StockZone } from './StockZone';
 import { GameController } from './GameController';
 import { Connection } from "./Connection";
 import { Game } from "./Game";
@@ -5,9 +6,11 @@ import { Game } from "./Game";
 const actionSection = document.getElementById("action");
 const boardSection = document.getElementById("board");
 
-export function engine(connection: Connection) {
-  const state = {};
+export async function engine(connection: Connection) {
+  //const state = {};
   const gameController = new GameController(connection);
+  //let state = await gameController.startNewGame();
+  //const stockZone = new StockZone(gameController)
   
  // const game = new Game();
  // game.connectionMessages(connection)
@@ -29,7 +32,7 @@ export function engine(connection: Connection) {
   function onState(state) {
     console.log("received state", state);
     game.processState(state);
-    gameController.setState(state);
+   // gameController.setState(state);
 
     
   }
@@ -37,7 +40,7 @@ export function engine(connection: Connection) {
   function onMoves(receivedMoves) {
     console.log("received moves", receivedMoves);
     game.processMoves(receivedMoves);
-    gameController.setReceivedMoves(receivedMoves)
+   // gameController.setReceivedMoves(receivedMoves)
 
   }
 
