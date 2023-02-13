@@ -1,7 +1,6 @@
 import * as PIXI from "pixi.js";
 import { Container, DisplayObject, Sprite } from "pixi.js";
 import {
-  CANVAS_WIDTH,
   CARD_HEIGHT,
   CARD_SCALE,
   CARD_WIDTH,
@@ -65,7 +64,6 @@ export class Card extends Container {
       app.stage.addChild(this);
       this.isPlaced = true;
     }
-    //flipCardSound.play();
   }
 
   placeCard(x: number, y: number) {
@@ -92,25 +90,7 @@ export class Card extends Container {
     return mask;
   }
 
-  flip() {
-    //flipCardSound.play();
-
-    const duration = 0.3;
-    const tl = gsap.timeline();
-    this.front.alpha = 0;
-    gsap.set(this.front, { pixi: { skewY: 90 } });
-    this.back.interactive = true;
-    this.back.on("pointertap", () => {
-      tl.to(this.back, { pixi: { skewY: -90 }, duration });
-      tl.to(this.front, {
-        pixi: { skewY: 0, alpha: 1 },
-        duration,
-      });
-    });
-  }
-
   showFace(duration = 0.3, cb?: Function) {
-    //flipCardSound.play();
     if (this.isBack) {
       const tl = gsap.timeline();
       this.front.alpha = 0;

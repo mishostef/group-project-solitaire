@@ -1,4 +1,4 @@
-import { GameController } from './GameControler';
+import { GameController } from './GameController';
 import { Connection } from "./Connection";
 import { Game } from "./Game";
 
@@ -7,10 +7,11 @@ const boardSection = document.getElementById("board");
 
 export function engine(connection: Connection) {
   const state = {};
-  const game = new Game();
   const gameController = new GameController(connection);
-
-  game.connectionMessages(connection)
+  
+ // const game = new Game();
+ // game.connectionMessages(connection)
+  
 
   actionSection.innerHTML = "";
   boardSection.innerHTML = "";
@@ -19,6 +20,7 @@ export function engine(connection: Connection) {
   connection.on("moves", onMoves);
   connection.on("moveResult", onResult);
   connection.on("victory", onVictory);
+  const game = new Game(cb);
 
   function onClick() {
 
@@ -42,12 +44,13 @@ export function engine(connection: Connection) {
   function onResult(data) {
     console.log("on result moves:", data);
     gameController.flipResponse(data);
+    game.data = data;
   }
   function onVictory() {
     alert("Victory!");
     connection.send("newGame");
   }
-
-
-
+  function cb(move) {
+    connection.send("move", move);
+  }
 }

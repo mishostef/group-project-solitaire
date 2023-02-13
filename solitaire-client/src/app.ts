@@ -1,4 +1,4 @@
-import { GameController } from './GameControler';
+import { GameController } from './GameController';
 import { Connection } from "./Connection";
 import { engine } from "./engine";
 import * as PIXI from "pixi.js";
@@ -11,7 +11,6 @@ import { Foundations } from "./FoundationsZone";
 import { Card } from "./Card";
 import { Suits } from "./constants";
 import { StockZone } from "./StockZone";
-import { Container, Point, TARGETS } from "pixi.js";
 import { loadFoundationsEmptyCards, loadStockEmptyCard } from "./cardsTexture";
 import src from "gsap/src";
 
@@ -96,22 +95,22 @@ function start() {
     //test();
 
     // ~~~~~~~~~~~  create Stock Zone  ~~~~~~~~~~~~~~~~~~~~~~~~
-    const card12 = new Card(null, Suits.null);
-    card12.placeCardReverse(0, 0);
+    // const card12 = new Card(null, Suits.null);
+    // card12.placeCardReverse(0, 0);
 
-    const card13 = new Card(null, Suits.null);
-    card13.placeCardReverse(0, 0);
+    // const card13 = new Card(null, Suits.null);
+    // card13.placeCardReverse(0, 0);
 
-    const card14 = new Card(null, Suits.null)
-    card14.placeCardReverse(0, 0);
+    // const card14 = new Card(null, Suits.null)
+    // card14.placeCardReverse(0, 0);
 
-    const card15 = new Card(null, Suits.null);
-    card15.placeCardReverse(0, 0);
+    // const card15 = new Card(null, Suits.null);
+    // card15.placeCardReverse(0, 0);
 
     // const card16 = new Card("3", Suits.hearts);
     // card16.placeCardReverse(0, 0);
 
-    const StockZon = new StockZone(gameController, [card12, card13, card14, card15]);
+    //const StockZon = new StockZone(gameController, [card12, card13, card14, card15]);
     //const StockZon = new StockZone([card14, card15, card16]);
 
     // ~~~~~~~~~~~  move to Foundation Zone  ~~~~~~~~~~~~~~~~~~~~~~~~

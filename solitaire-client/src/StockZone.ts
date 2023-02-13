@@ -1,4 +1,4 @@
-import { GameController } from './GameControler';
+import { GameController } from './GameController';
 import { ICard, IStock } from './interfaces';
 import * as PIXI from "pixi.js";
 import { app } from "./app";
@@ -14,43 +14,45 @@ import { gsap } from "gsap";
 
 export class StockZone {
   gameController: GameController;
-  stock = [];
+  //stock = [];
+   stock: Card[] = [];
   move = {};
   repeatCard: PIXI.Sprite;
   reverse = true;
-  waste = [];
+  waste: Card[] = [];
   countCreateStockContainer = 0;
 
   constructor(gameController, cards) {
     this.gameController = gameController;
     this.stock = cards;
     console.log("Stock Card",this.stock[0])
-    this.loadRepeatCard();
-    this.createStockContainer(this.stock);
+  // constructor(cards: Card[]) {
+  //   this.stock = cards;
+  //   this.loadRepeatCard();
+  //   this.createStockContainer(this.stock);
   }
 
-  createStockContainer(stock) {
+  createStockContainer(stock: Card[]) {
     this.waste = [];
 
     let index = 1;
-    let isStockEmpty;
+    let stockRemaining: Card[];
 
     this.repeatCard.interactive = true;
     this.repeatCard.on("pointertap", () => {
-      if (isStockEmpty.length > 0) {
+      if (stockRemaining.length > 0) {
         this.repeatStock();
       }
     });
 
-    for (let i =0; i <= stock.length - 1; i++) {
-      
+    for (let i = 0; i <= stock.length - 1; i++) {
       if (stock[i].x === 100 || stock[i].x === 0) {
         stock[i].movedFromStock = false;
       } else {
         stock[i].movedFromStock = true;
       }
 
-      isStockEmpty = stock.filter((card) => card.movedFromStock === false);
+      stockRemaining = stock.filter((card) => card.movedFromStock === false);
 
       if (stock[i].movedFromStock === false) {
         stock[i].interactive = true;
@@ -65,15 +67,17 @@ export class StockZone {
           stock[i].movedFromStock = true;
 
           
+          // stock[i].face = "A";
+          // stock[i].suit = Suits.diamonds;
+
           this.moveToWaste(stock[i], index);
 
-          console.log("Waste: ", this.waste)
+          console.log("Waste: ", this.waste);
         });
       }
-
     }
 
-      this.countCreateStockContainer++;
+    this.countCreateStockContainer++;
   }
 
 
@@ -100,11 +104,9 @@ export class StockZone {
       duration,
       onStart: () => card.showFace(0.5),
     });
-
   }
 
   repeatStock() {
- 
     let index = 1;
     this.waste.forEach((card) => {
       const tl = gsap.timeline();
@@ -119,7 +121,6 @@ export class StockZone {
 
       card.movedFromStock = false;
       this.stock.push(card);
-
     });
 
     this.waste = [];
@@ -136,6 +137,3 @@ export class StockZone {
     app.stage.addChild(this.repeatCard);
   }
 }
-
-
-
