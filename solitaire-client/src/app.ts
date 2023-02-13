@@ -69,6 +69,8 @@ function start() {
     engine(connection);
 
     gameController = new GameController(connection);
+    let state = await gameController.startNewGame();
+    gameController.setState(state)
 
     showBoard();
 
@@ -110,7 +112,7 @@ function start() {
     // const card16 = new Card("3", Suits.hearts);
     // card16.placeCardReverse(0, 0);
 
-    //const StockZon = new StockZone(gameController, [card12, card13, card14, card15]);
+    const createStockZone = new StockZone(gameController);
     //const StockZon = new StockZone([card14, card15, card16]);
 
     // ~~~~~~~~~~~  move to Foundation Zone  ~~~~~~~~~~~~~~~~~~~~~~~~

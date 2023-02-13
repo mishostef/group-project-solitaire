@@ -35,7 +35,7 @@ export class Game {
     this.waste = new CardContainer(0);
     this.waste.X = 200;
     this.waste.Y = 100;
-    this.stockZone = new StockZone1([card], this.waste, this.sendInfoToServer);
+    //this.stockZone = new StockZone1([card], this.waste, this.sendInfoToServer);
     app.ticker.add(this.update.bind(this));
 
     
@@ -50,7 +50,7 @@ export class Game {
 
   private processWaste(state: IState) {
     const wasteCards = state.waste.cards.map((c) => this.createCard(c));
-    this.stockZone.addCards(wasteCards);
+    //this.stockZone.addCards(wasteCards);
     console.log("stockZone", this.stockZone);
   }
   
@@ -77,7 +77,7 @@ export class Game {
   public processStock(stockZone) {
     //this.stock = new StockZone(stockZone.cards);
     // this.stock = new StockZone(stockZone.cards);
-    console.log("stock.cards - ", this.stock.stock)
+    //console.log("stock.cards - ", this.stock.stock)
   }
 
   public connectionMessages(connection) {
@@ -104,7 +104,7 @@ export class Game {
         card.showFace(0);
       }
       console.log("in update card=", card);
-      this.stockZone.addCards([card]);
+     // this.stockZone.addCards([card]);
       this.data = null;
     }
     const allContainers = [...this.piles, this.waste];

@@ -83,8 +83,15 @@ export class GameController {
     }
 
     setState(state) {
-        //console.log("state in gameController:", state)
+        console.log("state in gameController:", state)
         this.state = state;
+    }
+
+     getState() {
+
+        console.log("getSTATE", this.state)
+        return this.state;
+        
     }
 
     setReceivedMoves(moves) {
@@ -115,6 +122,7 @@ export class GameController {
         return new Promise(function(resolve) {
             console.log("inside promise!!!!!");
             this.statePromiseResolve = resolve;
+
         }.bind(this));
     }
 

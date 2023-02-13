@@ -4,6 +4,7 @@ import * as PIXI from "pixi.js";
 import { app } from "./app";
 import { Card } from "./Card";
 import {
+  cardMap,
   cardsConstants,
   CARD_HEIGHT,
   CARD_SCALE,
@@ -14,29 +15,41 @@ import { gsap } from "gsap";
 
 export class StockZone {
   gameController: GameController;
-  //stock = [];
-   stock: Card[] = [];
+  state;
+  stockFromServer = [];
+  newStock = [];
+  stockContainer = new PIXI.Container();
   move = {};
   repeatCard: PIXI.Sprite;
   reverse = true;
   waste: Card[] = [];
   countCreateStockContainer = 0;
 
-  constructor(gameController, cards) {
+  constructor(gameController) {
     this.gameController = gameController;
-    this.stock = cards;
-    console.log("Stock Card",this.stock[0])
-  // constructor(cards: Card[]) {
-  //   this.stock = cards;
-  //   this.loadRepeatCard();
-  //   this.createStockContainer(this.stock);
+
+    this.state= this.gameController.getState();
+    this.stockFromServer = this.state.stock.cards;
+
+    console.log("Stock Cards",this.stockFromServer)
+
+    this.loadRepeatCard();
+
+     this.createStockContainer(this.stockFromServer);
   }
 
-  createStockContainer(stock: Card[]) {
+  createStockContainer(stock) {
+
+    for (let i = 0; i <= stock.length - 1; i++) {
+       const card = new Card(this.stockFromServer[i].face, this.stockFromServer[i].suit);
+       this.newStock.push(card);
+    }
+
+
     this.waste = [];
 
     let index = 1;
-    let stockRemaining: Card[];
+     let stockRemaining: Card[];
 
     this.repeatCard.interactive = true;
     this.repeatCard.on("pointertap", () => {
@@ -45,32 +58,32 @@ export class StockZone {
       }
     });
 
-    for (let i = 0; i <= stock.length - 1; i++) {
-      if (stock[i].x === 100 || stock[i].x === 0) {
-        stock[i].movedFromStock = false;
-      } else {
-        stock[i].movedFromStock = true;
-      }
+    for (let i = 0; i <= this.newStock.length - 1; i++) {
+      // if (stock[i].x === 100 || stock[i].x === 0) {
+      //   stock[i].movedFromStock = false;
+      // } else {
+      //   stock[i].movedFromStock = true;
+      // }
 
       stockRemaining = stock.filter((card) => card.movedFromStock === false);
 
-      if (stock[i].movedFromStock === false) {
-        stock[i].interactive = true;
-        stock[i].placeCardReverse(100, 100);
+      if (this.newStock[i].movedFromStock === false) {
+        this.newStock[i].interactive = true;
+        this.newStock[i].placeCardReverse(100, 100);
 
-        stock[i].on("pointertap", async (e) => {
+        this.newStock[i].on("pointertap", async (e) => {
           
 
-          stock[i].zIndex = index;
+          this.newStock[i].zIndex = index;
           index++;
 
-          stock[i].movedFromStock = true;
+          this.newStock[i].movedFromStock = true;
 
           
           // stock[i].face = "A";
           // stock[i].suit = Suits.diamonds;
 
-          this.moveToWaste(stock[i], index);
+          this.moveToWaste(this.newStock[i], index);
 
           console.log("Waste: ", this.waste);
         });
@@ -88,11 +101,13 @@ export class StockZone {
     console.log("stockZone flipResponse: ", flipResponse);
 
 
-    if (this.countCreateStockContainer == 1) {
+    //if (this.countCreateStockContainer == 1) {
 
       card.changeFaceAndSuit(flipResponse.card.face, flipResponse.card.suit, 200, 100);
+
+      console.log("WWWWWW", card.suit, card.face)
     
-    }
+   // }
     this.waste.push(card);
 
     card.zIndex = index;
@@ -120,11 +135,11 @@ export class StockZone {
       index++;
 
       card.movedFromStock = false;
-      this.stock.push(card);
+      this.stockFromServer.push(card);
     });
 
     this.waste = [];
-    this.createStockContainer(this.stock);
+    this.createStockContainer(this.stockFromServer);
   }
 
   loadRepeatCard() {
