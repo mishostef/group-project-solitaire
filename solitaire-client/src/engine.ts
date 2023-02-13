@@ -6,7 +6,7 @@ const boardSection = document.getElementById("board");
 
 export function engine(connection: Connection) {
   const state = {};
-  const game = new Game(cb);
+  
 
   actionSection.innerHTML = "";
   boardSection.innerHTML = "";
@@ -15,6 +15,7 @@ export function engine(connection: Connection) {
   connection.on("moves", onMoves);
   connection.on("moveResult", onResult);
   connection.on("victory", onVictory);
+  const game = new Game(cb);
 
   function onState(state) {
     console.log("received state", state);
@@ -28,7 +29,7 @@ export function engine(connection: Connection) {
 
   function onResult(data) {
     console.log("on result moves:", data);
-    game.isMovePossible = data;
+    game.data = data;
   }
   function onVictory() {
     alert("Victory!");

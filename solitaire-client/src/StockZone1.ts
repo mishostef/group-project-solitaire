@@ -29,11 +29,13 @@ export class StockZone1 extends BaseCardContainer {
     const move = {
       ////for flipping in stock zone
       action: "flip",
+      source:"stock",
       index: 23,
-      source: "stock",
       target: null,
     };
     this.cb(move);
+
+    console.log(this.cards)
   }
 
   returnCardsToStock() {

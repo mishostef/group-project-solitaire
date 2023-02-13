@@ -7,56 +7,54 @@ import { app } from "./app";
 import { Card } from "./Card";
 import { cardMap, Suits } from "./constants";
 import { StockZone1 } from "./StockZone1";
+import { BaseCardContainer } from "./BaseCardContainer";
 ///here comes app creation etc
 
 function CardFactory(app) {}
 
 export class Game {
   foundations: Foundations[];
-  stockZone: any; //StockZone;
+  stockZone: BaseCardContainer; //StockZone;
   waste: CardContainer;
   piles: CardContainer[] = [];
   state: IState;
   sendInfoToServer: Function;
   move: any;
-  isMovePossible: boolean | null = null;
+  data: any = null;
   source: CardContainer = null;
   target: CardContainer = null;
 
   constructor(cb: Function) {
     this.sendInfoToServer = cb;
-    const card = new Card("A", Suits.spades);
-    const card2 = new Card("J", Suits.hearts);
-    card.showFace();
-
+    const card = new Card(null, null);
+    // const card2 = new Card("J", Suits.hearts);
+    //card.showFace();
     this.waste = new CardContainer(0);
     this.waste.X = 200;
     this.waste.Y = 100;
-    this.stockZone = new StockZone1([card, card2], this.waste,this.sendInfoToServer);
+    this.stockZone = new StockZone1([card], this.waste, this.sendInfoToServer);
     app.ticker.add(this.update.bind(this));
- 
-    // this.state = state;
-    // this.stock = new StockZone(state.stock.cards);
-    //console.log("stock.cards - ", this.stock)
   }
 
   public processState(state: IState) {
     this.processPiles(state);
+    state.waste.cards.length && this.processWaste(state);
+  }
+
+  private processWaste(state: IState) {
+    const wasteCards = state.waste.cards.map((c) => this.createCard(c));
+    this.stockZone.addCards(wasteCards);
+    console.log("stockZone", this.stockZone);
   }
 
   private processPiles(state: IState) {
     for (let i = 0; i < 7; i++) {
       const currentPileInfo = state.piles[i];
       const cards = currentPileInfo.cards;
-      //     console.log("currentPileInfo.cards", cards);
       const columnCards = [];
       for (let i = 0; i < cards.length; i++) {
         const cardInfo = cards[i];
-        const s =
-          typeof cardInfo.suit == "string"
-            ? Suits[cardInfo.suit]
-            : cardInfo.suit;
-        const card = new Card(cardMap[cardInfo.face], s);
+        const card = this.createCard(cardInfo);
         if (cardInfo.faceUp) {
           card.showFace(0);
         }
@@ -80,25 +78,30 @@ export class Game {
   }
 
   private update() {
+    if (this.data && this.data.face) {
+      console.log("in update data", this.data);
+      const card = this.createCard(this.data);
+      if (this.data.faceUp) {
+        card.showFace(0);
+      }
+      console.log("in update card=", card);
+      this.stockZone.addCards([card]);
+      this.data = null;
+    }
     const allContainers = [...this.piles, this.waste];
     const starting = allContainers.find(
       (container) => container.dragging == true
     );
     if (starting) {
       if (starting.dragging) {
-        this.isMovePossible &&
-          this.target &&
-          this.mergePiles(starting, this.target);
+        this.data && this.target && this.mergePiles(starting, this.target);
         const others = this.piles.filter((c) => c != starting);
         for (let i = 0; i < others.length; i++) {
           const target = others[i];
           if (target && starting.isOverlapping(target)) {
             app.stage.removeChild(starting.draggableContainer);
             app.stage.addChild(starting.draggableContainer);
-            let pileIndex = `pile${starting.rowNumber - 1}`;
-            if (starting.rowNumber - 1 < 0) {
-              pileIndex = "stock";
-            }
+            let pileIndex = this.getSource(starting);
             const move = {
               action: "place",
               target: `pile${target.rowNumber - 1}`,
@@ -114,6 +117,14 @@ export class Game {
     }
   }
 
+  private getSource(starting: CardContainer) {
+    let pileIndex = `pile${starting.rowNumber - 1}`;
+    if (starting.rowNumber - 1 < 0) {
+      pileIndex = "stock";
+    }
+    return pileIndex;
+  }
+
   private mergePiles(starting: CardContainer, target: CardContainer) {
     starting.draggableContainer.position.set(
       target.staticContainer.position.x,
@@ -123,11 +134,18 @@ export class Game {
     const move = {
       action: "flip",
       target: null,
-      source: `pile${starting.rowNumber - 1}`,
+      source: this.getSource(starting),
       index: starting.cards.length - starting.draggableLength,
     };
     this.sendInfoToServer(move);
     starting.cards[starting.cards.length - 1].showFace();
     this.target = null;
+  }
+
+  createCard(cardInfo: any) {
+    const s =
+      typeof cardInfo.suit == "string" ? Suits[cardInfo.suit] : cardInfo.suit;
+    const card = new Card(cardMap[cardInfo.face], s);
+    return card;
   }
 }

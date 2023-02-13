@@ -1,21 +1,19 @@
-
 export interface IBaseCard {
   face: number | null;
   suit: "clubs" | "spades" | "hearts" | "diamonds" | null;
 }
 
-export interface ICard extends IBaseCard{
+export interface ICard extends IBaseCard {
   faceUp: boolean;
 }
 
 export interface IStock extends ICard {
-  movedFromStock: boolean
-
+  movedFromStock: boolean;
 }
 export interface IState {
   piles: { cards: ICard[] };
   stock: { cards: IStock[] };
-  waste: { cards: [] };
+  waste: { cards: ICard[] };
   foundations: { cards: [] };
 }
 
@@ -24,6 +22,6 @@ export interface IMoves {
 }
 export interface IPileMove {
   flip: boolean;
-  place: boolean;//
-  take: number[];//card indices from this column that can be taken
+  place: boolean; //
+  take: number[]; //card indices from this column that can be taken
 }
