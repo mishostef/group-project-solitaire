@@ -1,5 +1,5 @@
-import { GameController } from './GameController';
-import { ICard, IStock } from './interfaces';
+import { GameController } from "./GameController";
+import { ICard, IStock } from "./interfaces";
 import * as PIXI from "pixi.js";
 import { app } from "./app";
 import { Card } from "./Card";
@@ -28,28 +28,29 @@ export class StockZone {
   constructor(gameController) {
     this.gameController = gameController;
 
-    this.state= this.gameController.getState();
+    this.state = this.gameController.getState();
     this.stockFromServer = this.state.stock.cards;
 
-    console.log("Stock Cards",this.stockFromServer)
+    console.log("Stock Cards", this.stockFromServer);
 
     this.loadRepeatCard();
 
-     this.createStockContainer(this.stockFromServer);
+    this.createStockContainer(this.stockFromServer);
   }
 
   createStockContainer(stock) {
-
     for (let i = 0; i <= stock.length - 1; i++) {
-       const card = new Card(this.stockFromServer[i].face, this.stockFromServer[i].suit);
-       this.newStock.push(card);
+      const card = new Card(
+        this.stockFromServer[i].face,
+        this.stockFromServer[i].suit
+      );
+      this.newStock.push(card);
     }
-
 
     this.waste = [];
 
     let index = 1;
-     let stockRemaining: Card[];
+    let stockRemaining: Card[];
 
     this.repeatCard.interactive = true;
     this.repeatCard.on("pointertap", () => {
@@ -72,14 +73,11 @@ export class StockZone {
         this.newStock[i].placeCardReverse(100, 100);
 
         this.newStock[i].on("pointertap", async (e) => {
-          
-
           this.newStock[i].zIndex = index;
           index++;
 
           this.newStock[i].movedFromStock = true;
 
-          
           // stock[i].face = "A";
           // stock[i].suit = Suits.diamonds;
 
@@ -93,21 +91,18 @@ export class StockZone {
     this.countCreateStockContainer++;
   }
 
-
- async moveToWaste(card: Card, index) {
-
+  async moveToWaste(card: Card, index) {
     console.log("pointertap: ", this.gameController);
     let flipResponse = await this.gameController.flip();
     console.log("stockZone flipResponse: ", flipResponse);
 
-
     //if (this.countCreateStockContainer == 1) {
 
-      card.changeFaceAndSuit(flipResponse.card.face, flipResponse.card.suit, 200, 100);
+    //card.changeFaceAndSuit(flipResponse.card.face, flipResponse.card.suit, 200, 100);
 
-      console.log("WWWWWW", card.suit, card.face)
-    
-   // }
+    console.log("WWWWWW", card.suit, card.face);
+
+    // }
     this.waste.push(card);
 
     card.zIndex = index;
