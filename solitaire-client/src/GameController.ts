@@ -21,6 +21,7 @@ export class GameController {
     connectionOpen: boolean
     statePromiseResolve;
     flipPromiseResolve;
+    flipData;
 
     state = {};
     move:move = {
@@ -46,6 +47,7 @@ export class GameController {
         console.log("connection open");
 
         this.connection.on("state", state => {
+            console.log("connection onState", state);
             if (this.statePromiseResolve != null) {
                 this.statePromiseResolve(state);
                 this.statePromiseResolve = null;
@@ -68,14 +70,20 @@ export class GameController {
 
     private getFlipResponse(data): FlipResponse {
         // todo: empty and reset stock
-        
+
         let response: FlipResponse = {
             type: "card",
-            card: {
-                face: data.face,
-                suit: data.suit
-            }
+            card: null
         };
+
+        if (data == null ) {
+            response.type = "reset"
+        } else {
+           response.card = {
+            face: data.face,
+            suit: data.suit
+        }  
+        }
 
         console.log("GET flip Response", response)
 
@@ -103,7 +111,12 @@ export class GameController {
     flipResponse(data) {
 
         console.log("DATA", data)
+        this.flipData = data
         
+    }
+
+    getFlipData() {
+        return this.flipData
     }
 
     moveResponse() {
@@ -127,6 +140,7 @@ export class GameController {
     }
 
     async flip(): Promise<FlipResponse> {
+
         console.log("Flip called");
         await this.openConnection();
 

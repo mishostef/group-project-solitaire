@@ -1,5 +1,5 @@
+import { DraggableObject } from './DraggableObject';
 import { GameController } from './GameController';
-import { ICard, IStock } from './interfaces';
 import * as PIXI from "pixi.js";
 import { app } from "./app";
 import { Card } from "./Card";
@@ -12,135 +12,111 @@ import {
   Suits,
 } from "./constants";
 import { gsap } from "gsap";
+import { BaseCardContainer } from './BaseCardContainer';
+import { CardContainer } from './CardContainer';
+import { FederatedPointerEvent } from 'pixi.js';
 
 export class StockZone {
   gameController: GameController;
   state;
-  stockFromServer = [];
-  newStock = [];
+  stock = [];
+  waste = [];
   stockContainer = new PIXI.Container();
+  wasteContainer = new PIXI.Container();
+  draggableContainer = new PIXI.Container();
   move = {};
   repeatCard: PIXI.Sprite;
   reverse = true;
-  waste: Card[] = [];
   countCreateStockContainer = 0;
+  flipCard;
+  dragging;
+  draggableLength;
+  currentCard;
 
   constructor(gameController) {
     this.gameController = gameController;
 
     this.state= this.gameController.getState();
-    this.stockFromServer = this.state.stock.cards;
-
-    console.log("Stock Cards",this.stockFromServer)
-
+    // this.draggableLength = this.draggableContainer.children.length;
+    
+    this.stock = this.state.stock.cards;
+    this.waste = this.state.waste.cards;
+    this.stock = this.stock.concat(this.waste)
     this.loadRepeatCard();
-
-     this.createStockContainer(this.stockFromServer);
+    this.createStockContainer(this.stock);
+    this.addEvents();
+    
   }
 
   createStockContainer(stock) {
 
-    for (let i = 0; i <= stock.length - 1; i++) {
-       const card = new Card(this.stockFromServer[i].face, this.stockFromServer[i].suit);
-       this.newStock.push(card);
-    }
+    app.stage.addChild(this.stockContainer);
+    this.stockContainer.position.set(100, 100);
+    app.stage.addChild(this.wasteContainer);
+    this.wasteContainer.position.set(0, 0);
+    app.stage.addChild(this.draggableContainer);
+    this.draggableContainer.position.set(200, 100);
 
-
-    this.waste = [];
-
-    let index = 1;
-     let stockRemaining: Card[];
-
-    this.repeatCard.interactive = true;
-    this.repeatCard.on("pointertap", () => {
-      if (stockRemaining.length > 0) {
-        this.repeatStock();
-      }
+    this.stock.map((c) => {
+      let card = this.createCard(c, 0, 0);
+      this.stockContainer.addChild(card);
     });
 
-    for (let i = 0; i <= this.newStock.length - 1; i++) {
-      // if (stock[i].x === 100 || stock[i].x === 0) {
-      //   stock[i].movedFromStock = false;
-      // } else {
-      //   stock[i].movedFromStock = true;
-      // }
+    console.log("stockFromServer", this.stock)
+    console.log("wasteFromServer", this.waste)
+    this.getCardFromStock()
 
-      stockRemaining = stock.filter((card) => card.movedFromStock === false);
-
-      if (this.newStock[i].movedFromStock === false) {
-        this.newStock[i].interactive = true;
-        this.newStock[i].placeCardReverse(100, 100);
-
-        this.newStock[i].on("pointertap", async (e) => {
-          
-
-          this.newStock[i].zIndex = index;
-          index++;
-
-          this.newStock[i].movedFromStock = true;
-
-          
-          // stock[i].face = "A";
-          // stock[i].suit = Suits.diamonds;
-
-          this.moveToWaste(this.newStock[i], index);
-
-          console.log("Waste: ", this.waste);
-        });
-      }
-    }
-
-    this.countCreateStockContainer++;
+    
   }
 
+  getCardFromStock() {
+    this.stockContainer.interactive = true;
+    this.stockContainer.on('pointertap', async () => {
 
- async moveToWaste(card: Card, index) {
+      let flipResponse = await this.gameController.flip()
+      console.log("stockZone flipped card:", flipResponse);
 
-    console.log("pointertap: ", this.gameController);
-    let flipResponse = await this.gameController.flip();
-    console.log("stockZone flipResponse: ", flipResponse);
+      this.stock.pop();
+      this.currentCard = this.createCard(flipResponse.card, 100, 100);
+      this.stock.push(this.currentCard );
+      this.stockContainer.addChild(this.currentCard );
 
+      this.moveToWaste();
 
-    //if (this.countCreateStockContainer == 1) {
+    })
 
-      card.changeFaceAndSuit(flipResponse.card.face, flipResponse.card.suit, 200, 100);
+  }
 
-      console.log("WWWWWW", card.suit, card.face)
+  async moveToWaste() {
+
+    console.log("waste array", this.waste)
     
-   // }
-    this.waste.push(card);
-
-    card.zIndex = index;
-
     const duration = 0.5;
+  
     const tl = gsap.timeline();
-    tl.to(card, {
+    tl.to(this.currentCard, {
       pixi: { x: 200, y: 100 },
       duration,
-      onStart: () => card.showFace(0.5),
-    });
-  }
-
-  repeatStock() {
-    let index = 1;
-    this.waste.forEach((card) => {
-      const tl = gsap.timeline();
-      tl.to(card, {
-        pixi: { x: 100, y: 100 },
-        duration: 2,
-        onStart: () => card.showBack(),
-      });
-
-      card.zIndex = index;
-      index++;
-
-      card.movedFromStock = false;
-      this.stockFromServer.push(card);
+      onStart: () => this.currentCard.showFace(0.5),
     });
 
-    this.waste = [];
-    this.createStockContainer(this.stockFromServer);
+    this.waste.push(this.currentCard); 
+    this.wasteContainer.addChild(this.currentCard);
+
+    this.wasteContainer.interactive = true;
+    this.handleMouseDownEvent()
+
   }
+
+
+  createCard(cardInfo: any, x:number, y: number) {
+      const s = typeof cardInfo.suit == "string" ? Suits[cardInfo.suit] : cardInfo.suit;
+      const card = new Card(cardMap[cardInfo.face], s);
+      card.position.set(x, y)
+      this.stockContainer.addChild(card);
+    return card;
+  }
+
 
   loadRepeatCard() {
     const repeatTexture = PIXI.Texture.from("assets/repeat.png");
@@ -151,4 +127,76 @@ export class StockZone {
     this.repeatCard.zIndex = -1;
     app.stage.addChild(this.repeatCard);
   }
+//}
+
+
+
+
+// -----------------Dragging -------------------------------------
+
+
+protected addEvents() {
+  this.draggableContainer.interactive = true;
+  this.draggableContainer.on("mouseup", this.handleMouseUpEvent.bind(this));
+  this.draggableContainer.on("mousedown", () => {
+    this.dragging = true;
+    console.log("dragging started");
+  });
+  this.draggableContainer.on(
+    "globalmousemove",
+    this.handleMouseMove.bind(this)
+  );
 }
+
+private handleMouseDownEvent() {
+      this.wasteContainer.on('mousedown', () => {
+      this.wasteContainer.removeChild(this.currentCard);
+      this.currentCard.position.set(0, 0);
+      this.draggableContainer.zIndex = 60;
+      this.draggableContainer.addChild(this.currentCard);
+      this.dragging = true;
+
+      this.handleMouseUpEvent();
+
+      console.log("dragging started");
+      console.log("drag children",this.draggableContainer.children)
+      console.log("waste children",this.wasteContainer.children)
+    })
+}
+
+
+
+protected handleMouseUpEvent() {
+
+  this.draggableContainer.on('mouseup' , (e) => {
+
+    this.dragging = false;
+    this.draggableContainer.position.set( e.globalX, e.globalY);
+  })
+
+}
+private handleMouseMove(e) {
+  let [x, y] = [e.globalX, e.globalY];
+  if (this.dragging) {
+    this.draggableContainer.position.set(x, y);
+  }
+}
+
+//private handleMouseDown(e: FederatedPointerEvent) {
+  // if (this.draggableContainer == null) {
+  //   this.draggableContainer = new Container();
+  // }
+  //let index = this.getIndex(e);
+  //this.dragging = true;
+  // this.cards.forEach((card, i) => {
+  //   if (i >= index) {
+  //     this.draggableContainer.addChild(card);
+  //     card.position.set(0, (i - index) * CARD_OFFSET);
+  //   }
+  //   this.draggableLength = this.draggableContainer.children.length;
+  // });
+//}
+
+
+}
+

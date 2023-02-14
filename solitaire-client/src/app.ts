@@ -40,17 +40,9 @@ async function init() {
   await PIXI.Assets.load("assets/repeat.png");
 }
 
-// async function start() {
-//   let gameController = new GameController("Toni");
-//   console.log("START!!!!!");
-//   let state = await gameController.startNewGame();
-//   console.log(state);
-//   let flipResponse = await gameController.flip();
-//   console.log("flip: ", flipResponse);
-// }
 
 function start() {
-  // let gameController = new GameController("Toni");
+
   const initForm = document.querySelector("form");
   const initSection = document.getElementById("init");
   const gameSection = document.getElementById("game");
@@ -94,6 +86,10 @@ function start() {
 
     loadFoundationsEmptyCards();
     loadStockEmptyCard();
+
+    const createStockZone = new StockZone(gameController);
+
+
     //test();
 
     // ~~~~~~~~~~~  create Stock Zone  ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -112,7 +108,6 @@ function start() {
     // const card16 = new Card("3", Suits.hearts);
     // card16.placeCardReverse(0, 0);
 
-    const createStockZone = new StockZone(gameController);
     //const StockZon = new StockZone([card14, card15, card16]);
 
     // ~~~~~~~~~~~  move to Foundation Zone  ~~~~~~~~~~~~~~~~~~~~~~~~

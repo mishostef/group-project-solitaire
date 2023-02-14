@@ -57,7 +57,7 @@ export class Card extends Container {
 
     this.back = this.getCardBack();
     this.addChild(this.back);
-  //}
+
 }
 
   placeCardReverse(x: number, y: number) {

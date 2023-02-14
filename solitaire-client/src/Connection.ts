@@ -76,6 +76,7 @@ export class Connection extends Emitter {
 
     send(type, data?) {
         ws.send(JSON.stringify({ type, data }));
+        console.log("send type", type)
     }
 
     disconnect() {
