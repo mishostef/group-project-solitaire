@@ -74,7 +74,11 @@ export class StockZone {
     this.stockContainer.on('pointertap', async () => {
 
       let flipResponse = await this.gameController.flip()
-      console.log("stockZone flipped card:", flipResponse);
+      //let flipResponseArr = []
+     // flipResponseArr.push(flipResponse)
+
+      console.log("stockZone flipped card WATCH:", flipResponse);
+
 
       this.stock.pop();
       this.currentCard = this.createCard(flipResponse.card, 100, 100);

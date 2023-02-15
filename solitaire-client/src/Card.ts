@@ -26,17 +26,6 @@ export class Card extends Container {
   constructor(public face: Face, public suit: Suits) {
     super();
 
-    // if (face !== null && suit !== null && suit !== Suits.null &&  face !== undefined && suit !== undefined) {
-    //   this.changeFaceAndSuit(face, suit, 0, 0)
-    // } else {
-    //   this.back = this.getCardBack();
-    //   this.addChild(this.back);
-    //   this.showBack();
-    //    //this.isValid = false;
-
-    // }
-
-
     if (face == null || suit == null || suit == Suits.null) {
       this.face = "A"
       this.suit = Suits.clubs;

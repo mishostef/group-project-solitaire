@@ -21,6 +21,7 @@ export class GameController {
     connectionOpen: boolean
     statePromiseResolve;
     flipPromiseResolve;
+    takePromiseResolve;
     flipData;
 
     state = {};
@@ -53,9 +54,11 @@ export class GameController {
                 this.statePromiseResolve = null;
             }
         });
-
+        
         this.connection.on("moveResult", data => {
-            console.log("moveResult: ", data);
+            console.log("moveResult watch: ", data);
+  
+
             if (data.hasOwnProperty('face')) {
                 // flip command detected
                 console.log("FLIP");
@@ -65,7 +68,22 @@ export class GameController {
                     this.flipPromiseResolve = null;
                 }
             }
+
+            if (data == true) {
+                console.log("Successful move");
+
+            }
+
+            if (data == false) {
+                console.log("Invalid move");
+
+                
+            }
+
+
+
         });
+
     }
 
     private getFlipResponse(data): FlipResponse {
@@ -85,9 +103,10 @@ export class GameController {
         }  
         }
 
-        console.log("GET flip Response", response)
+        console.log("GET flip Response watch", response)
 
-        return response;
+       return response;
+       
     }
 
     setState(state) {
@@ -138,25 +157,48 @@ export class GameController {
 
         }.bind(this));
     }
-
+    
+    
     async flip(): Promise<FlipResponse> {
-
+        
         console.log("Flip called");
         await this.openConnection();
-
+        
         let flipMove = {
             action: "flip",
             source: "stock",
             target: null,
             index: 0
         };
-
+        
         this.connection.send("move", flipMove);
-
+        
         return new Promise(function(resolve) {
             console.log("inside flip promise!!!!!");
             this.flipPromiseResolve = resolve;
         }.bind(this));
+    }
+
+
+    async takeCard() {
+        console.log("Take card called");
+
+        await this.openConnection();
+
+        let takeCardMove = {
+            action: "take",
+            source: "stock",
+            target: null,
+            index: 0
+        };
+
+        this.connection.send("move", takeCardMove);
+
+        return new Promise(function(resolve) {
+            console.log("inside take promise!!!!!");
+            this.takePromiseResolve = resolve;
+        }.bind(this));
+        
     }
 
 }
