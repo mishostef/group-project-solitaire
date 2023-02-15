@@ -1,4 +1,4 @@
-import { GameController } from './GameController';
+import { GameController } from "./GameController";
 import { Connection } from "./Connection";
 import { engine } from "./engine";
 import * as PIXI from "pixi.js";
@@ -10,7 +10,7 @@ import { CANVAS_WIDTH, CARD_HEIGHT, CARD_SCALE, CARD_WIDTH } from "./constants";
 import { Foundations } from "./FoundationsZone";
 import { Card } from "./Card";
 import { Suits } from "./constants";
-import { StockZone } from "./StockZone";
+//import { StockZone } from "./StockZone";
 import { loadFoundationsEmptyCards, loadStockEmptyCard } from "./cardsTexture";
 import src from "gsap/src";
 
@@ -68,12 +68,7 @@ function start() {
     await connection.open();
     engine(connection);
 
-    gameController = new GameController(connection);
-    let state = await gameController.startNewGame();
-    gameController.setState(state)
-
     showBoard();
-
 
     connection.send("startGame");
   });
@@ -112,7 +107,7 @@ function start() {
     // const card16 = new Card("3", Suits.hearts);
     // card16.placeCardReverse(0, 0);
 
-    const createStockZone = new StockZone(gameController);
+    //const createStockZone = new StockZone(gameController);
     //const StockZon = new StockZone([card14, card15, card16]);
 
     // ~~~~~~~~~~~  move to Foundation Zone  ~~~~~~~~~~~~~~~~~~~~~~~~

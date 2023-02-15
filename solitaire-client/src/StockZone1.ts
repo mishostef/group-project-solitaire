@@ -5,43 +5,49 @@ import { CardContainer } from "./CardContainer";
 import { gsap } from "gsap";
 import * as PIXI from "pixi.js";
 import { CARD_SCALE } from "./constants";
+import { Container, FederatedPointerEvent } from "pixi.js";
 
 export class StockZone1 extends BaseCardContainer {
   countCreateStockContainer = 1;
-  public waste: CardContainer;
+  // public waste: CardContainer;
   stockCard: PIXI.Sprite;
   private cb: Function;
-  constructor(cards: Card[], waste: CardContainer, cb: Function) {
+  waste: CardContainer;
+  public decrement = 0;
+
+  constructor(cb: Function) {
     super(0);
     this.X = 100;
     this.Y = 100;
-    this.addCards(cards);
-    this.waste = waste;
+    this.cards = [];
+    this.waste = new CardContainer(0);
+    this.waste.X = 200;
+    this.waste.Y = 100;
     this.cb = cb;
   }
 
   addEvents() {
-    this.staticContainer.interactive = true;
-    this.staticContainer.on("pointertap", () => this.createStockContainer());
+    this.loadRepeatCard();
+    this.stockCard.interactive = true;
+    this.stockCard.on("pointertap", () => this.createStockContainer());
   }
   createStockContainer() {
-    this.moveCardsToWaste();
     const move = {
       ////for flipping in stock zone
       action: "flip",
-      source:"stock",
+      source: "stock",
       index: 23,
       target: null,
     };
     this.cb(move);
-
-    console.log(this.cards)
+    // this.moveCardsToWaste();
+    console.log(this.cards);
   }
 
   returnCardsToStock() {
     let index = 1;
-    const card = this.waste.cards.shift();
-    this.addCards([card]);
+    const card = this.cards[this.cards.length - 1];
+    this.addCards([]);
     const tl = gsap.timeline();
     tl.fromTo(
       card,
@@ -55,10 +61,10 @@ export class StockZone1 extends BaseCardContainer {
     index++;
   }
 
-  moveCardsToWaste() {
-    let index = 1;
-    while (this.cards.length) {
-      const card = this.cards.shift();
+  public moveCardsToWaste() {
+    let index = 0;
+    while (index < this.staticContainer.children.length) {
+      const card = this.staticContainer.children[index] as Card;
       card.zIndex = index;
       const duration = 0.5;
       const tl = gsap.timeline();
@@ -70,9 +76,12 @@ export class StockZone1 extends BaseCardContainer {
           console.log("this.staticContainer:", this.staticContainer);
           console.log("this.waste", this.waste);
           this.waste.addCards([card]);
-          if (this.staticContainer.children.length <= 0) {
-            this.returnCardsToStock();
+          if (this.staticContainer.children.length > 0) {
+            this.waste.addCards([this.staticContainer.children[0] as Card]);
           }
+          // if (this.staticContainer.children.length <= 0) {
+          //   this.returnCardsToStock();
+          // }
         },
       });
       index++;
