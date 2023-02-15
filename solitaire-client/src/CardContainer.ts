@@ -17,11 +17,20 @@ export class CardContainer extends BaseCardContainer {
   dragging = false;
   public draggableLength = 0;
   public isReturningCards = false;
+  public cb: Function;
 
   constructor(public rowNumber: number) {
     super(rowNumber);
     this.staticContainer.on("mousedown", this.handleMouseDown.bind(this));
   }
+  handleMouseUp(e) {
+    this.cb && this.cb(this);
+    this.dragging = false;
+    if (this.draggableLength != 0) {
+      this.returnDraggableContainer();
+    }
+  }
+
   public addCards(cards: Card[]) {
     for (let i = 0; i < cards.length; i++) {
       const card = cards[i];

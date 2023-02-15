@@ -56,8 +56,7 @@ function start() {
   const gameSection = document.getElementById("game");
 
   let connection = null;
-  let gameController = null;
-
+ 
   initForm.addEventListener("submit", async (event) => {
     event.preventDefault();
     const { nickname } = Object.fromEntries(

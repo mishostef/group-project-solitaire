@@ -24,7 +24,7 @@ export class Game {
   sendInfoToServer: Function;
   move: any;
   data: any = null;
-  source: CardContainer = null;
+  starting: CardContainer = null;
   target: CardContainer = null;
 
   constructor(cb: Function) {
@@ -59,6 +59,7 @@ export class Game {
         columnCards.push(card);
       }
       const container = new CardContainer(i + 1);
+      container.cb = this.handleDragging.bind(this); ////
       container.addCards(columnCards);
       this.piles.push(container);
     }
@@ -79,24 +80,38 @@ export class Game {
     if (this.data && this.data.face) {
       this.handleFlip();
     }
-    this.handleDragging();
+
+    this.placeDraggabeOnTop();
   }
 
-  private handleDragging() {
+  private placeDraggabeOnTop() {
     const allContainers = [...this.piles, this.stockZone.waste];
     const starting = allContainers.find((container) => container.dragging);
     if (starting) {
-      if (starting.dragging) {
-        this.data && this.target && this.mergePiles(starting, this.target);
-        const others = this.piles.filter((c) => c != starting);
-        for (let i = 0; i < others.length; i++) {
-          const target = others[i];
-          if (target && starting.isOverlapping(target)) {
-            this.sendMergeRequest(starting, target);
-            this.target = target;
-            break;
-          }
+      const others = this.piles.filter((c) => c != starting);
+      for (let i = 0; i < others.length; i++) {
+        const target = others[i];
+        if (target && starting.isOverlapping(target)) {
+          app.stage.removeChild(starting.draggableContainer);
+          app.stage.addChild(starting.draggableContainer);
+          break;
         }
+      }
+    }
+  }
+
+  private handleDragging(starting) {
+    //called in CardContainer mouseup
+    if (starting) {
+      const others = this.piles.filter((c) => c != starting);
+      for (let i = 0; i < others.length; i++) {
+        const target = others[i];
+        if (starting.isOverlapping(target)) {
+          this.sendMergeRequest(starting, target);
+          this.starting = starting;
+          this.target = target;
+          break;
+        } 
       }
     }
   }
@@ -112,8 +127,6 @@ export class Game {
   }
 
   private sendMergeRequest(starting: CardContainer, target: CardContainer) {
-    app.stage.removeChild(starting.draggableContainer);
-    app.stage.addChild(starting.draggableContainer);
     let pileIndex = this.getSource(starting);
     const move = {
       action: "place",
@@ -122,13 +135,10 @@ export class Game {
       index: starting.cards.length - starting.draggableLength,
     };
     if (move.source == "stock") {
-      move.index =
-        this.stockZone.waste.staticContainer.children.length -
-        this.stockZone.decrement;
+      move.index = this.stockZone.cards.length - 1;
       move.action = "place";
     }
     this.sendInfoToServer(move);
-    this.target = target;
   }
 
   private getSource(starting: CardContainer) {
@@ -139,11 +149,7 @@ export class Game {
     return pileIndex;
   }
 
-  private mergePiles(starting: CardContainer, target: CardContainer) {
-    ////last change here///////////////////////////////////
-    if (starting == this.stockZone.waste) {
-      this.stockZone.decrement++;
-    }
+  public mergePiles(starting: CardContainer, target: CardContainer) {
     starting.draggableContainer.position.set(
       target.staticContainer.position.x,
       target.staticContainer.position.y
@@ -165,5 +171,13 @@ export class Game {
       typeof cardInfo.suit == "string" ? Suits[cardInfo.suit] : cardInfo.suit;
     const card = new Card(cardMap[cardInfo.face], s);
     return card;
+  }
+  public setResult(data) {
+    this.data = data;
+    if (data === true) {
+      this.mergePiles(this.starting, this.target);
+    } else if (data === false || !this.target) {
+      this.starting.returnDraggableContainer();
+    }
   }
 }

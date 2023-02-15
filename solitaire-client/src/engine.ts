@@ -7,14 +7,6 @@ const actionSection = document.getElementById("action");
 const boardSection = document.getElementById("board");
 
 export async function engine(connection: Connection) {
-  //const state = {};
-  const gameController = new GameController(connection);
-  //let state = await gameController.startNewGame();
-  //const stockZone = new StockZone(gameController)
-
-  // const game = new Game();
-  // game.connectionMessages(connection)
-
   actionSection.innerHTML = "";
   boardSection.innerHTML = "";
 
@@ -36,12 +28,14 @@ export async function engine(connection: Connection) {
 
   function onResult(data) {
     console.log("on result moves:", data);
-    game.data = data;
+    game.setResult(data);
+    // game.mergePiles(game.starting, game.target);
   }
   function onVictory() {
     alert("Victory!");
     connection.send("newGame");
   }
+
   function cb(move) {
     console.log("I was called!");
     connection.send("move", move);
