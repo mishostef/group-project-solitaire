@@ -93,6 +93,7 @@ export class Game {
           const target = others[i];
           if (target && starting.isOverlapping(target)) {
             this.sendMergeRequest(starting, target);
+            this.target = target;
             break;
           }
         }

@@ -55,17 +55,21 @@ export class BaseCardContainer {
   protected handleMouseUp(e) {
     this.dragging = false;
     if (this.draggableLength != 0) {
-      this.draggableContainer.position.set(
-        this.staticContainer.x,
-        this.staticContainer.y
-      );
-      const x = this.cards.splice(
-        this.cards.length - this.draggableLength,
-        this.draggableLength
-      );
-      this.addCards(x);
+      this.returnDraggableContainer();
     }
   }
+  public returnDraggableContainer() {
+    this.draggableContainer.position.set(
+      this.staticContainer.x,
+      this.staticContainer.y
+    );
+    const x = this.cards.splice(
+      this.cards.length - this.draggableLength,
+      this.draggableLength
+    );
+    this.addCards(x);
+  }
+
   private handleMouseMove(e) {
     let [x, y] = [e.globalX, e.globalY];
     if (this.dragging) {

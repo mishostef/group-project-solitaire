@@ -16,7 +16,7 @@ export class CardContainer extends BaseCardContainer {
   staticContainer: Container;
   dragging = false;
   public draggableLength = 0;
-  public isReturningCards = true;
+  public isReturningCards = false;
 
   constructor(public rowNumber: number) {
     super(rowNumber);
