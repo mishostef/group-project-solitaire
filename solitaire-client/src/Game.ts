@@ -201,6 +201,8 @@ export class Game {
       this.starting.returnDraggableContainer();
     } else if (this.data && this.data.face) {
       this.handleFlip();
+    } else if (data === null) {
+      this.stockZone.returnCardsToStock();
     }
   }
 }

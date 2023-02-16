@@ -9,7 +9,6 @@ import { Container, FederatedPointerEvent } from "pixi.js";
 
 export class StockZone1 extends BaseCardContainer {
   countCreateStockContainer = 1;
-  // public waste: CardContainer;
   stockCard: PIXI.Sprite;
   private cb: Function;
   waste: CardContainer;
@@ -19,7 +18,6 @@ export class StockZone1 extends BaseCardContainer {
     super(0);
     this.X = 100;
     this.Y = 100;
-   // this.cards = [];
     this.waste = new CardContainer(0);
     window["waste"] = this.waste;
     this.waste.X = 200;
@@ -34,32 +32,40 @@ export class StockZone1 extends BaseCardContainer {
   }
   createStockContainer() {
     const move = {
-      ////for flipping in stock zone
       action: "flip",
       source: "stock",
       index: 23,
       target: null,
     };
     this.cb(move);
-    // this.moveCardsToWaste();
     console.log(this.cards);
   }
 
   returnCardsToStock() {
-    let index = 1;
-    const card = this.cards[this.cards.length - 1];
-    this.addCards([]);
-    const tl = gsap.timeline();
-    tl.fromTo(
-      card,
-      {
-        pixi: { x: 100 },
-      },
-      { pixi: { x: 0 }, duration: 2, onStart: () => card.showBack() }
-    );
+    // let index = 1;
+    // const card = this.cards[this.cards.length - 1];
+    // this.addCards([]);
+    this.staticContainer.removeChildren();
+    this.cards = [];
+    this.waste.cards.forEach((card, index) => {
+      const tl = gsap.timeline();
+      tl.fromTo(
+        card,
+        {
+          pixi: { x: 100 },
+        },
+        { pixi: { x: -100 }, duration: 2, onStart: () => card.showBack() }
+      );
 
-    card.zIndex = index;
-    index++;
+      card.zIndex = index;
+      //index++;
+    });
+    console.log("waste before:", this.waste);
+    console.log("this.cards before:", this.cards);
+    //this.addCards(this.waste.cards);
+    this.waste.cards = [];
+    console.log("waste after:", this.waste);
+    console.log("this.cards after:", this.cards);
   }
 
   public moveCardsToWaste() {
@@ -76,7 +82,7 @@ export class StockZone1 extends BaseCardContainer {
         onComplete: () => {
           console.log("this.staticContainer:", this.staticContainer);
           console.log("this.waste", this.waste);
-          // this.waste.addCards([card]);
+
           if (this.staticContainer.children.length > 0) {
             const next = this.staticContainer.children[0] as Card;
             if (!this.waste.cards.includes(next)) {

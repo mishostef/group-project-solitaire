@@ -29,7 +29,6 @@ export async function engine(connection: Connection) {
   function onResult(data) {
     console.log("on result moves:", data);
     game.setResult(data);
-    // game.mergePiles(game.starting, game.target);
   }
   function onVictory() {
     alert("Victory!");

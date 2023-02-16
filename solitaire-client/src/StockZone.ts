@@ -100,8 +100,7 @@ export class StockZone {
 
     //card.changeFaceAndSuit(flipResponse.card.face, flipResponse.card.suit, 200, 100);
 
-    console.log("WWWWWW", card.suit, card.face);
-
+   
     // }
     this.waste.push(card);
 
