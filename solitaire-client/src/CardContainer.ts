@@ -7,16 +7,10 @@ import {
   CARD_SCALE,
   CARD_WIDTH,
 } from "./constants";
-import { app } from "./app";
+//import { app } from "./app";
 import { BaseCardContainer } from "./BaseCardContainer";
 const CARD_OFFSET = (CARD_HEIGHT * CARD_SCALE) / 4;
 export class CardContainer extends BaseCardContainer {
-  cards: Card[];
-  draggableContainer: Container;
-  staticContainer: Container;
-  dragging = false;
-  public draggableLength = 0;
-  public isReturningCards = false;
   public cb: Function;
 
   constructor(public rowNumber: number) {
@@ -26,9 +20,6 @@ export class CardContainer extends BaseCardContainer {
   handleMouseUp(e) {
     this.cb && this.cb(this);
     this.dragging = false;
-    // if (this.draggableLength != 0) {
-    //   this.returnDraggableContainer();
-    // }
   }
 
   public addCards(cards: Card[]) {
