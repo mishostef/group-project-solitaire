@@ -37,14 +37,6 @@ export function createBox(
   box.pivot.set(width / 2, height / 2);
   return box;
 }
-export function createCircle(x, y, radius, color) {
-  const circle = new PIXI.Graphics();
-  circle.beginFill(color);
-  circle.drawCircle(0, 0, radius);
-  circle.endFill();
-  circle.position.set(x, y);
-  return circle;
-}
 
 export function getMask(x, y, radius) {
   const mask = new PIXI.Graphics();

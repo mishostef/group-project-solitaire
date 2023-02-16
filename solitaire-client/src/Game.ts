@@ -37,6 +37,7 @@ export class Game {
     this.sendInfoToServer = cb;
     const card = new Card(null, null);
     this.stockZone = new StockZone1(this.sendInfoToServer);
+    this.stockZone.waste.cb = this.handleDragging.bind(this);
     app.ticker.add(this.update.bind(this));
   }
 
@@ -83,9 +84,9 @@ export class Game {
   }
 
   private update() {
-    if (this.data && this.data.face) {
-      this.handleFlip();
-    }
+    // if (this.data && this.data.face) {
+    //   this.handleFlip();
+    // }
 
     this.placeDraggabeOnTop();
   }
@@ -129,12 +130,23 @@ export class Game {
 
   private handleFlip() {
     const card = this.createCard(this.data);
-    if (this.data.faceUp) {
-      card.showFace(0);
+    if (this.isInSockZone()) {
+      if (this.data.faceUp) {
+        card.showFace(0);
+      }
+      this.stockZone.addCards([card]);
+      this.stockZone.moveCardsToWaste();
+    } else {
+      if (this.starting.rowNumber !== 0) {
+        this.starting = null;
+      }
     }
-    this.stockZone.addCards([card]);
-    this.stockZone.moveCardsToWaste();
-    this.data = null;
+  }
+
+  private isInSockZone() {
+    return (
+      this.starting == null || (this.starting && this.starting.rowNumber == 0)
+    );
   }
 
   private sendMergeRequest(starting: CardContainer, target: CardContainer) {
@@ -175,6 +187,7 @@ export class Game {
     this.sendInfoToServer(move);
     starting.cards[starting.cards.length - 1].showFace();
     this.target = null;
+    // this.starting = null;
   }
 
   createCard(cardInfo: any) {
@@ -189,6 +202,8 @@ export class Game {
       this.mergePiles(this.starting, this.target);
     } else if (data === false) {
       this.starting.returnDraggableContainer();
+    } else if (this.data && this.data.face) {
+      this.handleFlip();
     }
   }
 }
