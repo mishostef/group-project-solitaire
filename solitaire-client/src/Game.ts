@@ -84,10 +84,6 @@ export class Game {
   }
 
   private update() {
-    // if (this.data && this.data.face) {
-    //   this.handleFlip();
-    // }
-
     this.placeDraggabeOnTop();
   }
 
@@ -158,7 +154,7 @@ export class Game {
       index: starting.cards.length - starting.draggableLength,
     };
     if (move.source == "stock") {
-      move.index = this.stockZone.cards.length - 1;
+      move.index = starting.cards.length - 1; /////
       move.action = "place";
     }
     this.sendInfoToServer(move);
@@ -196,6 +192,7 @@ export class Game {
     const card = new Card(cardMap[cardInfo.face], s);
     return card;
   }
+
   public setResult(data) {
     this.data = data;
     if (data === true) {

@@ -19,8 +19,9 @@ export class StockZone1 extends BaseCardContainer {
     super(0);
     this.X = 100;
     this.Y = 100;
-    this.cards = [];
+   // this.cards = [];
     this.waste = new CardContainer(0);
+    window["waste"] = this.waste;
     this.waste.X = 200;
     this.waste.Y = 100;
     this.cb = cb;
