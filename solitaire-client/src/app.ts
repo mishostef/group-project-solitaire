@@ -1,4 +1,4 @@
-import { GameController } from "./GameController";
+
 import { Connection } from "./Connection";
 import { engine } from "./engine";
 import * as PIXI from "pixi.js";
@@ -10,7 +10,7 @@ import { CANVAS_WIDTH, CARD_HEIGHT, CARD_SCALE, CARD_WIDTH } from "./constants";
 import { Foundations } from "./FoundationsZone";
 import { Card } from "./Card";
 import { Suits } from "./constants";
-//import { StockZone } from "./StockZone";
+
 import { loadFoundationsEmptyCards, loadStockEmptyCard } from "./cardsTexture";
 import src from "gsap/src";
 
@@ -40,23 +40,17 @@ async function init() {
   await PIXI.Assets.load("assets/repeat.png");
 }
 
-// async function start() {
-//   let gameController = new GameController("Toni");
-//   console.log("START!!!!!");
-//   let state = await gameController.startNewGame();
-//   console.log(state);
-//   let flipResponse = await gameController.flip();
-//   console.log("flip: ", flipResponse);
-// }
+
 
 function start() {
-  // let gameController = new GameController("Toni");
+  
   const initForm = document.querySelector("form");
   const initSection = document.getElementById("init");
   const gameSection = document.getElementById("game");
 
   let connection = null;
- 
+  let gameController = null;
+
   initForm.addEventListener("submit", async (event) => {
     event.preventDefault();
     const { nickname } = Object.fromEntries(

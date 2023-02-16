@@ -26,9 +26,9 @@ export class CardContainer extends BaseCardContainer {
   handleMouseUp(e) {
     this.cb && this.cb(this);
     this.dragging = false;
-    if (this.draggableLength != 0) {
-      this.returnDraggableContainer();
-    }
+    // if (this.draggableLength != 0) {
+    //   this.returnDraggableContainer();
+    // }
   }
 
   public addCards(cards: Card[]) {

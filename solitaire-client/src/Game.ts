@@ -5,7 +5,13 @@ import { IState, IStock, IMoves } from "./interfaces";
 import { StockZone } from "./StockZone";
 import { app } from "./app";
 import { Card } from "./Card";
-import { cardMap, Suits } from "./constants";
+import {
+  CANVAS_WIDTH,
+  cardMap,
+  CARD_SCALE,
+  CARD_WIDTH,
+  Suits,
+} from "./constants";
 import { StockZone1 } from "./StockZone1";
 import { BaseCardContainer } from "./BaseCardContainer";
 ///here comes app creation etc
@@ -111,7 +117,12 @@ export class Game {
           this.starting = starting;
           this.target = target;
           break;
-        } 
+        } else {
+          this.target = null;
+        }
+      }
+      if (this.target === null) {
+        starting.returnDraggableContainer();
       }
     }
   }
@@ -176,7 +187,7 @@ export class Game {
     this.data = data;
     if (data === true) {
       this.mergePiles(this.starting, this.target);
-    } else if (data === false || !this.target) {
+    } else if (data === false) {
       this.starting.returnDraggableContainer();
     }
   }
