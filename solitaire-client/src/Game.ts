@@ -187,7 +187,7 @@ export class Game {
     this.sendInfoToServer(move);
     starting.cards[starting.cards.length - 1].showFace();
     this.target = null;
-    // this.starting = null;
+    this.starting = starting;
   }
 
   createCard(cardInfo: any) {

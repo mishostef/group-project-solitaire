@@ -75,9 +75,12 @@ export class StockZone1 extends BaseCardContainer {
         onComplete: () => {
           console.log("this.staticContainer:", this.staticContainer);
           console.log("this.waste", this.waste);
-          this.waste.addCards([card]);
+          // this.waste.addCards([card]);
           if (this.staticContainer.children.length > 0) {
-            this.waste.addCards([this.staticContainer.children[0] as Card]);
+            const next = this.staticContainer.children[0] as Card;
+            if (!this.waste.cards.includes(next)) {
+              this.waste.addCards([next as Card]);
+            }
           }
           // if (this.staticContainer.children.length <= 0) {
           //   this.returnCardsToStock();
