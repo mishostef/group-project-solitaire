@@ -1,8 +1,6 @@
 import { CardContainer } from "./CardContainer";
 import { Foundations } from "./FoundationsZone";
 import { IState, IStock, IMoves } from "./interfaces";
-
-import { StockZone } from "./StockZone";
 import { app } from "./app";
 import { Card } from "./Card";
 import {
@@ -10,6 +8,7 @@ import {
   cardMap,
   CARD_SCALE,
   CARD_WIDTH,
+  foundationsMap,
   Suits,
 } from "./constants";
 import { StockZone1 } from "./StockZone1";
@@ -17,15 +16,9 @@ import { BaseCardContainer } from "./BaseCardContainer";
 ///here comes app creation etc
 
 function CardFactory(app) {}
-export const foundationsMap = {
-  "-600": "hearts",
-  "-700": "spades",
-  "-800": "diamonds",
-  "-900": "clubs",
-};
-export class Game {
-  // foundations: Foundations[];
-  stockZone: StockZone1; //StockZone;
+
+export class Game { 
+  stockZone: StockZone1;
   waste: CardContainer;
   piles: CardContainer[] = [];
   state: IStock;

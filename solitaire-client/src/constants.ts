@@ -6,6 +6,13 @@ export const CARD_SCALE = 0.2;
 export const CANVAS_WIDTH = 1800;
 export const CANVAS_HEIGHT = 1800;
 
+export const foundationsMap = {
+  "-600": "hearts",
+  "-700": "spades",
+  "-800": "diamonds",
+  "-900": "clubs",
+};
+
 export enum Suits {
   diamonds,
   clubs,
