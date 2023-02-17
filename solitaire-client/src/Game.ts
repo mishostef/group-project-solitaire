@@ -44,6 +44,10 @@ export class Game {
     this.stockZone.waste.cb = this.handleDragging.bind(this);
     Object.keys(foundationsMap).forEach((key, i) => {
       const val = foundationsMap[key];
+      new Foundations(Suits.diamonds);
+      new Foundations(Suits.clubs);
+      new Foundations(Suits.hearts);
+      new Foundations(Suits.spades);
       this.foundations[i] = new CardContainer(Number(key));
       this.foundations[i].X = -1 * Number(key);
       this.foundations[i].Y = 100;

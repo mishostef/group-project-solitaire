@@ -7,7 +7,7 @@ import {
   CARD_SCALE,
   CARD_WIDTH,
 } from "./constants";
-//import { app } from "./app";
+
 import { BaseCardContainer } from "./BaseCardContainer";
 const CARD_OFFSET = (CARD_HEIGHT * CARD_SCALE) / 4;
 export class CardContainer extends BaseCardContainer {

@@ -64,10 +64,8 @@ export function loadFoundationsEmptyCards() {
   club.scale.set(CARD_SCALE - 0.01);
   club.position.set(900, 100)
   club.anchor.set(0.5);
-  app.stage.addChild(club);
-  
+  app.stage.addChild(club);  
 }
-
 
 export function loadStockEmptyCard() {
   const emptyCardTexture = PIXI.Texture.from("assets/emptyCard.png");
@@ -77,5 +75,4 @@ export function loadStockEmptyCard() {
   emptyCard.anchor.set(0.5);
   emptyCard.zIndex = -1;
   app.stage.addChild(emptyCard);
-
 }
