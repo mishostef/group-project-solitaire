@@ -20,7 +20,7 @@ PixiPlugin.registerPIXI(PIXI);
 
 export const app = new PIXI.Application({
   width: 1200,
-  height: 1000,
+  height: 1200,
   background: 0x999999,
 });
 
@@ -89,7 +89,7 @@ function start() {
     loadStockEmptyCard();
 
     const createStockZone = new StockZone(gameController);
-    const createPiles = new Piles(gameController);
+    const createPiles = new Piles(gameController, createStockZone);
 
   }
 

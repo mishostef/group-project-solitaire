@@ -23,10 +23,14 @@ export class GameController {
     connection: Connection;
     connectionOpen: boolean
     statePromiseResolve;
+    movesPromiseResolve;
     flipPromiseResolve;
     placePromiseResolve;
+    takePromiseResolve;
+    nextMovesResolve;
     flipData;
     placeData;
+
 
     state = {};
 
@@ -52,9 +56,17 @@ export class GameController {
                 this.statePromiseResolve = null;
             }
         });
+
+        this.connection.on("moves", moves => {
+        console.log("connection moves", moves);
+
+
+         });
         
         this.connection.on("moveResult", data => {
             console.log("moveResult watch: ", data);
+  
+            console.log("DATA", data);
 
             if (data !== null && data.hasOwnProperty('face')) {
                 // flip command detected
@@ -66,14 +78,20 @@ export class GameController {
                 }
             } 
 
-            if (data == true) {
-                console.log("Successful move");
+            if (data === true) {
+                console.log("Successful move watch");
                 this.resolvePlacePromise(data);
+                this.resolveTakePromise(data);
+
             }
 
-            if (data == false) {
-                console.log("Invalid move");
+            if (data === false) {
+                console.log("Invalid move watch");
                 this.resolvePlacePromise(data);
+                this.resolveTakePromise(data);
+
+             
+
                 
             }
 
@@ -81,6 +99,7 @@ export class GameController {
         });
 
     }
+
 
 
     private getFlipResponse(data): FlipResponse {
@@ -185,5 +204,61 @@ export class GameController {
             this.placePromiseResolve = null;
         }
     }
+
+    async takeCard( source: source, target: target, index: number) {
+        console.log("Take card called");
+        
+       // await this.openConnection();
+        
+       let takeCardMove: move = {
+        action: "take",
+        source: source,
+        target: target,
+        index: index
+    };
+        
+        this.connection.send("move", takeCardMove);
+        console.log("Take card called 2", takeCardMove);
+
+        return new Promise(function(resolve) {
+            console.log("inside take promise!!!!!");
+            this.takePromiseResolve = resolve;
+        }.bind(this));
+        
+    }
+
+    private resolveTakePromise(result) {
+
+        console.log("take result", result)
+        if (this.takePromiseResolve != null) {
+            this.takePromiseResolve(result);
+            this.takePromiseResolve = null;
+        }
+    }
+    //---------------------------------
+
+    // async nextMoves() {
+    //     console.log("next moves called"); 
+        
+    //     this.connection.send("moves",  moves => {
+    //     console.log("connection moves", moves);
+
+
+    //      });
+    //     console.log("next moves called 2");
+
+    //     return new Promise(function(resolve) {
+    //         console.log("inside next moves promise!!!!!");
+    //         this.nextMovesResolve = resolve;
+    //     }.bind(this));
+        
+    // }
+
+    // private resolveNextMovePromise(result) {
+    //     if (this.nextMovesResolve != null) {
+    //         this.nextMovesResolve(result);
+    //         this.nextMovesResolve = null;
+    //     }
+    // }
 
 }

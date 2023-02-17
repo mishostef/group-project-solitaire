@@ -35,7 +35,7 @@ export class CardContainer extends BaseCardContainer {
       this.draggableContainer = new Container();
     }
     let index = this.getIndex(e);
-    this.dragging = true;
+    //this.dragging = true;
     this.cards.forEach((card, i) => {
       if (i >= index) {
         this.draggableContainer.addChild(card);

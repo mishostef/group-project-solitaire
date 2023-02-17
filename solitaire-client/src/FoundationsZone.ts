@@ -29,13 +29,13 @@ export class Foundations {
 
             if (this.getIndex(card) === this.cards.length) {
                 if (card.suit === 0) {
-                    this.x = 800;
+                    this.x = 670;
                 } else if (card.suit === 1) {
-                    this.x = 900;
+                    this.x = 785;
                 } else if (card.suit === 2) {
-                    this.x = 600;
+                    this.x = 450;
                 } else if (card.suit == 3) {
-                    this.x = 700;
+                    this.x = 560;
                 } 
                
                 if (this.suit === card.suit) {

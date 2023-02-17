@@ -31,6 +31,7 @@ export class StockZone {
   dragging;
   draggableLength;
   currentCard;
+  index;
 
   constructor(gameController) {
     this.gameController = gameController;
@@ -40,10 +41,9 @@ export class StockZone {
 
     this.stock = this.state.stock.cards;
     this.waste = this.state.waste.cards;
-    this.stock = this.stock.concat(this.waste)
+    //this.stock = this.stock.concat(this.waste)
     this.loadRepeatCard();
     this.createStockContainer(this.stock);
-    this.addEvents();
     
   }
 
@@ -74,19 +74,20 @@ export class StockZone {
 
 
       let flipResponse = await this.gameController.flip("stock", 0);
- 
+      
       console.log("stockZone flipped card WATCH:", flipResponse);
-
+      
       if (flipResponse == null) {
-        this.stock = []
+        this.stock = [];
+       
       }
-
-        this.stock.pop();
-        this.currentCard = createCard(flipResponse.card, 100, 100);
-        this.stock.push(this.currentCard );
-        this.stockContainer.addChild(this.currentCard );
-  
-        this.moveToWaste();
+      
+      this.stock.pop();
+      this.currentCard = createCard(flipResponse.card, 100, 100);
+      this.stock.push(this.currentCard );
+      this.stockContainer.addChild(this.currentCard );
+      
+      this.moveToWaste();
   
 
     })
@@ -109,8 +110,10 @@ export class StockZone {
     this.waste.push(this.currentCard); 
     this.wasteContainer.addChild(this.currentCard);
 
-    this.wasteContainer.interactive = true;
-    this.handleMouseDownEvent()
+    this.currentCard.interactive = true;
+    this.handleClickEvent();
+   
+
 
   }
 
@@ -132,90 +135,31 @@ export class StockZone {
 // -----------------Dragging -------------------------------------
 
 
-protected addEvents() {
-  this.draggableContainer.interactive = true;
-  this.draggableContainer.on("mouseup", this.handleMouseUpEvent.bind(this));
-  this.draggableContainer.on("mousedown", () => {
-    this.dragging = true;
-    console.log("dragging started");
-  });
-  this.draggableContainer.on(
-    "globalmousemove",
-    this.handleMouseMove.bind(this)
-  );
-}
 
-private handleMouseDownEvent() {
-      this.wasteContainer.on('mousedown', () => {
+
+private handleClickEvent() {
+      this.currentCard.on('pointertap', async () => {
       this.wasteContainer.removeChild(this.currentCard);
       this.currentCard.position.set(0, 0);
       this.draggableContainer.zIndex = 61;
       this.draggableContainer.addChild(this.currentCard);
-      this.dragging = true;
 
-      this.handleMouseUpEvent();
+      
 
-      console.log("dragging started");
-      console.log("drag children",this.draggableContainer.children)
-      console.log("waste children",this.wasteContainer.children)
+      for ( let i = 0; i < this.waste.length; i++) {
+
+        let takeResponse = await this.gameController.takeCard( "stock", null, i);
+        console.log("take result + index", takeResponse, i)
+        if (takeResponse === true) {
+          this.index = i;
+
+        }
+      }
+
+      
     })
 }
 
-
-
-protected handleMouseUpEvent() {
-
-  this.draggableContainer.on('mouseup' , async (e) => {
-
-    let result = await this.gameController.placeCard("stock", "pile1", 0);
-
-    if (result == false) {
-
-      gsap.fromTo(this.currentCard, {x: e.globalX, y: e.globalY}, { x:210, y: 100, duration: 0.5 })
-      this.draggableContainer.removeChild(this.currentCard);
- 
-      this.wasteContainer.addChild(this.currentCard);
- 
-    }
-
-    if (result = true) {
-      //this.draggableContainer.removeChild(this.currentCard);
-      // add current card to pile
-
-
-
-    }
-
-
-
-    console.log("Place card called in StockZone result", result)
-
-    this.dragging = false;
-    this.draggableContainer.position.set( e.globalX, e.globalY);
-  })
-
-}
-private handleMouseMove(e) {
-  let [x, y] = [e.globalX, e.globalY];
-  if (this.dragging) {
-    this.draggableContainer.position.set(x, y);
-  }
-}
-
-//private handleMouseDown(e: FederatedPointerEvent) {
-  // if (this.draggableContainer == null) {
-  //   this.draggableContainer = new Container();
-  // }
-  //let index = this.getIndex(e);
-  //this.dragging = true;
-  // this.cards.forEach((card, i) => {
-  //   if (i >= index) {
-  //     this.draggableContainer.addChild(card);
-  //     card.position.set(0, (i - index) * CARD_OFFSET);
-  //   }
-  //   this.draggableLength = this.draggableContainer.children.length;
-  // });
-//}
 
 
 }
