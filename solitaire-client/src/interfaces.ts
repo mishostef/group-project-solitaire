@@ -22,8 +22,8 @@ export interface IMoves {
 }
 export interface IPileMove {
   flip: boolean;
-  place: boolean; //
-  take: number[]; //card indices from this column that can be taken
+  place: boolean;
+  take: number[]; 
 }
 
 

@@ -1,11 +1,8 @@
 import { Container, FederatedPointerEvent } from "pixi.js";
 import { Card } from "./Card";
 import {
-  CANVAS_HEIGHT,
-  CANVAS_WIDTH,
   CARD_HEIGHT,
   CARD_SCALE,
-  CARD_WIDTH,
 } from "./constants";
 
 import { BaseCardContainer } from "./BaseCardContainer";

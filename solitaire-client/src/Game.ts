@@ -17,7 +17,7 @@ import { BaseCardContainer } from "./BaseCardContainer";
 
 function CardFactory(app) {}
 
-export class Game { 
+export class Game {
   stockZone: StockZone1;
   waste: CardContainer;
   piles: CardContainer[] = [];
@@ -163,7 +163,7 @@ export class Game {
       index: starting.cards.length - starting.draggableLength,
     };
     if (move.source == "stock") {
-      move.index = starting.cards.length - 1; /////
+      move.index = starting.cards.length - 1;
       move.action = "place";
     }
     this.sendInfoToServer(move);
