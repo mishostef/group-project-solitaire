@@ -59,9 +59,7 @@ private addEventListenerOnCard(cards: Card[], card: Card, columnNumber: number, 
               this.stockZone.draggableContainer.removeChild(this.stockZone.currentCard);
               this.containers[columnNumber].addCards([this.stockZone.currentCard]);
             }
-        })
-
-    
+        })    
 
 }
 
