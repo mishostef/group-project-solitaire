@@ -71,10 +71,9 @@ export class StockZone1 extends BaseCardContainer {
         onComplete: () => {
           console.log("this.staticContainer:", this.staticContainer);
           console.log("this.waste", this.waste);
-          let index = 1;
           if (this.staticContainer.children.length > 0) {
             const next = this.staticContainer.children[0] as Card;
-            next.zIndex = ++index;
+            //next.zIndex = ++index;
             if (!this.waste.cards.includes(next)) {
               this.waste.addCards([next as Card]);
             }

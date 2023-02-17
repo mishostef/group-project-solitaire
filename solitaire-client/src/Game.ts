@@ -86,12 +86,12 @@ export class Game {
   public processMoves(moves: IMoves) {
     const pileMoves = moves.piles;
     console.log("pileMoves: ", pileMoves);
-    pileMoves.forEach((mv, index) => {
-      const currentPile = this.piles[index];
-      if (mv.flip) {
-        currentPile.flip();
-      }
-    });
+    // pileMoves.forEach((mv, index) => {
+    //   const currentPile = this.piles[index];
+    //   if (mv.flip) {
+    //     currentPile.flip();
+    //   }
+    // });
   }
 
   private update() {
@@ -123,17 +123,6 @@ export class Game {
       for (let i = 0; i < others.length; i++) {
         const target = others[i];
         const isCurrentOverlappingTarget = starting.isOverlapping(target);
-        console.log(
-          "starting X:",
-          starting.X,
-          "starting.y",
-          starting.Y,
-          "tx",
-          target.X,
-          "targe.y",
-          target.Y
-        );
-        console.log("iscurrentOverlap", isCurrentOverlappingTarget);
         if (isCurrentOverlappingTarget) {
           this.sendMergeRequest(starting, target);
           this.starting = starting;
@@ -159,6 +148,10 @@ export class Game {
       this.stockZone.moveCardsToWaste();
     } else {
       if (this.starting.rowNumber !== 0) {
+        const lastel = this.starting.cards.pop();
+        this.starting.staticContainer.removeChild(lastel);
+        this.starting.addCards([card]);
+        this.starting.flip(); ////
         this.starting = null;
       }
     }
@@ -174,7 +167,7 @@ export class Game {
     let pileIndex = this.getSource(starting);
     const move = {
       action: "place",
-      target: this.getTarget(target), //`pile${target.rowNumber - 1}`,
+      target: this.getTarget(target),
       source: `${pileIndex}`,
       index: starting.cards.length - starting.draggableLength,
     };
@@ -212,7 +205,7 @@ export class Game {
       index: starting.cards.length - starting.draggableLength,
     };
     this.sendInfoToServer(move);
-    starting.cards[starting.cards.length - 1].showFace();
+    //starting.cards[starting.cards.length - 1].showFace(); ////////////here
     this.target = null;
     this.starting = starting;
   }
