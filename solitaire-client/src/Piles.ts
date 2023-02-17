@@ -57,11 +57,7 @@ private addEventListenerOnCard(cards: Card[], card: Card, columnNumber: number, 
 
             if (placeResponse ==  true) {
               this.stockZone.draggableContainer.removeChild(this.stockZone.currentCard);
-              //cards.push(this.stockZone.currentCard);
-            //this.containers[columnNumber].removeChildren();
-            //  gsap.set(this.stockZone.currentCard, { pixi:{ x:100, y: 100}})
               this.containers[columnNumber].addCards([this.stockZone.currentCard]);
-             // this.state = this.gameController.getState();
             }
         })
 
