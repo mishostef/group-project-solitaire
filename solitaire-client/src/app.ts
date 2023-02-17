@@ -1,10 +1,9 @@
-
 import { Connection } from "./Connection";
 import { engine } from "./engine";
 import * as PIXI from "pixi.js";
 import { gsap } from "gsap";
 import { PixiPlugin } from "gsap/PixiPlugin.js";
-import { clearScreen, InteractiveBackground, test } from "./utils";
+import { clearScreen, InteractiveBackground } from "./utils";
 import { CardContainer } from "./CardContainer";
 import { CANVAS_WIDTH, CARD_HEIGHT, CARD_SCALE, CARD_WIDTH } from "./constants";
 import { Foundations } from "./FoundationsZone";
@@ -40,16 +39,12 @@ async function init() {
   await PIXI.Assets.load("assets/repeat.png");
 }
 
-
-
 function start() {
-  
   const initForm = document.querySelector("form");
   const initSection = document.getElementById("init");
   const gameSection = document.getElementById("game");
 
   let connection = null;
-  let gameController = null;
 
   initForm.addEventListener("submit", async (event) => {
     event.preventDefault();

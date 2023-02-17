@@ -86,12 +86,6 @@ export class Game {
   public processMoves(moves: IMoves) {
     const pileMoves = moves.piles;
     console.log("pileMoves: ", pileMoves);
-    // pileMoves.forEach((mv, index) => {
-    //   const currentPile = this.piles[index];
-    //   if (mv.flip) {
-    //     currentPile.flip();
-    //   }
-    // });
   }
 
   private update() {
