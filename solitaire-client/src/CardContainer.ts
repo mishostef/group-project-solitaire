@@ -30,7 +30,7 @@ export class CardContainer extends BaseCardContainer {
       card.position.set(0, (this.cards.length - 1) * CARD_OFFSET);
     }
   }
-  private handleMouseDown(e: FederatedPointerEvent) {
+  protected handleMouseDown(e: FederatedPointerEvent) {
     if (this.draggableContainer == null) {
       this.draggableContainer = new Container();
     }

@@ -6,20 +6,20 @@ import { gsap } from "gsap";
 import * as PIXI from "pixi.js";
 import { CARD_SCALE } from "./constants";
 import { Container, FederatedPointerEvent } from "pixi.js";
+import { StockCardContainer } from "./StockCardContainer";
 
 export class StockZone1 extends BaseCardContainer {
   countCreateStockContainer = 1;
   stockCard: PIXI.Sprite;
   private cb: Function;
-  waste: CardContainer;
+  waste: StockCardContainer;
   public decrement = 0;
 
   constructor(cb: Function) {
     super(0);
     this.X = 100;
     this.Y = 100;
-    this.waste = new CardContainer(0);
-    window["waste"] = this.waste;
+    this.waste = new StockCardContainer(0);
     this.waste.X = 200;
     this.waste.Y = 100;
     this.cb = cb;
@@ -38,13 +38,9 @@ export class StockZone1 extends BaseCardContainer {
       target: null,
     };
     this.cb(move);
-    console.log(this.cards);
   }
 
   returnCardsToStock() {
-    // let index = 1;
-    // const card = this.cards[this.cards.length - 1];
-    // this.addCards([]);
     this.staticContainer.removeChildren();
     this.cards = [];
     this.waste.cards.forEach((card, index) => {
@@ -56,16 +52,9 @@ export class StockZone1 extends BaseCardContainer {
         },
         { pixi: { x: -100 }, duration: 2, onStart: () => card.showBack() }
       );
-
       card.zIndex = index;
-      //index++;
     });
-    console.log("waste before:", this.waste);
-    console.log("this.cards before:", this.cards);
-    //this.addCards(this.waste.cards);
     this.waste.cards = [];
-    console.log("waste after:", this.waste);
-    console.log("this.cards after:", this.cards);
   }
 
   public moveCardsToWaste() {
@@ -82,16 +71,14 @@ export class StockZone1 extends BaseCardContainer {
         onComplete: () => {
           console.log("this.staticContainer:", this.staticContainer);
           console.log("this.waste", this.waste);
-
+          let index = 1;
           if (this.staticContainer.children.length > 0) {
             const next = this.staticContainer.children[0] as Card;
+            next.zIndex = ++index;
             if (!this.waste.cards.includes(next)) {
               this.waste.addCards([next as Card]);
             }
           }
-          // if (this.staticContainer.children.length <= 0) {
-          //   this.returnCardsToStock();
-          // }
         },
       });
       index++;

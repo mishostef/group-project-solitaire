@@ -17,14 +17,18 @@ import { BaseCardContainer } from "./BaseCardContainer";
 ///here comes app creation etc
 
 function CardFactory(app) {}
-
+export const foundationsMap = {
+  "-600": "hearts",
+  "-700": "spades",
+  "-800": "diamonds",
+  "-900": "clubs",
+};
 export class Game {
-  foundations: Foundations[];
+  // foundations: Foundations[];
   stockZone: StockZone1; //StockZone;
   waste: CardContainer;
   piles: CardContainer[] = [];
   state: IStock;
-  //state: IState;
   stock;
   logicState;
   sendInfoToServer: Function;
@@ -32,12 +36,19 @@ export class Game {
   data: any = null;
   starting: CardContainer = null;
   target: CardContainer = null;
+  foundations: CardContainer[] = [];
 
   constructor(cb: Function) {
     this.sendInfoToServer = cb;
-    const card = new Card(null, null);
     this.stockZone = new StockZone1(this.sendInfoToServer);
     this.stockZone.waste.cb = this.handleDragging.bind(this);
+    Object.keys(foundationsMap).forEach((key, i) => {
+      const val = foundationsMap[key];
+      this.foundations[i] = new CardContainer(Number(key));
+      this.foundations[i].X = -1 * Number(key);
+      this.foundations[i].Y = 100;
+    });
+
     app.ticker.add(this.update.bind(this));
   }
 
@@ -106,10 +117,24 @@ export class Game {
   private handleDragging(starting) {
     //called in CardContainer mouseup
     if (starting) {
-      const others = this.piles.filter((c) => c != starting);
+      const others = [...this.piles, ...this.foundations].filter(
+        (c) => c != starting
+      );
       for (let i = 0; i < others.length; i++) {
         const target = others[i];
-        if (starting.isOverlapping(target)) {
+        const isCurrentOverlappingTarget = starting.isOverlapping(target);
+        console.log(
+          "starting X:",
+          starting.X,
+          "starting.y",
+          starting.Y,
+          "tx",
+          target.X,
+          "targe.y",
+          target.Y
+        );
+        console.log("iscurrentOverlap", isCurrentOverlappingTarget);
+        if (isCurrentOverlappingTarget) {
           this.sendMergeRequest(starting, target);
           this.starting = starting;
           this.target = target;
@@ -149,7 +174,7 @@ export class Game {
     let pileIndex = this.getSource(starting);
     const move = {
       action: "place",
-      target: `pile${target.rowNumber - 1}`,
+      target: this.getTarget(target), //`pile${target.rowNumber - 1}`,
       source: `${pileIndex}`,
       index: starting.cards.length - starting.draggableLength,
     };
@@ -158,6 +183,12 @@ export class Game {
       move.action = "place";
     }
     this.sendInfoToServer(move);
+  }
+
+  private getTarget(target) {
+    return target.rowNumber - 1 >= 0
+      ? `pile${target.rowNumber - 1}`
+      : foundationsMap[target.rowNumber.toString()];
   }
 
   private getSource(starting: CardContainer) {

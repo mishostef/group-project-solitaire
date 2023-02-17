@@ -107,9 +107,11 @@ export class BaseCardContainer {
   public isOverlapping(target: BaseCardContainer) {
     return (
       this.draggableContainer.position.x >=
-        target.staticContainer.position.x - (CARD_WIDTH * CARD_SCALE) / 2 &&
+        target.X - (CARD_WIDTH * CARD_SCALE) / 2 &&
       this.draggableContainer.position.x <=
-        target.staticContainer.position.x + (CARD_WIDTH * CARD_SCALE) / 2
+        target.X + (CARD_WIDTH * CARD_SCALE) / 2 &&
+      this.draggableContainer.position.y >=
+        target.Y - (CANVAS_HEIGHT * CARD_SCALE) / 2 /////////
     );
   }
   get X() {
@@ -117,16 +119,16 @@ export class BaseCardContainer {
   }
   set X(newX: number) {
     this.containersInitialX = newX;
-    this.staticContainer.x = this.containersInitialX;
-    this.draggableContainer.x = this.containersInitialX;
+    this.staticContainer.x = newX;
+    this.draggableContainer.x = newX;
   }
   get Y() {
     return this.containersInitialY;
   }
   set Y(newY: number) {
     this.containersInitialY = newY;
-    this.staticContainer.y = this.containersInitialX;
-    this.draggableContainer.y = this.containersInitialX;
+    this.staticContainer.y = newY;
+    this.draggableContainer.y = newY;
   }
 
   flip() {
