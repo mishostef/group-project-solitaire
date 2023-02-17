@@ -20,7 +20,7 @@ export class CardContainer extends BaseCardContainer {
 
   constructor(public rowNumber: number) {
     super(rowNumber);
-    this.staticContainer.on("mousedown", this.handleMouseDown.bind(this));
+   // this.staticContainer.on("mousedown", this.handleMouseDown.bind(this));
   }
   public addCards(cards: Card[]) {
     for (let i = 0; i < cards.length; i++) {
@@ -35,7 +35,7 @@ export class CardContainer extends BaseCardContainer {
       this.draggableContainer = new Container();
     }
     let index = this.getIndex(e);
-    //this.dragging = true;
+   
     this.cards.forEach((card, i) => {
       if (i >= index) {
         this.draggableContainer.addChild(card);

@@ -42,7 +42,7 @@ export class BaseCardContainer {
   protected addEvents() {
     this.draggableContainer.interactive = true;
     this.staticContainer.interactive = true;
-    this.draggableContainer.on("pointertap", this.handleMouseUp.bind(this));
+   // this.draggableContainer.on("pointertap", this.handleMouseUp.bind(this));
    // this.draggableContainer.on("mousedown", () => {
       //this.dragging = true;
    // });
