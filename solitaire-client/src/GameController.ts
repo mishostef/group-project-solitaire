@@ -1,8 +1,11 @@
 import { Connection } from './Connection';
+type action = "flip" | "take" | "place";
+type source = "stock" | "waste" | "foundations" | "pile0" | "pile1" | "pile2" | "pile3" | "pile4" | "pile5" | "pile6" ;
+type target =  null | "stock" | "waste" | "foundations" | "pile0" | "pile1" | "pile2" | "pile3" | "pile4" | "pile5" | "pile6";
 interface move {
-    action: "flip" | "take" | "place",
-    source: "stock" | "waste" | "piles" | "foundations"
-    target: null,
+    action: action,
+    source: source
+    target: target,
     index: number
 }
 
@@ -21,18 +24,13 @@ export class GameController {
     connectionOpen: boolean
     statePromiseResolve;
     flipPromiseResolve;
-    takePromiseResolve;
+    placePromiseResolve;
     flipData;
+    placeData;
 
     state = {};
-    move:move = {
-        action: "flip",
-        source: "stock",
-        target: null,
-        index: 0
-    };
 
-
+    
     constructor(connection: Connection) {
         this.connection = connection;
     }
@@ -57,9 +55,8 @@ export class GameController {
         
         this.connection.on("moveResult", data => {
             console.log("moveResult watch: ", data);
-  
 
-            if (data.hasOwnProperty('face')) {
+            if (data !== null && data.hasOwnProperty('face')) {
                 // flip command detected
                 console.log("FLIP");
 
@@ -67,24 +64,24 @@ export class GameController {
                     this.flipPromiseResolve(this.getFlipResponse(data));
                     this.flipPromiseResolve = null;
                 }
-            }
+            } 
 
             if (data == true) {
                 console.log("Successful move");
-
+                this.resolvePlacePromise(data);
             }
 
             if (data == false) {
                 console.log("Invalid move");
-
+                this.resolvePlacePromise(data);
                 
             }
-
 
 
         });
 
     }
+
 
     private getFlipResponse(data): FlipResponse {
         // todo: empty and reset stock
@@ -115,32 +112,12 @@ export class GameController {
     }
 
      getState() {
-
         console.log("getSTATE", this.state)
         return this.state;
-        
     }
 
-    setReceivedMoves(moves) {
-        // console.log("Received moves in gameController", moves)
-        // console.log("Stock in gameController", moves.stock.flip)
 
-    }
 
-    flipResponse(data) {
-
-        console.log("DATA", data)
-        this.flipData = data
-        
-    }
-
-    getFlipData() {
-        return this.flipData
-    }
-
-    moveResponse() {
-
-    }
 
     ///////////////////////////////////
 
@@ -159,14 +136,14 @@ export class GameController {
     }
     
     
-    async flip(): Promise<FlipResponse> {
+    async flip(source: source, index: number): Promise<FlipResponse> {
         
         console.log("Flip called");
-        await this.openConnection();
+       // await this.openConnection();
         
-        let flipMove = {
+        let flipMove: move = {
             action: "flip",
-            source: "stock",
+            source: source,
             target: null,
             index: 0
         };
@@ -180,25 +157,33 @@ export class GameController {
     }
 
 
-    async takeCard() {
-        console.log("Take card called");
-
-        await this.openConnection();
-
-        let takeCardMove = {
-            action: "take",
-            source: "stock",
-            target: null,
-            index: 0
+    async placeCard(source: source, target: target, index: number) {
+        console.log("Place card called");
+        
+       // await this.openConnection();
+        
+        let placeCardMove: move = {
+            action: "place",
+            source: source,
+            target: target,
+            index: index
         };
-
-        this.connection.send("move", takeCardMove);
+        
+        this.connection.send("move", placeCardMove);
+        console.log("Place card called 2", placeCardMove);
 
         return new Promise(function(resolve) {
-            console.log("inside take promise!!!!!");
-            this.takePromiseResolve = resolve;
+            console.log("inside place promise!!!!!");
+            this.placePromiseResolve = resolve;
         }.bind(this));
         
+    }
+
+    private resolvePlacePromise(result) {
+        if (this.placePromiseResolve != null) {
+            this.placePromiseResolve(result);
+            this.placePromiseResolve = null;
+        }
     }
 
 }

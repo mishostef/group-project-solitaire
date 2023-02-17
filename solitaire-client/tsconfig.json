@@ -10,7 +10,7 @@
     },
     "include": [
         "src/**/*"
-    ],
+, "oldFIles/StockZone1.ts", "src/BaseCardContainer.ts", "oldFIles/CardContainer.ts", "oldFIles/DraggableObject.ts", "oldFIles/Game.ts"    ],
     "exclude": [
         "node_modules"
     ]

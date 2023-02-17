@@ -1,10 +1,10 @@
-import { app } from "./app";
+import { app } from "../src/app";
 import { BaseCardContainer } from "./BaseCardContainer";
-import { Card } from "./Card";
+import { Card } from "../src/Card";
 import { CardContainer } from "./CardContainer";
 import { gsap } from "gsap";
 import * as PIXI from "pixi.js";
-import { CARD_SCALE } from "./constants";
+import { CARD_SCALE } from "../src/constants";
 
 export class StockZone1 extends BaseCardContainer {
   countCreateStockContainer = 1;

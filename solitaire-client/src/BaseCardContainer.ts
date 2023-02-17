@@ -26,7 +26,7 @@ export class BaseCardContainer {
     this.staticContainer = new Container();
     app.stage.addChild(this.staticContainer);
     app.stage.addChild(this.draggableContainer);
-    this.containersInitialX = ((CANVAS_WIDTH) / 2 * rowNumber) / 8;
+    this.containersInitialX = ((CANVAS_WIDTH)/2 * rowNumber) / 8;
     this.containersInitialY = 400;
     this.draggableContainer.position.set(
       this.containersInitialX,

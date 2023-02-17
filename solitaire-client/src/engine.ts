@@ -8,9 +8,9 @@ const boardSection = document.getElementById("board");
 
 export async function engine(connection: Connection) {
   //const state = {};
-  const gameController = new GameController(connection);
-  let state = await gameController.startNewGame();
-  gameController.setState(state)
+  // const gameController = new GameController(connection);
+  // let state = await gameController.startNewGame();
+  // gameController.setState(state)
 
   //const stockZone = new StockZone(gameController)
   
@@ -48,7 +48,8 @@ export async function engine(connection: Connection) {
 
   function onResult(data) {
     console.log("on result moves:", data);
-    gameController.flipResponse(data);
+   // gameController.flipResponse(data);
+  
    
     game.data = data;
   }

@@ -2,7 +2,7 @@
 
 export const CARD_WIDTH = 410;
 export const CARD_HEIGHT = 620;
-export const CARD_SCALE = 0.2;
+export const CARD_SCALE = 0.25;
 export const CANVAS_WIDTH = 1800;
 export const CANVAS_HEIGHT = 800;
 

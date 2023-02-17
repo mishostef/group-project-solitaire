@@ -1,7 +1,6 @@
 import * as PIXI from "pixi.js";
 import { Container, DisplayObject, Sprite } from "pixi.js";
 import {
-  cardMap,
   CARD_HEIGHT,
   CARD_SCALE,
   CARD_WIDTH,
@@ -21,33 +20,27 @@ export class Card extends Container {
   public movedFromStock = false;
   private map = createDeckAssets();
   public isValid = true;
-  public faceUp: boolean = false;
+  public faceUp = false;
 
   constructor(public face: Face, public suit: Suits) {
     super();
-
     if (face == null || suit == null || suit == Suits.null) {
-      this.face = "A"
+      this.face = "A";
       this.suit = Suits.clubs;
       this.isValid = false;
     } else {
       this.face = face;
       this.suit = suit;
     }
-
-    console.log(`${this.face}${Suits[this.suit]}`);
     this.front = this.map[`${this.face}${Suits[this.suit]}`] as PIXI.Sprite;
     this.front.anchor.set(0.5);
     this.frontMask = this.getMask();
     this.addChild(this.frontMask);
     this.front.mask = this.frontMask;
     this.addChild(this.front);
-
-
     this.back = this.getCardBack();
     this.addChild(this.back);
-
-}
+  }
 
   placeCardReverse(x: number, y: number) {
     this.position.set(x, y);
@@ -115,7 +108,7 @@ export class Card extends Container {
     }
   }
   getCardBack() {
-    const backTexture = PIXI.Texture.from("assets/back.png");
+    const backTexture = PIXI.Texture.from("assets/backAmusnet.png");
     const back = new PIXI.Sprite(backTexture);
     back.scale.set(CARD_SCALE - 0.01);
     back.position.set(1.2, 0);
@@ -123,18 +116,10 @@ export class Card extends Container {
     return back;
   }
 
-  changeFaceAndSuit(newFace, newSuit, x, y) {
+  changeFaceAndSuit(newFace: Face, newSuit: Suits, x, y) {
     this.face = newFace;
     this.suit = newSuit;
-
-    const s = typeof newSuit == "string" ? Suits[newSuit] : newSuit;
-
-    this.front = this.map[`${cardMap[newFace]}${s}`];
-    console.log("TESTTTT", this.map[`${newFace}${s}`])
-    //this.front = this.map[`${this.face}${Suits[this.suit]}`];
-    //this.front = this.map[`${this.face}${this.suit}`] as PIXI.Sprite;
-    console.log("Front", this.front)
-    console.log("Face and Suit", `${this.face}${this.suit}`)
+    this.front = this.map[`${newFace}${Suits[newSuit]}`];
     this.front.anchor.set(0.5);
     this.front.position.set(x, y);
     this.frontMask = this.getMask();

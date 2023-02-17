@@ -4,8 +4,8 @@ import { engine } from "./engine";
 import * as PIXI from "pixi.js";
 import { gsap } from "gsap";
 import { PixiPlugin } from "gsap/PixiPlugin.js";
-import { clearScreen, InteractiveBackground, test } from "./utils";
-import { CardContainer } from "./CardContainer";
+import { clearScreen, InteractiveBackground } from "./utils";
+
 import { CANVAS_WIDTH, CARD_HEIGHT, CARD_SCALE, CARD_WIDTH } from "./constants";
 import { Foundations } from "./FoundationsZone";
 import { Card } from "./Card";
@@ -13,13 +13,14 @@ import { Suits } from "./constants";
 import { StockZone } from "./StockZone";
 import { loadFoundationsEmptyCards, loadStockEmptyCard } from "./cardsTexture";
 import src from "gsap/src";
+import { Piles } from './Piles';
 
 gsap.registerPlugin(PixiPlugin);
 PixiPlugin.registerPIXI(PIXI);
 
 export const app = new PIXI.Application({
-  width: 1800,
-  height: 1800,
+  width: 1200,
+  height: 1000,
   background: 0x999999,
 });
 
@@ -58,7 +59,7 @@ function start() {
 
     connection = new Connection(nickname as string);
     await connection.open();
-    engine(connection);
+    //engine(connection);
 
     gameController = new GameController(connection);
     let state = await gameController.startNewGame();
@@ -67,7 +68,7 @@ function start() {
     showBoard();
 
 
-    connection.send("startGame");
+   // connection.send("startGame");
   });
 
   document.getElementById("disconnect").addEventListener("click", () => {
@@ -88,34 +89,8 @@ function start() {
     loadStockEmptyCard();
 
     const createStockZone = new StockZone(gameController);
+    const createPiles = new Piles(gameController);
 
-
-    //test();
-
-    // ~~~~~~~~~~~  create Stock Zone  ~~~~~~~~~~~~~~~~~~~~~~~~
-    // const card12 = new Card(null, Suits.null);
-    // card12.placeCardReverse(0, 0);
-
-    // const card13 = new Card(null, Suits.null);
-    // card13.placeCardReverse(0, 0);
-
-    // const card14 = new Card(null, Suits.null)
-    // card14.placeCardReverse(0, 0);
-
-    // const card15 = new Card(null, Suits.null);
-    // card15.placeCardReverse(0, 0);
-
-    // const card16 = new Card("3", Suits.hearts);
-    // card16.placeCardReverse(0, 0);
-
-    //const StockZon = new StockZone([card14, card15, card16]);
-
-    // ~~~~~~~~~~~  move to Foundation Zone  ~~~~~~~~~~~~~~~~~~~~~~~~
-
-    //clubFoundation.addCard(card14)
-    //container.removeCardFromContainer(card6)
-
-    //---------------------------------------------------------------
   }
 
   function showInit() {

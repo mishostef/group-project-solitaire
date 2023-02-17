@@ -1,13 +1,13 @@
 import { Container, FederatedPointerEvent } from "pixi.js";
-import { Card } from "./Card";
+import { Card } from "../src/Card";
 import {
   CANVAS_HEIGHT,
   CANVAS_WIDTH,
   CARD_HEIGHT,
   CARD_SCALE,
   CARD_WIDTH,
-} from "./constants";
-import { app } from "./app";
+} from "../src/constants";
+import { app } from "../src/app";
 import { BaseCardContainer } from "./BaseCardContainer";
 const CARD_OFFSET = (CARD_HEIGHT * CARD_SCALE) / 4;
 export class CardContainer extends BaseCardContainer {

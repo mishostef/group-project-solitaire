@@ -1,11 +1,11 @@
 import { CardContainer } from "./CardContainer";
-import { Foundations } from "./FoundationsZone";
-import { IState, IStock, IMoves } from "./interfaces";
+import { Foundations } from "../src/FoundationsZone";
+import { IState, IStock, IMoves } from "../src/interfaces";
 
-import { StockZone } from "./StockZone";
-import { app } from "./app";
-import { Card } from "./Card";
-import { cardMap, Suits } from "./constants";
+import { StockZone } from "../src/StockZone";
+import { app } from "../src/app";
+import { Card } from "../src/Card";
+import { cardMap, Suits } from "../src/constants";
 import { StockZone1 } from "./StockZone1";
 import { BaseCardContainer } from "./BaseCardContainer";
 ///here comes app creation etc
@@ -20,7 +20,6 @@ export class Game {
   state: IStock;
   //state: IState;
   stock;
-  logicState;
   sendInfoToServer: Function;
   move: any;
   data: any = null;
