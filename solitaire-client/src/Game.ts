@@ -1,5 +1,4 @@
 import { CardContainer } from "./cardContainers/CardContainer";
-import { Foundations } from "./FoundationsZone";
 import { IState, IStock, IMoves } from "./interfaces";
 import { app } from "./app";
 import { Card } from "./Card";
@@ -13,6 +12,7 @@ import {
 } from "./constants";
 import { StockZone1 } from "./StockZone1";
 import { BaseCardContainer } from "./cardContainers/BaseCardContainer";
+import { loadFoundationsEmptyCards } from "./cardsTexture";
 
 ///here comes app creation etc
 
@@ -34,15 +34,11 @@ export class Game {
   lastMove: any = null;
 
   constructor(cb: Function) {
+    loadFoundationsEmptyCards();
     this.sendInfoToServer = cb;
     this.stockZone = new StockZone1(this.sendInfoToServer);
     this.stockZone.waste.cb = this.handleDragging.bind(this);
     Object.keys(foundationsMap).forEach((key, i) => {
-      const val = foundationsMap[key];
-      new Foundations(Suits.diamonds);
-      new Foundations(Suits.clubs);
-      new Foundations(Suits.hearts);
-      new Foundations(Suits.spades);
       this.foundations[i] = new CardContainer(Number(key));
       this.foundations[i].X = -1 * Number(key);
       this.foundations[i].Y = 100;
@@ -108,7 +104,6 @@ export class Game {
   }
 
   private handleDragging(starting) {
-    //called in CardContainer mouseup
     if (starting) {
       const others = [...this.piles, ...this.foundations].filter(
         (c) => c != starting
@@ -136,15 +131,13 @@ export class Game {
     if (this.isInSockZone()) {
       this.stockZone.addCards([card]);
       this.stockZone.moveCardsToWaste();
-      this.waste.staticContainer.sortChildren();
+      this.stockZone.waste.staticContainer.sortChildren();
     } else if (this.starting.rowNumber !== 0) {
       const lastel = this.starting.cards.pop();
       this.starting.staticContainer.removeChild(lastel);
       this.starting.addCards([card]);
-      ////
       this.starting.flip(); ////
       this.starting = null;
-      //this.starting.rowNumber = 0;
     }
 
     if (this.data.faceUp) {
@@ -200,7 +193,6 @@ export class Game {
       index: starting.cards.length - starting.draggableLength,
     };
     this.sendInfoToServer(move);
-    //starting.cards[starting.cards.length - 1].showFace(); ////////////here
     this.target = null;
     this.starting = starting;
   }

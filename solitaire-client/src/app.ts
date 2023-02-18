@@ -3,12 +3,6 @@ import { engine } from "./engine";
 import * as PIXI from "pixi.js";
 import { gsap } from "gsap";
 import { PixiPlugin } from "gsap/PixiPlugin.js";
-import { Foundations } from "./FoundationsZone";
-import { Card } from "./Card";
-import { Suits } from "./constants";
-
-import { loadFoundationsEmptyCards, loadStockEmptyCard } from "./cardsTexture";
-import src from "gsap/src";
 
 gsap.registerPlugin(PixiPlugin);
 PixiPlugin.registerPIXI(PIXI);
@@ -66,9 +60,6 @@ function start() {
   function showBoard() {
     initSection.style.display = "none";
     gameSection.style.display = "block";
-
-    loadFoundationsEmptyCards();
-    loadStockEmptyCard();
   }
 
   function showInit() {
