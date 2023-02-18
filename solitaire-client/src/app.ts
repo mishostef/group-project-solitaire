@@ -46,27 +46,29 @@ function start() {
   const initForm = document.querySelector("form");
   const initSection = document.getElementById("init");
   const gameSection = document.getElementById("game");
-
+  
+  
+  
   let connection = null;
   let gameController = null;
-
+  
   initForm.addEventListener("submit", async (event) => {
     event.preventDefault();
     const { nickname } = Object.fromEntries(
       new FormData(event.target as HTMLFormElement)
-    );
-
-    connection = new Connection(nickname as string);
-    await connection.open();
-    //engine(connection);
-
-    gameController = new GameController(connection);
-    let state = await gameController.startNewGame();
-    gameController.setState(state)
-
-    showBoard();
-
-
+      );
+      
+      connection = new Connection(nickname as string);
+      await connection.open();
+      //engine(connection);
+      
+      gameController = new GameController(connection);
+      let state = await gameController.startNewGame();
+      gameController.setState(state)
+      
+      showBoard();
+      
+    
    // connection.send("startGame");
   });
 

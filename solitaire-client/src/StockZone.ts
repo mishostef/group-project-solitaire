@@ -25,6 +25,7 @@ export class StockZone {
   draggableLength;
   currentCard;
   index;
+  isClicked = false;
 
   constructor(gameController) {
     this.gameController = gameController;
@@ -84,7 +85,7 @@ export class StockZone {
       
       this.repeatCard.interactive = true;
       this.repeatCard.on('pointertap', () => {
-        //this.repeatCard.zIndex = -1;
+
         this.stockContainer.removeChild(this.repeatCard);
         this.emptyCard.position.set(210, 100);
         this.wasteContainer.addChild(this.emptyCard);
@@ -105,8 +106,6 @@ export class StockZone {
   }
 
   async moveToWaste() {
-
-    console.log("waste array", this.waste)
     
     const duration = 0.5;
   
@@ -123,19 +122,26 @@ export class StockZone {
     this.stock.pop();
 
     this.currentCard.interactive = true;
-    console.log("TEST WASTE 2 LENGTH-1 =", this.waste.length - 1)
+  
     this.handleClickEvent();
 
   }
 
   private handleClickEvent() {
         this.currentCard.on('pointertap', async () => {
-        this.wasteContainer.removeChild(this.currentCard);
-        this.waste.pop()
-        this.currentCard.position.set(0, 0);
-        this.draggableContainer.zIndex = 61;
-        this.draggableContainer.addChild(this.currentCard);
-        this.draggableContainer.position.set(210, 100)
+        
+          this.isClicked = true;
+
+          //this.wasteContainer.removeChild(this.currentCard);
+          //this.index = this.waste.length - 1;
+          console.log("waste INDEX", this.waste.length - 1)
+    
+          //this.waste.pop()
+          this.currentCard.position.set(0, 0);
+          this.draggableContainer.zIndex = 25;
+          this.draggableContainer.addChild(this.currentCard);
+          this.draggableContainer.position.set(210, 100);
+
         
       })
   }

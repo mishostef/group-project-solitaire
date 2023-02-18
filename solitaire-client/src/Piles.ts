@@ -4,6 +4,7 @@ import { createCard } from './utils';
 import { CardContainer } from './CardContainer';
 import { Card } from './Card';
 import { gsap } from "gsap";
+import { loadStockEmptyCard } from './cardsTexture';
 
 export class Piles {
     gameController;
@@ -11,6 +12,9 @@ export class Piles {
     pilesData;
     containers = [];
     stockZone;
+    source;
+    index;
+    isClicked = false;
 
    constructor(gameController, stockZone) {
     this.gameController = gameController;
@@ -25,9 +29,15 @@ export class Piles {
 
 private createPiles() {
     for (let i = 0; i <= 6; i++) {
+      const emptyCard = loadStockEmptyCard();
       const pileCards = this.state.piles[i];
       const cards = pileCards.cards;
       this.containers[i] = new CardContainer(i);
+
+      emptyCard.position.set(0, 0);
+      emptyCard.interactive = true;
+      this.containers[i].staticContainer.addChild(emptyCard);
+      
       const columnCards = [];
       for (let j = 0; j < cards.length; j++) {
         const cardInfo = cards[j];
@@ -39,7 +49,7 @@ private createPiles() {
         columnCards.push(cards[j]);
 
         if (j == cards.length - 1) {
-            this.addEventListenerOnCard(cards, cards[j], i, j)
+            this.addEventListenerOnCard(cards[j], i, j)
         }
 
     }
@@ -47,26 +57,36 @@ private createPiles() {
     }
   }
 
-private addEventListenerOnCard(cards: Card[], card: Card, columnNumber: number, index: number) {
-
+private addEventListenerOnCard(card: Card, columnNumber: number, index: number) {
+        this.isClicked = true;
         card.interactive = true;
         card.on('pointertap', async() => {
-          //let placeResponse = await this.gameController.placeCard("stock", `pile${columnNumber}`, this.stockZone.index )
-          let placeResponse = await this.gameController.placeCard("stock", `pile${columnNumber}`, this.stockZone.waste.length )
-          console.log("placeResponse TEST + length-1 = ", placeResponse, this.stockZone.waste.length)
-        
 
+          if (this.stockZone.isClicked === true) {
+
+          let placeResponse = await this.gameController.placeCard("stock", `pile${columnNumber}`, this.stockZone.waste.length - 1 )
+         
             if (placeResponse ==  true) {
               this.stockZone.draggableContainer.removeChild(this.stockZone.currentCard);
               this.containers[columnNumber].addCards([this.stockZone.currentCard]);
+              this.stockZone.waste.pop();
             }
 
             if (placeResponse == false) {
-              this.stockZone.waste.push(this.stockZone.currentCard)
-              this.stockZone.wasteContainer.addChild(this.stockZone.currentCard);
-              this.stockZone.currentCard.position.set(210, 100);
-              this.stockZone.waste.push(this.stockZone.currentCard)
+              this.stockZone.draggableContainer.zIndex = this.stockZone.waste.length - 1;
+              //this.stockZone.waste.push(this.stockZone.currentCard)
+              //this.stockZone.wasteContainer.addChild(this.stockZone.currentCard);
+             // this.stockZone.currentCard.position.set(210, 100);
+              //this.stockZone.waste.push(this.stockZone.currentCard)
             }
+          }
+
+
+          if ( this.stockZone.draggableContainer.children.length === 0) {
+            this.source = `pile${columnNumber}`;
+            this.index = index;
+          }
+
         })    
 
 }

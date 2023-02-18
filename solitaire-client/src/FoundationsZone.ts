@@ -72,30 +72,40 @@ export class Foundations {
        this.createSuitArray(foundationState.diamonds.cards, "diamonds", this.diamondsContainer);
        this.createSuitArray(foundationState.clubs.cards, "clubs", this.clubsContainer);
        this.createSuitArray(foundationState.hearts.cards, "hearts", this.heartsContainer);
-       this.createSuitArray(foundationState.spade.cards, "spades", this.spadesContainer);
+       this.createSuitArray(foundationState.spades.cards, "spades", this.spadesContainer);
     }
 
     addToFoundationsZone(container: PIXI.Container, suit: string) {
        container.interactive = true;
 
         container.on('pointertap', async () => {
+        let placeResponse;
 
-          let placeResponse = await this.gameController.placeCard("stock", `${suit}`, this.stockZone.waste.length);
+        if (this.stockZone.draggableContainer.children.length === 1) {
+
+            placeResponse = await this.gameController.placeCard("stock", `${suit}`, this.stockZone.waste.length - 1);
+        
+        } else {
+
+            placeResponse = await this.gameController.placeCard(this.piles.source, `${suit}`, this.piles.index);
+
+        }
+
 
           if (placeResponse === true) {
             this.stockZone.draggableContainer.removeChild(this.stockZone.currentCard);
             container.addChild(this.stockZone.currentCard)
+            this.stockZone.waste.pop();
+            this.stockZone.is.wasteContainer.removeChild(this.stockZone.currentCard);
           }
 
           if (placeResponse === false) {
-              this.stockZone.waste.push(this.stockZone.currentCard)
+              //this.stockZone.waste.push(this.stockZone.currentCard);
+ 
               this.stockZone.wasteContainer.addChild(this.stockZone.currentCard);
               this.stockZone.currentCard.position.set(210, 100);
-              this.stockZone.waste.push(this.stockZone.currentCard)
-
           }
-
-            
+  
         })
 
     }
