@@ -51,13 +51,21 @@ private addEventListenerOnCard(cards: Card[], card: Card, columnNumber: number, 
 
         card.interactive = true;
         card.on('pointertap', async() => {
-            let placeResponse = await this.gameController.placeCard("stock", `pile${columnNumber}`, this.stockZone.index )
-
-            console.log("TEST Place + index", placeResponse, index)
+          //let placeResponse = await this.gameController.placeCard("stock", `pile${columnNumber}`, this.stockZone.index )
+          let placeResponse = await this.gameController.placeCard("stock", `pile${columnNumber}`, this.stockZone.waste.length )
+          console.log("placeResponse TEST + length-1 = ", placeResponse, this.stockZone.waste.length)
+        
 
             if (placeResponse ==  true) {
               this.stockZone.draggableContainer.removeChild(this.stockZone.currentCard);
               this.containers[columnNumber].addCards([this.stockZone.currentCard]);
+            }
+
+            if (placeResponse == false) {
+              this.stockZone.waste.push(this.stockZone.currentCard)
+              this.stockZone.wasteContainer.addChild(this.stockZone.currentCard);
+              this.stockZone.currentCard.position.set(210, 100);
+              //this.stockZone.currentCard.zIndex = this.stockZone.waste.length - 1;
             }
         })    
 

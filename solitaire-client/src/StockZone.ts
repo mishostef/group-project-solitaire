@@ -41,6 +41,8 @@ export class StockZone {
 
     this.stock = this.state.stock.cards;
     this.waste = this.state.waste.cards;
+
+
     //this.stock = this.stock.concat(this.waste)
     this.loadRepeatCard();
     this.createStockContainer(this.stock);
@@ -77,17 +79,33 @@ export class StockZone {
       
       console.log("stockZone flipped card WATCH:", flipResponse);
       
-      if (flipResponse == null) {
-        this.stock = [];
-       
+      console.log("TEST FLIPRESPONSE", flipResponse.type)
+      if (flipResponse.type === "card") {
+        this.stock.pop();
+        this.currentCard = createCard(flipResponse.card, 100, 100);
+        this.stock.push(this.currentCard );
+        this.stockContainer.addChild(this.currentCard );
+        
+        this.moveToWaste();
+      } else if (flipResponse.type === "reset") {
+
+        this.stock = this.state.stock.cards;
+        this.waste = [];
+        console.log("TEST STOCK", this.stock)
+        console.log("TEST WASTE LENGTH-1 RESET", this.waste.length - 1)
+       // this.repeatCard.zIndex = 25;
+       //this.stock.push(this.repeatCard)
+       this.stockContainer.addChild(this.repeatCard);
+       this.repeatCard.position.set(0, 0)
+        
       }
+
+      this.repeatCard.interactive = true;
+      this.repeatCard.on('pointertap', () => {
+        //this.repeatCard.zIndex = -1;
+        this.stockContainer.removeChild(this.repeatCard);
+      })
       
-      this.stock.pop();
-      this.currentCard = createCard(flipResponse.card, 100, 100);
-      this.stock.push(this.currentCard );
-      this.stockContainer.addChild(this.currentCard );
-      
-      this.moveToWaste();
   
 
     })
@@ -110,7 +128,10 @@ export class StockZone {
     this.waste.push(this.currentCard); 
     this.wasteContainer.addChild(this.currentCard);
 
+    this.stock.pop();
+
     this.currentCard.interactive = true;
+    console.log("TEST WASTE 2 LENGTH-1 =", this.waste.length - 1)
     this.handleClickEvent();
    
 
@@ -140,21 +161,23 @@ export class StockZone {
 private handleClickEvent() {
       this.currentCard.on('pointertap', async () => {
       this.wasteContainer.removeChild(this.currentCard);
+      this.waste.pop()
       this.currentCard.position.set(0, 0);
       this.draggableContainer.zIndex = 61;
       this.draggableContainer.addChild(this.currentCard);
+      this.draggableContainer.position.set(210, 100)
 
       
 
-      for ( let i = 0; i < this.waste.length; i++) {
+      // for ( let i = 0; i < this.waste.length; i++) {
 
-        let takeResponse = await this.gameController.takeCard( "stock", null, i);
-        console.log("take result + index", takeResponse, i)
-        if (takeResponse === true) {
-          this.index = i;
+      //   let takeResponse = await this.gameController.takeCard( "stock", null, i);
+      //   console.log("take result + index", takeResponse, i)
+      //   if (takeResponse === true) {
+      //     this.index = i;
 
-        }
-      }
+      //   }
+      // }
 
       
     })

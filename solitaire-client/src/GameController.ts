@@ -68,6 +68,16 @@ export class GameController {
   
             console.log("DATA", data);
 
+            if (data === null) {
+                // flip command detected
+                console.log("NULL");
+
+                if (this.flipPromiseResolve != null) {
+                    this.flipPromiseResolve(this.getFlipResponse(data));
+                    this.flipPromiseResolve = null;
+                }
+            } 
+
             if (data !== null && data.hasOwnProperty('face')) {
                 // flip command detected
                 console.log("FLIP");

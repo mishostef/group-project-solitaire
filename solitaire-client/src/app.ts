@@ -76,10 +76,10 @@ function start() {
     showInit();
   });
 
-  const diamondsFoundation = new Foundations(Suits.diamonds);
-  const clubFoundation = new Foundations(Suits.clubs);
-  const heartsFoundation = new Foundations(Suits.hearts);
-  const spadesFoundation = new Foundations(Suits.spades);
+  // const diamondsFoundation = new Foundations(Suits.diamonds);
+  // const clubFoundation = new Foundations(Suits.clubs);
+  // const heartsFoundation = new Foundations(Suits.hearts);
+  // const spadesFoundation = new Foundations(Suits.spades);
 
   function showBoard() {
     initSection.style.display = "none";
@@ -90,6 +90,7 @@ function start() {
 
     const createStockZone = new StockZone(gameController);
     const createPiles = new Piles(gameController, createStockZone);
+    const createFoundations = new Foundations(gameController, createStockZone, createPiles);
 
   }
 
