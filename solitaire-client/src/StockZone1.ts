@@ -61,8 +61,9 @@ export class StockZone1 extends BaseCardContainer {
     let index = 0;
     while (index < this.staticContainer.children.length) {
       const card = this.staticContainer.children[index] as Card;
-      card.zIndex = index;
+      card.zIndex = index + 1; ///
       const duration = 0.5;
+
       const tl = gsap.timeline();
       tl.to(card, {
         pixi: { x: "+=100" },
@@ -73,10 +74,15 @@ export class StockZone1 extends BaseCardContainer {
           console.log("this.waste", this.waste);
           if (this.staticContainer.children.length > 0) {
             const next = this.staticContainer.children[0] as Card;
-            //next.zIndex = ++index;
+            if (this.waste.cards.length) {
+              next.zIndex +=
+                this.waste.cards[this.waste.cards.length - 1].zIndex;
+            }
             if (!this.waste.cards.includes(next)) {
               this.waste.addCards([next as Card]);
+              this.waste.flip();
             }
+            this.waste.staticContainer.sortChildren();
           }
         },
       });

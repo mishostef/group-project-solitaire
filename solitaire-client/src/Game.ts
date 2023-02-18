@@ -13,6 +13,7 @@ import {
 } from "./constants";
 import { StockZone1 } from "./StockZone1";
 import { BaseCardContainer } from "./BaseCardContainer";
+
 ///here comes app creation etc
 
 function CardFactory(app) {}
@@ -30,6 +31,7 @@ export class Game {
   starting: CardContainer = null;
   target: CardContainer = null;
   foundations: CardContainer[] = [];
+  lastMove: any = null;
 
   constructor(cb: Function) {
     this.sendInfoToServer = cb;
@@ -132,19 +134,20 @@ export class Game {
   private handleFlip() {
     const card = this.createCard(this.data);
     if (this.isInSockZone()) {
-      if (this.data.faceUp) {
-        card.showFace(0);
-      }
       this.stockZone.addCards([card]);
       this.stockZone.moveCardsToWaste();
-    } else {
-      if (this.starting.rowNumber !== 0) {
-        const lastel = this.starting.cards.pop();
-        this.starting.staticContainer.removeChild(lastel);
-        this.starting.addCards([card]);
-        this.starting.flip(); ////
-        this.starting = null;
-      }
+    } else if (this.starting.rowNumber !== 0) {
+      const lastel = this.starting.cards.pop();
+      this.starting.staticContainer.removeChild(lastel);
+      this.starting.addCards([card]);
+      ////
+      this.starting.flip(); ////
+      this.starting = null;
+      //this.starting.rowNumber = 0;
+    }
+
+    if (this.data.faceUp) {
+      card.showFace(0);
     }
   }
 
@@ -170,9 +173,9 @@ export class Game {
   }
 
   private getTarget(target) {
-    return target.rowNumber - 1 >= 0
+    return target && target.rowNumber - 1 >= 0
       ? `pile${target.rowNumber - 1}`
-      : foundationsMap[target.rowNumber.toString()];
+      : foundationsMap[(~~target.rowNumber).toString()];
   }
 
   private getSource(starting: CardContainer) {

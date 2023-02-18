@@ -11,6 +11,7 @@ export const foundationsMap = {
   "-700": "spades",
   "-800": "diamonds",
   "-900": "clubs",
+  "0": "stock",
 };
 
 export enum Suits {
@@ -67,9 +68,8 @@ export const cardMap = {
   11: "J",
   12: "Q",
   13: "K",
-  14: null
+  14: null,
 };
-
 
 export const cardsFaces = [
   "A",
