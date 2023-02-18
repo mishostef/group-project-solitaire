@@ -136,6 +136,7 @@ export class Game {
     if (this.isInSockZone()) {
       this.stockZone.addCards([card]);
       this.stockZone.moveCardsToWaste();
+      this.waste.staticContainer.sortChildren();
     } else if (this.starting.rowNumber !== 0) {
       const lastel = this.starting.cards.pop();
       this.starting.staticContainer.removeChild(lastel);

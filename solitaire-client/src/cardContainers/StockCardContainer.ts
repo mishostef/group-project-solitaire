@@ -23,6 +23,7 @@ export class StockCardContainer extends CardContainer {
       this.draggableContainer = new Container();
     }
     const card = this.cards[this.cards.length - 1];
+    this.draggableContainer.removeChildren();
     this.draggableContainer.addChild(this.cards[this.cards.length - 1]);
     card.position.set(0, 0);
   }
