@@ -11,7 +11,7 @@ import {
   Suits,
 } from "./constants";
 import { sliceDeck } from "./cardsTexture";
-import { CardContainer } from "./CardContainer";
+import { CardContainer } from "./cardContainers/CardContainer";
 import { Container } from "pixi.js";
 
 

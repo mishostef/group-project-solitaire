@@ -4,7 +4,7 @@ import { gsap } from "gsap";
 import { cardsConstants, CARD_SCALE, Suits } from "./constants";
 import { app } from "./app";
 import { Card } from "./Card";
-import { CardContainer } from "./CardContainer";
+import { CardContainer } from "./cardContainers/CardContainer";
 
 
 export class Foundations {

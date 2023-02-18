@@ -1,5 +1,5 @@
 import { Container, FederatedPointerEvent } from "pixi.js";
-import { Card } from "./Card";
+import { Card } from "../Card";
 import { CardContainer } from "./CardContainer";
 
 export class StockCardContainer extends CardContainer {

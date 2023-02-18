@@ -1,19 +1,20 @@
 import { app } from "./app";
-import { BaseCardContainer } from "./BaseCardContainer";
+import { BaseCardContainer } from "./cardContainers/BaseCardContainer";
 import { Card } from "./Card";
-import { CardContainer } from "./CardContainer";
+import { CardContainer } from "./cardContainers/CardContainer";
 import { gsap } from "gsap";
 import * as PIXI from "pixi.js";
 import { CARD_SCALE } from "./constants";
 import { Container, FederatedPointerEvent } from "pixi.js";
-import { StockCardContainer } from "./StockCardContainer";
+import { StockCardContainer } from "./cardContainers/StockCardContainer";
 
 export class StockZone1 extends BaseCardContainer {
   countCreateStockContainer = 1;
   stockCard: PIXI.Sprite;
   private cb: Function;
   waste: StockCardContainer;
-  public decrement = 0;
+  //public decrement = 0;
+  private canClick = true;
 
   constructor(cb: Function) {
     super(0);
@@ -31,13 +32,15 @@ export class StockZone1 extends BaseCardContainer {
     this.stockCard.on("pointertap", () => this.createStockContainer());
   }
   createStockContainer() {
-    const move = {
-      action: "flip",
-      source: "stock",
-      index: 23,
-      target: null,
-    };
-    this.cb(move);
+    if (this.canClick) {
+      const move = {
+        action: "flip",
+        source: "stock",
+        index: 23,
+        target: null,
+      };
+      this.cb(move);
+    }
   }
 
   returnCardsToStock() {
@@ -59,6 +62,7 @@ export class StockZone1 extends BaseCardContainer {
 
   public moveCardsToWaste() {
     let index = 0;
+    this.canClick = false;
     while (index < this.staticContainer.children.length) {
       const card = this.staticContainer.children[index] as Card;
       card.zIndex = index + 1; ///
@@ -70,6 +74,7 @@ export class StockZone1 extends BaseCardContainer {
         duration,
         onStart: () => card.showFace(0.5),
         onComplete: () => {
+          this.canClick = true;
           console.log("this.staticContainer:", this.staticContainer);
           console.log("this.waste", this.waste);
           if (this.staticContainer.children.length > 0) {

@@ -1,4 +1,4 @@
-import { CardContainer } from "./CardContainer";
+import { CardContainer } from "./cardContainers/CardContainer";
 import { Foundations } from "./FoundationsZone";
 import { IState, IStock, IMoves } from "./interfaces";
 import { app } from "./app";
@@ -12,7 +12,7 @@ import {
   Suits,
 } from "./constants";
 import { StockZone1 } from "./StockZone1";
-import { BaseCardContainer } from "./BaseCardContainer";
+import { BaseCardContainer } from "./cardContainers/BaseCardContainer";
 
 ///here comes app creation etc
 
