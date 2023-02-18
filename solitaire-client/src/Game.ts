@@ -227,13 +227,10 @@ export class Game {
 
   private checkLoseCondition() {
     const potentialCards = [...this.stockZone.waste.cards];
-    console.log("--check-lose--waste-cards--", this.stockZone.waste.cards);
     const foundationsLastCards = this.foundations
       .map((f) => f.cards[f.cards.length - 1])
       .filter((x) => x !== undefined);
     const pilesLastCards = this.piles.map((p) => p.cards[p.cards.length - 1]);
-    console.log("foundationsLastCards", foundationsLastCards);
-    console.log("pilesLastCards", pilesLastCards);
     for (let i = 0; i < potentialCards.length; i++) {
       const foundationsMovePossible = foundationsLastCards.some((flc) => {
         const sameColor = !isDifferentColor(potentialCards[i], flc);
