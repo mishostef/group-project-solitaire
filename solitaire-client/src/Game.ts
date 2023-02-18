@@ -5,6 +5,7 @@ import { Card } from "./Card";
 import {
   CANVAS_WIDTH,
   cardMap,
+  cardsFaces,
   CARD_SCALE,
   CARD_WIDTH,
   foundationsMap,
@@ -13,6 +14,7 @@ import {
 import { StockZone1 } from "./StockZone1";
 import { BaseCardContainer } from "./cardContainers/BaseCardContainer";
 import { loadFoundationsEmptyCards } from "./cardsTexture";
+import { isDifferentColor } from "./utils";
 
 ///here comes app creation etc
 
@@ -132,7 +134,10 @@ export class Game {
       this.stockZone.addCards([card]);
       this.stockZone.moveCardsToWaste();
       this.stockZone.waste.staticContainer.sortChildren();
-    } else if (this.starting.rowNumber !== 0) {
+    } else if (
+      this.starting.rowNumber !== 0 &&
+      this.starting.staticContainer.children.length > 0
+    ) {
       const lastel = this.starting.cards.pop();
       this.starting.staticContainer.removeChild(lastel);
       this.starting.addCards([card]);
@@ -213,7 +218,43 @@ export class Game {
     } else if (this.data && this.data.face) {
       this.handleFlip();
     } else if (data === null) {
+      if (this.checkLoseCondition()) {
+        alert("Alas, you lost");
+      }
       this.stockZone.returnCardsToStock();
     }
+  }
+
+  private checkLoseCondition() {
+    const potentialCards = [...this.stockZone.waste.cards];
+    console.log("--check-lose--waste-cards--", this.stockZone.waste.cards);
+    const foundationsLastCards = this.foundations
+      .map((f) => f.cards[f.cards.length - 1])
+      .filter((x) => x !== undefined);
+    const pilesLastCards = this.piles.map((p) => p.cards[p.cards.length - 1]);
+    console.log("foundationsLastCards", foundationsLastCards);
+    console.log("pilesLastCards", pilesLastCards);
+    for (let i = 0; i < potentialCards.length; i++) {
+      const foundationsMovePossible = foundationsLastCards.some((flc) => {
+        const sameColor = !isDifferentColor(potentialCards[i], flc);
+        const sequential =
+          cardsFaces[potentialCards[i].face] - cardsFaces[flc.face] === 1;
+        return sameColor && sequential;
+      });
+
+      if (foundationsMovePossible) {
+        return false;
+      }
+      const pileMovePossible = pilesLastCards.some((plc) => {
+        const sequential =
+          cardsFaces[plc.face] - cardsFaces[potentialCards[i].face] === 1;
+        const differentColor = isDifferentColor(plc, potentialCards[i]);
+        return sequential && differentColor;
+      });
+      if (pileMovePossible) {
+        return false;
+      }
+    }
+    return true;
   }
 }

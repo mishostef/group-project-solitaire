@@ -14,45 +14,10 @@ import { sliceDeck } from "./cardsTexture";
 import { CardContainer } from "./cardContainers/CardContainer";
 import { Container } from "pixi.js";
 
-
 gsap.registerPlugin(PixiPlugin);
 PixiPlugin.registerPIXI(PIXI);
 
 export const flipCardSound = new Audio("/assets/flipCard.mp3");
-
-export function createBox(
-  x: number,
-  y: number,
-  color = 0xffffff,
-  width = 100,
-  height = 100
-) {
-  const box = new PIXI.Graphics();
-  box.beginFill(color);
-  box.drawRect(0, 0, width, height);
-  box.endFill();
-  box.position.set(x, y);
-  box.pivot.set(width / 2, height / 2);
-  return box;
-}
-
-export function getMask(x, y, radius) {
-  const mask = new PIXI.Graphics();
-  mask.beginFill(0xffffff);
-  const width = 100;
-  const height = 100;
-  mask.drawRoundedRect(
-    2.5 - width / 2,
-    2.5 - height / 2,
-    width,
-    height,
-    radius
-  );
-  mask.endFill();
-  mask.pivot.set(0, 0);
-  mask.position.set(x, y);
-  return mask;
-}
 
 export function clearScreen(app) {
   for (var i = app.stage.children.length - 1; i >= 0; i--) {
@@ -89,7 +54,8 @@ export class InteractiveBackground extends Container {
   dragging: boolean = false;
   constructor() {
     super();
-    const card = new Card("K", Suits.hearts);    const card2 = new Card("Q", Suits.hearts);
+    const card = new Card("K", Suits.hearts);
+    const card2 = new Card("Q", Suits.hearts);
     const card3 = new Card("A", Suits.clubs);
     const container = new CardContainer(2);
 
@@ -117,3 +83,11 @@ export class InteractiveBackground extends Container {
   addCardContainers() {}
 }
 
+export function isDifferentColor(currentCard: Card, previousCard: Card) {
+  const black = [Suits.clubs, Suits.spades];
+  const red = [Suits.hearts, Suits.diamonds];
+  const differentColor =
+    (black.includes(currentCard.suit) && red.includes(previousCard.suit)) ||
+    (red.includes(currentCard.suit) && black.includes(previousCard.suit));
+  return differentColor;
+}
