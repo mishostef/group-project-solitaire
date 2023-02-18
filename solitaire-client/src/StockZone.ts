@@ -2,17 +2,9 @@
 import { GameController } from './GameController';
 import * as PIXI from "pixi.js";
 import { app } from "./app";
-import { Card } from "./Card";
-import {
-  cardMap,
-  cardsConstants,
-  CARD_HEIGHT,
-  CARD_SCALE,
-  CARD_WIDTH,
-  Suits,
-} from "./constants";
 import { gsap } from "gsap";
 import { createCard } from './utils';
+import { loadRepeatCard, loadStockEmptyCard } from './cardsTexture';
 
 
 export class StockZone {
@@ -24,7 +16,8 @@ export class StockZone {
   wasteContainer = new PIXI.Container();
   draggableContainer = new PIXI.Container();
   move = {};
-  repeatCard: PIXI.Sprite;
+  repeatCard = loadRepeatCard()
+  emptyCard = loadStockEmptyCard();
   reverse = true;
   countCreateStockContainer = 0;
   flipCard;
@@ -42,9 +35,6 @@ export class StockZone {
     this.stock = this.state.stock.cards;
     this.waste = this.state.waste.cards;
 
-
-    //this.stock = this.stock.concat(this.waste)
-    this.loadRepeatCard();
     this.createStockContainer(this.stock);
     
   }
@@ -66,7 +56,6 @@ export class StockZone {
     console.log("stockFromServer", this.stock)
     console.log("wasteFromServer", this.waste)
     this.getCardFromStock()
-
     
   }
 
@@ -74,12 +63,8 @@ export class StockZone {
     this.stockContainer.interactive = true;
     this.stockContainer.on('pointertap', async () => {
 
+      let flipResponse = await this.gameController.flip("stock", 0); 
 
-      let flipResponse = await this.gameController.flip("stock", 0);
-      
-      console.log("stockZone flipped card WATCH:", flipResponse);
-      
-      console.log("TEST FLIPRESPONSE", flipResponse.type)
       if (flipResponse.type === "card") {
         this.stock.pop();
         this.currentCard = createCard(flipResponse.card, 100, 100);
@@ -91,23 +76,30 @@ export class StockZone {
 
         this.stock = this.state.stock.cards;
         this.waste = [];
-        console.log("TEST STOCK", this.stock)
-        console.log("TEST WASTE LENGTH-1 RESET", this.waste.length - 1)
-       // this.repeatCard.zIndex = 25;
-       //this.stock.push(this.repeatCard)
-       this.stockContainer.addChild(this.repeatCard);
-       this.repeatCard.position.set(0, 0)
-        
+    
+        this.stockContainer.addChild(this.repeatCard);
+        this.repeatCard.position.set(0, 0)
+  
       }
-
+      
       this.repeatCard.interactive = true;
       this.repeatCard.on('pointertap', () => {
         //this.repeatCard.zIndex = -1;
         this.stockContainer.removeChild(this.repeatCard);
-      })
-      
-  
+        this.emptyCard.position.set(210, 100);
+        this.wasteContainer.addChild(this.emptyCard);
 
+        console.log("last", this.currentCard);
+
+        let lastCard = this.currentCard;
+        app.stage.addChild(lastCard);
+        
+      gsap.to(lastCard, {pixi: {x: 100, y: 100}, duration: 0.5 ,
+          onStart: () => lastCard.showBack(0.5)});
+
+      app.stage.removeChild(lastCard);
+      })
+  
     })
 
   }
@@ -133,56 +125,20 @@ export class StockZone {
     this.currentCard.interactive = true;
     console.log("TEST WASTE 2 LENGTH-1 =", this.waste.length - 1)
     this.handleClickEvent();
-   
-
 
   }
 
-
-  loadRepeatCard() {
-    const repeatTexture = PIXI.Texture.from("assets/repeat.png");
-    this.repeatCard = new PIXI.Sprite(repeatTexture);
-    this.repeatCard.scale.set(CARD_SCALE);
-    this.repeatCard.position.set(100, 100);
-    this.repeatCard.anchor.set(0.5);
-    this.repeatCard.zIndex = -1;
-    app.stage.addChild(this.repeatCard);
+  private handleClickEvent() {
+        this.currentCard.on('pointertap', async () => {
+        this.wasteContainer.removeChild(this.currentCard);
+        this.waste.pop()
+        this.currentCard.position.set(0, 0);
+        this.draggableContainer.zIndex = 61;
+        this.draggableContainer.addChild(this.currentCard);
+        this.draggableContainer.position.set(210, 100)
+        
+      })
   }
-//}
-
-
-
-
-// -----------------Dragging -------------------------------------
-
-
-
-
-private handleClickEvent() {
-      this.currentCard.on('pointertap', async () => {
-      this.wasteContainer.removeChild(this.currentCard);
-      this.waste.pop()
-      this.currentCard.position.set(0, 0);
-      this.draggableContainer.zIndex = 61;
-      this.draggableContainer.addChild(this.currentCard);
-      this.draggableContainer.position.set(210, 100)
-
-      
-
-      // for ( let i = 0; i < this.waste.length; i++) {
-
-      //   let takeResponse = await this.gameController.takeCard( "stock", null, i);
-      //   console.log("take result + index", takeResponse, i)
-      //   if (takeResponse === true) {
-      //     this.index = i;
-
-      //   }
-      // }
-
-      
-    })
-}
-
 
 
 }

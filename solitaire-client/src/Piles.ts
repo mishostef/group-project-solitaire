@@ -65,7 +65,7 @@ private addEventListenerOnCard(cards: Card[], card: Card, columnNumber: number, 
               this.stockZone.waste.push(this.stockZone.currentCard)
               this.stockZone.wasteContainer.addChild(this.stockZone.currentCard);
               this.stockZone.currentCard.position.set(210, 100);
-              //this.stockZone.currentCard.zIndex = this.stockZone.waste.length - 1;
+              this.stockZone.waste.push(this.stockZone.currentCard)
             }
         })    
 

@@ -6,149 +6,110 @@ import { cardsConstants, CARD_SCALE, Suits } from "./constants";
 import { app } from "./app";
 import { Card } from "./Card";
 import { CardContainer } from "./CardContainer";
+import { loadClubEmptyCards, loadDiamondEmptyCards, loadHeartEmptyCards, loadSpadeEmptyCards } from './cardsTexture';
+import { createCard } from './utils';
 
 
 export class Foundations {
 
-  diamondsFoundation = new PIXI.Container();
-  clubFoundation = new PIXI.Container();
-  heartsFoundation = new PIXI.Container();
-  spadesFoundation = new PIXI.Container();
-  gameController;
-  stockZone;
-  piles;
+    diamondsContainer: PIXI.Container;
+    clubsContainer: PIXI.Container;
+    heartsContainer: PIXI.Container;
+    spadesContainer: PIXI.Container;
 
+    diamondEmptyCard: PIXI.Sprite;
+    clubEmptyCard: PIXI.Sprite;
+    heartEmptyCard: PIXI.Sprite;
+    spadeEmptyCard: PIXI.Sprite;
 
-    cards: Card[] = [];
-    suit: Suits;
-    x = 0;
-    y = 100;
-    z: number;
+    gameController;
+    stockZone;
+    piles;
+
 
     constructor(gameController, stockZone, piles) {
+
         this.gameController = gameController;
         this.stockZone = stockZone;
         this.piles = piles;
+
+        this.createContainers();
+        
     }
 
+    createContainers() {
 
+        this.diamondsContainer = new PIXI.Container();
+        this.clubsContainer = new PIXI.Container();
+        this.heartsContainer = new PIXI.Container();
+        this.spadesContainer = new PIXI.Container();
 
+        this.diamondsContainer.position.set(670, 100);
+        this.clubsContainer.position.set(785, 100);
+        this.heartsContainer.position.set(450, 100);
+        this.spadesContainer.position.set(560, 100);
+      
+        this.diamondEmptyCard = loadDiamondEmptyCards();
+        this.clubEmptyCard = loadClubEmptyCards();
+        this.heartEmptyCard = loadHeartEmptyCards();
+        this.spadeEmptyCard = loadSpadeEmptyCards();
+        
+        this.diamondsContainer.addChild(this.diamondEmptyCard);
+        this.clubsContainer.addChild(this.clubEmptyCard);
+        this.heartsContainer.addChild(this.heartEmptyCard);
+        this.spadesContainer.addChild(this.spadeEmptyCard);
+        
+        app.stage.addChild(this.diamondsContainer, this.clubsContainer, this.heartsContainer, this.spadesContainer);
 
+        this.addToFoundationsZone(this.diamondsContainer, "diamonds");
+        this.addToFoundationsZone(this.clubsContainer, "clubs");
+        this.addToFoundationsZone(this.heartsContainer, "hearts");
+        this.addToFoundationsZone(this.spadesContainer, "spades");
 
-    
+        let foundationState = this.gameController.state.foundations;
+        
 
-    // addCard(card: Card) {
-         
-    //     card.interactive = true;
-    //     const startCardX = card.x;
-    //     const startCardY = card.y;
+       this.createSuitArray(foundationState.diamonds.cards, "diamonds", this.diamondsContainer);
+       this.createSuitArray(foundationState.clubs.cards, "clubs", this.clubsContainer);
+       this.createSuitArray(foundationState.hearts.cards, "hearts", this.heartsContainer);
+       this.createSuitArray(foundationState.spade.cards, "spades", this.spadesContainer);
+    }
 
-    //     card.on('pointertap', () => {
+    addToFoundationsZone(container: PIXI.Container, suit: string) {
+       container.interactive = true;
 
-    //         if (this.getIndex(card) === this.cards.length) {
-    //             if (card.suit === 0) {
-    //                 this.x = 670;
-    //             } else if (card.suit === 1) {
-    //                 this.x = 785;
-    //             } else if (card.suit === 2) {
-    //                 this.x = 450;
-    //             } else if (card.suit == 3) {
-    //                 this.x = 560;
-    //             } 
-               
-    //             if (this.suit === card.suit) {
-    //                 this.cards.push(card);   
-    //             }
+        container.on('pointertap', async () => {
 
-    //             gsap.to(card, { pixi:{x: this.x, y: this.y}, duration: 0.8 });
-    //             card.interactive = false;
-    //         } else {
-    //             gsap.to(card, { pixi:{x: startCardX, y: startCardY}, duration: 0.3 });
-    //         }
+          let placeResponse = await this.gameController.placeCard("stock", `${suit}`, this.stockZone.waste.length);
 
-    //     });
+          if (placeResponse === true) {
+            this.stockZone.draggableContainer.removeChild(this.stockZone.currentCard);
+            container.addChild(this.stockZone.currentCard)
+          }
 
-    //     this.setZIndex(card)
-    // }
+          if (placeResponse === false) {
+              this.stockZone.waste.push(this.stockZone.currentCard)
+              this.stockZone.wasteContainer.addChild(this.stockZone.currentCard);
+              this.stockZone.currentCard.position.set(210, 100);
+              this.stockZone.waste.push(this.stockZone.currentCard)
 
-    // setZIndex(card: Card) {
-    //             card.zIndex = this.getIndex(card) + 1;
-    // }
+          }
 
-    // getIndex(card: Card) {
-    //     let index: number;
-    //     cardsConstants.filter( (value, arrIndex) => {
-    //         if (value === card.face) {  
-    //             index = arrIndex;
-    //         } 
-    //     }); 
-    //     console.log(index)
-    //     return index;
-    // }   
+            
+        })
+
+    }
+
+    createSuitArray(stateArray: Card[], suit: string, container: PIXI.Container) {
+
+        for (let i = 0; i < stateArray.length; i++) {
+            const cardInfo = stateArray[i];
+            const card = createCard(cardInfo, 0, 0);
+            card.showFace(0);
+            container.addChild(card);
+        }
+
+    }
+
 }
 
-
-// -------------------------------------------
-
-
-// export class Foundations {
-//     cards: Card[] = [];
-//     suit: Suits;
-//     x = 0;
-//     y = 100;
-//     z: number;
-
-//     constructor(suit: Suits) {
-//         this.suit = suit;
-        
-//     }
-
-//     addCard(card: Card) {
-         
-//         card.interactive = true;
-//         const startCardX = card.x;
-//         const startCardY = card.y;
-
-//         card.on('pointertap', () => {
-
-//             if (this.getIndex(card) === this.cards.length) {
-//                 if (card.suit === 0) {
-//                     this.x = 670;
-//                 } else if (card.suit === 1) {
-//                     this.x = 785;
-//                 } else if (card.suit === 2) {
-//                     this.x = 450;
-//                 } else if (card.suit == 3) {
-//                     this.x = 560;
-//                 } 
-               
-//                 if (this.suit === card.suit) {
-//                     this.cards.push(card);   
-//                 }
-
-//                 gsap.to(card, { pixi:{x: this.x, y: this.y}, duration: 0.8 });
-//                 card.interactive = false;
-//             } else {
-//                 gsap.to(card, { pixi:{x: startCardX, y: startCardY}, duration: 0.3 });
-//             }
-
-//         });
-
-//         this.setZIndex(card)
-//     }
-
-//     setZIndex(card: Card) {
-//                 card.zIndex = this.getIndex(card) + 1;
-//     }
-
-//     getIndex(card: Card) {
-//         let index: number;
-//         cardsConstants.filter( (value, arrIndex) => {
-//             if (value === card.face) {  
-//                 index = arrIndex;
-//             } 
-//         }); 
-//         console.log(index)
-//         return index;
-//     }   
-// }

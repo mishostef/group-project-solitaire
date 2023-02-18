@@ -11,7 +11,6 @@ import { Foundations } from "./FoundationsZone";
 import { Card } from "./Card";
 import { Suits } from "./constants";
 import { StockZone } from "./StockZone";
-import { loadFoundationsEmptyCards, loadStockEmptyCard } from "./cardsTexture";
 import src from "gsap/src";
 import { Piles } from './Piles';
 
@@ -85,8 +84,8 @@ function start() {
     initSection.style.display = "none";
     gameSection.style.display = "block";
 
-    loadFoundationsEmptyCards();
-    loadStockEmptyCard();
+    // loadFoundationsEmptyCards();
+    // loadStockEmptyCard();
 
     const createStockZone = new StockZone(gameController);
     const createPiles = new Piles(gameController, createStockZone);

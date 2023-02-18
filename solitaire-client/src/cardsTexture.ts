@@ -36,35 +36,53 @@ export function sliceDeck(arr, x: number, y: number, row) {
   return arr;
 }
 
-export function loadFoundationsEmptyCards() {
-    
+export function loadHeartEmptyCards() {
   const heartTexture = PIXI.Texture.from("assets/heart.png");
   const heart = new PIXI.Sprite(heartTexture);
   heart.scale.set(CARD_SCALE - 0.01);
-  heart.position.set(450, 100)
-  heart.anchor.set(0.5);
+  // heart.position.set(450, 100)
+   heart.anchor.set(0.5);
   app.stage.addChild(heart);
-  
+
+  return heart;
+}
+
+export function loadSpadeEmptyCards() {
   const spadeTexture = PIXI.Texture.from("assets/spade.png");
   const spade= new PIXI.Sprite(spadeTexture);
   spade.scale.set(CARD_SCALE - 0.01);
-  spade.position.set(560, 100)
+  // spade.position.set(560, 100)
   spade.anchor.set(0.5);
   app.stage.addChild(spade);
+
+  return spade;
+  
+}
+
+export function loadDiamondEmptyCards() {
 
   const diamondTexture = PIXI.Texture.from("assets/diamond.png");
   const diamond = new PIXI.Sprite(diamondTexture);
   diamond.scale.set(CARD_SCALE - 0.01);
-  diamond.position.set(670, 100)
+  // diamond.position.set(670, 100)
   diamond.anchor.set(0.5);
   app.stage.addChild(diamond);
+
+  return diamond;
   
+}
+
+export function loadClubEmptyCards() {
+
+    
   const clubTexture = PIXI.Texture.from("assets/club.png");
   const club = new PIXI.Sprite(clubTexture);
   club.scale.set(CARD_SCALE - 0.01);
-  club.position.set(785, 100)
+  // club.position.set(785, 100)
   club.anchor.set(0.5);
   app.stage.addChild(club);
+
+  return club;
   
 }
 
@@ -78,4 +96,17 @@ export function loadStockEmptyCard() {
   emptyCard.zIndex = -1;
   app.stage.addChild(emptyCard);
 
+  return emptyCard;
+}
+
+export function loadRepeatCard() {
+  const repeatTexture = PIXI.Texture.from("assets/repeat.png");
+  const repeatCard = new PIXI.Sprite(repeatTexture);
+  repeatCard.scale.set(CARD_SCALE);
+  repeatCard.position.set(100, 100);
+  repeatCard.anchor.set(0.5);
+  repeatCard.zIndex = -1;
+  app.stage.addChild(repeatCard);
+
+  return repeatCard;
 }
