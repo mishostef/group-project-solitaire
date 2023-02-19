@@ -1,15 +1,8 @@
 import * as PIXI from "pixi.js";
 import { Container, DisplayObject, Sprite } from "pixi.js";
-import {
-  CARD_HEIGHT,
-  CARD_SCALE,
-  CARD_WIDTH,
-  Face,
-  Suits,
-} from "./constants";
+import { CARD_HEIGHT, CARD_SCALE, CARD_WIDTH, Face, Suits } from "./constants";
 import { createDeckAssets, flipCardSound } from "./utils";
 import { gsap } from "gsap";
-import { app } from "./app";
 
 export class Card extends Container {
   private back: DisplayObject;
@@ -41,23 +34,6 @@ export class Card extends Container {
     this.back = this.getCardBack();
     this.addChild(this.back);
   }
-
-  // placeCardReverse(x: number, y: number) {
-  //   this.position.set(x, y);
-  //   if (!this.isPlaced) {
-  //     app.stage.addChild(this);
-  //     this.isPlaced = true;
-  //   }
-  // }
-
-  // placeCard(x: number, y: number) {
-  //   this.position.set(x, y);
-  //   this.removeChild(this.back);
-  //   if (!this.isPlaced) {
-  //     app.stage.addChild(this);
-  //     this.isPlaced = true;
-  //   }
-  // }
 
   private getMask() {
     const mask = new PIXI.Graphics();
@@ -114,17 +90,5 @@ export class Card extends Container {
     back.position.set(1.2, 0);
     back.anchor.set(0.5);
     return back;
-  }
-
-  changeFaceAndSuit(newFace: Face, newSuit: Suits, x, y) {
-    this.face = newFace;
-    this.suit = newSuit;
-    this.front = this.map[`${newFace}${Suits[newSuit]}`];
-    this.front.anchor.set(0.5);
-    this.front.position.set(x, y);
-    this.frontMask = this.getMask();
-    this.front.mask = this.frontMask;
-    this.addChild(this.frontMask);
-    app.stage.addChild(this.front);
   }
 }

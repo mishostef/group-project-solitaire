@@ -1,13 +1,36 @@
 import { CardContainer } from "./cardContainers/CardContainer";
 import { IState, IStock, IMoves } from "./interfaces";
-import { app } from "./app";
+import * as PIXI from "pixi.js";
+//import { app } from "./app";
 import { Card } from "./Card";
-import { cardMap, cardsFaces, foundationsMap, Suits } from "./constants";
+import {
+  cardMap,
+  cardsFaces,
+  CARD_SCALE,
+  foundationsMap,
+  Suits,
+} from "./constants";
 import { StockZone1 } from "./StockZone1";
 import { loadFoundationsEmptyCards } from "./cardsTexture";
-import { checkLoseCondition, getSource, getTarget, isDifferentColor } from "./utils";
+import {
+  checkLoseCondition,
+  getSource,
+  getTarget,
+  isDifferentColor,
+} from "./utils";
+import { loadRepeatCard as loadStockButton } from "./Factories";
 
+export const app = new PIXI.Application({
+  width: 1800,
+  height: 1800,
+  background: 0x999999,
+});
+
+document.body.appendChild(app.view as HTMLCanvasElement);
+app.stage.sortableChildren = true;
 ///here comes app creation etc
+
+export const loadRepeatCard = loadStockButton.bind(null, app);
 
 function CardFactory(app) {}
 
@@ -165,8 +188,6 @@ export class Game {
     }
     this.sendInfoToServer(move);
   }
-
-
 
   public mergePiles(starting: CardContainer, target: CardContainer) {
     starting.draggableContainer.position.set(

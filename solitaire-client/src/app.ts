@@ -7,15 +7,6 @@ import { PixiPlugin } from "gsap/PixiPlugin.js";
 gsap.registerPlugin(PixiPlugin);
 PixiPlugin.registerPIXI(PIXI);
 
-export const app = new PIXI.Application({
-  width: 1800,
-  height: 1800,
-  background: 0x999999,
-});
-
-document.body.appendChild(app.view as HTMLCanvasElement);
-app.stage.sortableChildren = true;
-
 init().then(start);
 
 async function init() {

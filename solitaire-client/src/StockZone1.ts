@@ -1,4 +1,4 @@
-import { app } from "./app";
+import { app, loadRepeatCard } from "./Game";
 import { BaseCardContainer } from "./cardContainers/BaseCardContainer";
 import { Card } from "./Card";
 import { gsap } from "gsap";
@@ -24,7 +24,7 @@ export class StockZone1 extends BaseCardContainer {
   }
 
   addEvents() {
-    this.loadRepeatCard();
+    this.stockCard = loadRepeatCard(); //this.loadRepeatCard();
     this.stockCard.interactive = true;
     this.stockCard.on("pointertap", () => this.createStockContainer());
   }
@@ -86,14 +86,5 @@ export class StockZone1 extends BaseCardContainer {
       });
       index++;
     }
-  }
-  loadRepeatCard() {
-    const repeatTexture = PIXI.Texture.from("assets/repeat.png");
-    this.stockCard = new PIXI.Sprite(repeatTexture);
-    this.stockCard.scale.set(CARD_SCALE);
-    this.stockCard.position.set(0, 100);
-    this.stockCard.anchor.set(0.5);
-    this.stockCard.zIndex = -1;
-    app.stage.addChild(this.stockCard);
   }
 }
