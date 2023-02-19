@@ -20,11 +20,6 @@ PixiPlugin.registerPIXI(PIXI);
 
 export const flipCardSound = new Audio("/assets/flipCard.mp3");
 
-// export function clearScreen(app) {
-//   for (var i = app.stage.children.length - 1; i >= 0; i--) {
-//     app.stage.removeChild(app.stage.children[i]);
-//   }
-// }
 
 export function createDeckAssets() {
   const map = {};
@@ -50,39 +45,6 @@ export function createInteractiveBg() {
   bg.interactive = true;
   return bg;
 }
-// export class InteractiveBackground extends Container {
-//   bg: PIXI.Graphics;
-//   dragging: boolean = false;
-//   constructor() {
-//     super();
-//     const card = new Card("K", Suits.hearts);
-//     const card2 = new Card("Q", Suits.hearts);
-//     const card3 = new Card("A", Suits.clubs);
-//     const container = new CardContainer(2);
-
-//     this.addChild(container.draggableContainer);
-//     app.stage.addChild(container.draggableContainer);
-//     this.bg = new PIXI.Graphics();
-//     this.bg.beginFill(0);
-//     this.bg.drawRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-//     this.bg.alpha = 0;
-//     this.bg.endFill();
-//     this.bg.interactive = true;
-//     this.bg.on("mousemove", (e) => {
-//       if (this.dragging) {
-//         console.log(`dragging in container`);
-//       }
-//     });
-//     this.bg.on("mouseup", function (e) {
-//       this.dragging = false;
-//     });
-//     this.bg.on("mousedown", (e) => {
-//       this.dragging = true;
-//     });
-//     this.addChild(this.bg);
-//   }
-//   addCardContainers() {}
-// }
 
 export function isDifferentColor(currentCard: Card, previousCard: Card) {
   const black = [Suits.clubs, Suits.spades];

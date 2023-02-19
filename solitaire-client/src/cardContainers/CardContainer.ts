@@ -7,6 +7,7 @@ import {
 
 import { BaseCardContainer } from "./BaseCardContainer";
 const CARD_OFFSET = (CARD_HEIGHT * CARD_SCALE) / 4;
+
 export class CardContainer extends BaseCardContainer {
   public cb: Function;
 

@@ -7,13 +7,11 @@ import { gsap } from "gsap";
 export class Card extends Container {
   private back: DisplayObject;
   public front: Sprite | null;
-  private isPlaced = false;
   private frontMask: any;
   public isBack = true;
   public movedFromStock = false;
   private map = createDeckAssets();
   public isValid = true;
-  public faceUp = false;
 
   constructor(public face: Face, public suit: Suits) {
     super();

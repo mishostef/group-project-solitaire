@@ -7,7 +7,7 @@ import {
   CARD_SCALE,
   CARD_WIDTH,
 } from "../constants";
-import { app } from "../Game";
+//import { app } from "../Game";
 
 const CARD_OFFSET = (CARD_HEIGHT * CARD_SCALE) / 4;
 export class BaseCardContainer {
@@ -24,8 +24,6 @@ export class BaseCardContainer {
     this.cards = [];
     this.draggableContainer = new Container();
     this.staticContainer = new Container();
-    app.stage.addChild(this.staticContainer);
-    app.stage.addChild(this.draggableContainer);
     this.containersInitialX = (CANVAS_WIDTH * rowNumber) / 8;
     this.containersInitialY = 400;
     this.draggableContainer.position.set(

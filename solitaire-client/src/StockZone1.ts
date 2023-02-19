@@ -5,6 +5,7 @@ import { gsap } from "gsap";
 import * as PIXI from "pixi.js";
 import { CARD_SCALE } from "./constants";
 import { StockCardContainer } from "./cardContainers/StockCardContainer";
+import { createCardContainer } from "./Game";
 
 export class StockZone1 extends BaseCardContainer {
   countCreateStockContainer = 1;
@@ -17,10 +18,12 @@ export class StockZone1 extends BaseCardContainer {
     super(0);
     this.X = 100;
     this.Y = 100;
-    this.waste = new StockCardContainer(0);
+    this.waste = createCardContainer("StockCardContainer", 0); //new  StockCardContainer(0);
     this.waste.X = 200;
     this.waste.Y = 100;
     this.cb = cb;
+    // app.stage.addChild(this.staticContainer);
+    // app.stage.addChild(this.draggableContainer);
   }
 
   addEvents() {
@@ -52,7 +55,6 @@ export class StockZone1 extends BaseCardContainer {
         },
         { pixi: { x: -100 }, duration: 2, onStart: () => card.showBack() }
       );
-      card.zIndex = index;
     });
     this.waste.cards = [];
   }
@@ -62,7 +64,7 @@ export class StockZone1 extends BaseCardContainer {
     this.canClick = false;
     while (index < this.staticContainer.children.length) {
       const card = this.staticContainer.children[index] as Card;
-      card.zIndex = index + 1; ///
+      //card.zIndex = index + 1; ///
       const duration = 0.5;
 
       const tl = gsap.timeline();
@@ -78,6 +80,8 @@ export class StockZone1 extends BaseCardContainer {
             const next = this.staticContainer.children[0] as Card;
             if (!this.waste.cards.includes(next)) {
               this.waste.addCards([next as Card]);
+              next.zIndex = Math.max(this.waste.cards.length, ~~next.zIndex);
+              console.log("zzz=", next.zIndex);
               this.waste.flip();
             }
             this.waste.staticContainer.sortChildren();
