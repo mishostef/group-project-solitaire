@@ -62,7 +62,6 @@ export class StockZone1 extends BaseCardContainer {
     this.canClick = false;
     while (index < this.staticContainer.children.length) {
       const card = this.staticContainer.children[index] as Card;
-      //card.zIndex = index + 1; ///
       const duration = 0.5;
 
       const tl = gsap.timeline();
@@ -70,23 +69,31 @@ export class StockZone1 extends BaseCardContainer {
         pixi: { x: "+=100" },
         duration,
         onStart: () => card.showFace(0.5),
-        onComplete: () => {
-          this.canClick = true;
-          console.log("this.staticContainer:", this.staticContainer);
-          console.log("this.waste", this.waste);
-          if (this.staticContainer.children.length > 0) {
-            const next = this.staticContainer.children[0] as Card;
-            if (!this.waste.cards.includes(next)) {
-              this.waste.addCards([next as Card]);
-              next.zIndex = Math.max(this.waste.cards.length, ~~next.zIndex);
-              console.log("zzz=", next.zIndex);
-              this.waste.flip();
-            }
-            this.waste.staticContainer.sortChildren();
-          }
-        },
+        onComplete: this.onComplete.bind(this),
       });
       index++;
+    }
+  }
+
+  onComplete() {
+    this.canClick = true;
+    console.log("this.staticContainer:", this.staticContainer);
+    console.log("this.waste", this.waste);
+    if (this.staticContainer.children.length > 0) {
+      const next = this.staticContainer.children[0] as Card;
+      if (!this.waste.cards.includes(next)) {
+        this.waste.addCards([next as Card]);
+        next.zIndex = this.waste.cards.length + 1;
+        if (
+          this.waste.cards &&
+          this.waste.cards[this.waste.cards.length - 1].zIndex >= next.zIndex
+        ) {
+          next.zIndex =
+            this.waste.cards[this.waste.cards.length - 1].zIndex + 1;
+        }
+        this.waste.flip();
+      }
+      this.waste.staticContainer.sortChildren();
     }
   }
 }
