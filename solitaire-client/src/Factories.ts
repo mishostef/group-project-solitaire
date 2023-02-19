@@ -38,3 +38,15 @@ export function createStock(app, cb: Function) {
   app.stage.addChild(stockZone.draggableContainer);
   return stockZone;
 }
+
+export function loadFoundationsEmptyCards(app) {
+  const foundations = { heart: 600, spade: 700, diamond: 800, club: 900 };
+  Object.keys(foundations).forEach((key) => {
+    const texture = PIXI.Texture.from(`assets/${key}.png`);
+    const symbol = new PIXI.Sprite(texture);
+    symbol.scale.set(CARD_SCALE - 0.01);
+    symbol.position.set(foundations[key], 100);
+    symbol.anchor.set(0.5);
+    app.stage.addChild(symbol);
+  });
+}

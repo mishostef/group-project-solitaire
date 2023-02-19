@@ -1,7 +1,6 @@
 import * as PIXI from "pixi.js";
 import { gsap } from "gsap";
 import { PixiPlugin } from "gsap/PixiPlugin.js";
-import { app } from "./Game";
 import { CARD_HEIGHT, CARD_SCALE, CARD_WIDTH } from "./constants";
 
 gsap.registerPlugin(PixiPlugin);
@@ -33,26 +32,4 @@ export function sliceDeck(arr, x: number, y: number, row) {
   }
 
   return arr;
-}
-
-export function loadFoundationsEmptyCards() {
-  const foundations = { heart: 600, spade: 700, diamond: 800, club: 900 };
-  Object.keys(foundations).forEach((key) => {
-    const texture = PIXI.Texture.from(`assets/${key}.png`);
-    const symbol = new PIXI.Sprite(texture);
-    symbol.scale.set(CARD_SCALE - 0.01);
-    symbol.position.set(foundations[key], 100);
-    symbol.anchor.set(0.5);
-    app.stage.addChild(symbol);
-  });
-}
-
-export function loadStockEmptyCard() {
-  const emptyCardTexture = PIXI.Texture.from("assets/emptyCard.png");
-  const emptyCard = new PIXI.Sprite(emptyCardTexture);
-  emptyCard.scale.set(CARD_SCALE - 0.01);
-  emptyCard.position.set(200, 100);
-  emptyCard.anchor.set(0.5);
-  emptyCard.zIndex = -1;
-  app.stage.addChild(emptyCard);
 }

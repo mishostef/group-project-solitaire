@@ -11,12 +11,12 @@ import {
   Suits,
 } from "./constants";
 import { StockZone1 } from "./StockZone1";
-import { loadFoundationsEmptyCards } from "./cardsTexture";
 import { checkLoseCondition, getSource, getTarget } from "./utils";
 import {
   loadRepeatCard as loadStockButton,
   createContainer,
   createStock,
+  loadFoundationsEmptyCards as loadEmptyCards,
 } from "./Factories";
 
 export const app = new PIXI.Application({
@@ -33,6 +33,7 @@ export const loadRepeatCard = loadStockButton.bind(null, app);
 
 export const createCardContainer = createContainer.bind(null, app);
 export const createStockZone = createStock.bind(null, app);
+export const loadFoundationsEmptyCards = loadEmptyCards.bind(null, app);
 
 export class Game {
   stockZone: StockZone1;
@@ -223,6 +224,7 @@ export class Game {
       this.handleFlip();
     } else if (data === null) {
       if (
+        this.stockZone.waste.cards.length &&
         checkLoseCondition(
           this.stockZone.waste.cards,
           this.piles,

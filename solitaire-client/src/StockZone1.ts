@@ -18,16 +18,14 @@ export class StockZone1 extends BaseCardContainer {
     super(0);
     this.X = 100;
     this.Y = 100;
-    this.waste = createCardContainer("StockCardContainer", 0); //new  StockCardContainer(0);
+    this.waste = createCardContainer("StockCardContainer", 0);
     this.waste.X = 200;
     this.waste.Y = 100;
     this.cb = cb;
-    // app.stage.addChild(this.staticContainer);
-    // app.stage.addChild(this.draggableContainer);
   }
 
   addEvents() {
-    this.stockCard = loadRepeatCard(); //this.loadRepeatCard();
+    this.stockCard = loadRepeatCard();
     this.stockCard.interactive = true;
     this.stockCard.on("pointertap", () => this.createStockContainer());
   }
