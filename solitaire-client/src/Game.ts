@@ -1,19 +1,11 @@
 import { CardContainer } from "./cardContainers/CardContainer";
 import { IState, IStock, IMoves } from "./interfaces";
 import * as PIXI from "pixi.js";
-//import { app } from "./app";
 import { Card } from "./Card";
-import {
-  cardMap,
-  cardsFaces,
-  CARD_SCALE,
-  foundationsMap,
-  Suits,
-} from "./constants";
+import { cardMap, foundationsMap, Suits } from "./constants";
 import { StockZone1 } from "./StockZone1";
 import { checkLoseCondition, getSource, getTarget } from "./utils";
 import {
-  loadRepeatCard as loadStockButton,
   createContainer,
   createStock,
   loadFoundationsEmptyCards as loadEmptyCards,
@@ -27,9 +19,6 @@ export const app = new PIXI.Application({
 
 document.body.appendChild(app.view as HTMLCanvasElement);
 app.stage.sortableChildren = true;
-///here comes app creation etc
-
-export const loadRepeatCard = loadStockButton.bind(null, app);
 
 export const createCardContainer = createContainer.bind(null, app);
 export const createStockZone = createStock.bind(null, app);
@@ -53,7 +42,7 @@ export class Game {
   constructor(cb: Function) {
     loadFoundationsEmptyCards();
     this.sendInfoToServer = cb;
-    this.stockZone = createStockZone(this.sendInfoToServer); //new StockZone1(this.sendInfoToServer);
+    this.stockZone = createStockZone(this.sendInfoToServer);
     this.stockZone.waste.cb = this.handleDragging.bind(this);
     Object.keys(foundationsMap).forEach((key, i) => {
       this.foundations[i] = createCardContainer("CardContainer", Number(key));
@@ -88,8 +77,8 @@ export class Game {
         }
         columnCards.push(card);
       }
-      const container = createCardContainer("CardContainer", i + 1); // new CardContainer(i + 1);
-      container.cb = this.handleDragging.bind(this); ////
+      const container = createCardContainer("CardContainer", i + 1);
+      container.cb = this.handleDragging.bind(this);
       container.addCards(columnCards);
       this.piles.push(container);
     }

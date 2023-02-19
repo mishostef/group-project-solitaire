@@ -1,9 +1,7 @@
-import { app, loadRepeatCard } from "./Game";
 import { BaseCardContainer } from "./cardContainers/BaseCardContainer";
 import { Card } from "./Card";
 import { gsap } from "gsap";
 import * as PIXI from "pixi.js";
-import { CARD_SCALE } from "./constants";
 import { StockCardContainer } from "./cardContainers/StockCardContainer";
 import { createCardContainer } from "./Game";
 
@@ -14,7 +12,7 @@ export class StockZone1 extends BaseCardContainer {
   waste: StockCardContainer;
   private canClick = true;
 
-  constructor(cb: Function) {
+  constructor(cb: Function, card: PIXI.Sprite) {
     super(0);
     this.X = 100;
     this.Y = 100;
@@ -22,13 +20,11 @@ export class StockZone1 extends BaseCardContainer {
     this.waste.X = 200;
     this.waste.Y = 100;
     this.cb = cb;
-  }
-
-  addEvents() {
-    this.stockCard = loadRepeatCard();
+    this.stockCard = card; 
     this.stockCard.interactive = true;
     this.stockCard.on("pointertap", () => this.createStockContainer());
   }
+
   createStockContainer() {
     if (this.canClick) {
       const move = {

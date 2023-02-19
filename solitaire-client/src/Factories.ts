@@ -33,7 +33,8 @@ export function createContainer(app, name, rowNumber) {
 }
 
 export function createStock(app, cb: Function) {
-  const stockZone = new StockZone1(cb);
+  const btn = loadRepeatCard(app);
+  const stockZone = new StockZone1(cb, btn);
   app.stage.addChild(stockZone.staticContainer);
   app.stage.addChild(stockZone.draggableContainer);
   return stockZone;

@@ -35,7 +35,6 @@ export async function engine(connection: Connection) {
   }
 
   function cb(move) {
-    console.log("I was called!");
     connection.send("move", move);
   }
 }
