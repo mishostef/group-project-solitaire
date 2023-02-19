@@ -42,22 +42,22 @@ export class Card extends Container {
     this.addChild(this.back);
   }
 
-  placeCardReverse(x: number, y: number) {
-    this.position.set(x, y);
-    if (!this.isPlaced) {
-      app.stage.addChild(this);
-      this.isPlaced = true;
-    }
-  }
+  // placeCardReverse(x: number, y: number) {
+  //   this.position.set(x, y);
+  //   if (!this.isPlaced) {
+  //     app.stage.addChild(this);
+  //     this.isPlaced = true;
+  //   }
+  // }
 
-  placeCard(x: number, y: number) {
-    this.position.set(x, y);
-    this.removeChild(this.back);
-    if (!this.isPlaced) {
-      app.stage.addChild(this);
-      this.isPlaced = true;
-    }
-  }
+  // placeCard(x: number, y: number) {
+  //   this.position.set(x, y);
+  //   this.removeChild(this.back);
+  //   if (!this.isPlaced) {
+  //     app.stage.addChild(this);
+  //     this.isPlaced = true;
+  //   }
+  // }
 
   private getMask() {
     const mask = new PIXI.Graphics();

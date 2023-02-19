@@ -5,7 +5,7 @@ import { Card } from "./Card";
 import { cardMap, cardsFaces, foundationsMap, Suits } from "./constants";
 import { StockZone1 } from "./StockZone1";
 import { loadFoundationsEmptyCards } from "./cardsTexture";
-import { isDifferentColor } from "./utils";
+import { checkLoseCondition, getSource, getTarget, isDifferentColor } from "./utils";
 
 ///here comes app creation etc
 
@@ -152,10 +152,10 @@ export class Game {
   }
 
   private sendMergeRequest(starting: CardContainer, target: CardContainer) {
-    let pileIndex = this.getSource(starting);
+    let pileIndex = getSource(starting);
     const move = {
       action: "place",
-      target: this.getTarget(target),
+      target: getTarget(target),
       source: `${pileIndex}`,
       index: starting.cards.length - starting.draggableLength,
     };
@@ -166,19 +166,7 @@ export class Game {
     this.sendInfoToServer(move);
   }
 
-  private getTarget(target) {
-    return target && target.rowNumber - 1 >= 0
-      ? `pile${target.rowNumber - 1}`
-      : foundationsMap[(~~target.rowNumber).toString()];
-  }
 
-  private getSource(starting: CardContainer) {
-    let pileIndex = `pile${starting.rowNumber - 1}`;
-    if (starting.rowNumber - 1 < 0) {
-      pileIndex = "stock";
-    }
-    return pileIndex;
-  }
 
   public mergePiles(starting: CardContainer, target: CardContainer) {
     starting.draggableContainer.position.set(
@@ -189,7 +177,7 @@ export class Game {
     const move = {
       action: "flip",
       target: null,
-      source: this.getSource(starting),
+      source: getSource(starting),
       index: starting.cards.length - starting.draggableLength,
     };
     this.sendInfoToServer(move);
@@ -213,46 +201,16 @@ export class Game {
     } else if (this.data && this.data.face) {
       this.handleFlip();
     } else if (data === null) {
-      if (this.checkLoseCondition()) {
+      if (
+        checkLoseCondition(
+          this.stockZone.waste.cards,
+          this.piles,
+          this.foundations
+        )
+      ) {
         alert("Alas, you lost");
       }
       this.stockZone.returnCardsToStock();
     }
-  }
-
-  private checkLoseCondition() {
-    const potentialCards = [...this.stockZone.waste.cards];
-    const foundationsLastCards = this.foundations
-      .map((f) => f.cards[f.cards.length - 1])
-      .filter((x) => x !== undefined);
-    const pilesLastCards = this.piles
-      .map((p) => p.cards[p.cards.length - 1])
-      .filter((x) => x !== undefined);
-    const isEmptyPileAvailable = this.piles.some((p) => p.cards.length == 0);
-
-    for (let i = 0; i < potentialCards.length; i++) {
-      const foundationsMovePossible = foundationsLastCards.some((flc) => {
-        const sameColor = !isDifferentColor(potentialCards[i], flc);
-        const sequential =
-          cardsFaces[potentialCards[i].face] - cardsFaces[flc.face] === 1;
-        return sameColor && sequential;
-      });
-      if (isEmptyPileAvailable && potentialCards[i].face === "K") {
-        return false;
-      }
-      if (foundationsMovePossible) {
-        return false;
-      }
-      const pileMovePossible = pilesLastCards.some((plc) => {
-        const sequential =
-          cardsFaces[plc.face] - cardsFaces[potentialCards[i].face] === 1;
-        const differentColor = isDifferentColor(plc, potentialCards[i]);
-        return sequential && differentColor;
-      });
-      if (pileMovePossible) {
-        return false;
-      }
-    }
-    return true;
   }
 }
