@@ -2,17 +2,8 @@ import { CardContainer } from "./cardContainers/CardContainer";
 import { IState, IStock, IMoves } from "./interfaces";
 import { app } from "./app";
 import { Card } from "./Card";
-import {
-  CANVAS_WIDTH,
-  cardMap,
-  cardsFaces,
-  CARD_SCALE,
-  CARD_WIDTH,
-  foundationsMap,
-  Suits,
-} from "./constants";
+import { cardMap, cardsFaces, foundationsMap, Suits } from "./constants";
 import { StockZone1 } from "./StockZone1";
-import { BaseCardContainer } from "./cardContainers/BaseCardContainer";
 import { loadFoundationsEmptyCards } from "./cardsTexture";
 import { isDifferentColor } from "./utils";
 
@@ -143,6 +134,10 @@ export class Game {
       this.starting.addCards([card]);
       this.starting.flip(); ////
       this.starting = null;
+    } else {
+      this.stockZone.addCards([card]);
+      this.stockZone.moveCardsToWaste();
+      this.stockZone.waste.staticContainer.sortChildren();
     }
 
     if (this.data.faceUp) {
@@ -230,7 +225,11 @@ export class Game {
     const foundationsLastCards = this.foundations
       .map((f) => f.cards[f.cards.length - 1])
       .filter((x) => x !== undefined);
-    const pilesLastCards = this.piles.map((p) => p.cards[p.cards.length - 1]);
+    const pilesLastCards = this.piles
+      .map((p) => p.cards[p.cards.length - 1])
+      .filter((x) => x !== undefined);
+    const isEmptyPileAvailable = this.piles.some((p) => p.cards.length == 0);
+
     for (let i = 0; i < potentialCards.length; i++) {
       const foundationsMovePossible = foundationsLastCards.some((flc) => {
         const sameColor = !isDifferentColor(potentialCards[i], flc);
@@ -238,7 +237,9 @@ export class Game {
           cardsFaces[potentialCards[i].face] - cardsFaces[flc.face] === 1;
         return sameColor && sequential;
       });
-
+      if (isEmptyPileAvailable && potentialCards[i].face === "K") {
+        return false;
+      }
       if (foundationsMovePossible) {
         return false;
       }

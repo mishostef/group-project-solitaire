@@ -1,11 +1,9 @@
 import { app } from "./app";
 import { BaseCardContainer } from "./cardContainers/BaseCardContainer";
 import { Card } from "./Card";
-import { CardContainer } from "./cardContainers/CardContainer";
 import { gsap } from "gsap";
 import * as PIXI from "pixi.js";
 import { CARD_SCALE } from "./constants";
-import { Container, FederatedPointerEvent } from "pixi.js";
 import { StockCardContainer } from "./cardContainers/StockCardContainer";
 
 export class StockZone1 extends BaseCardContainer {
@@ -13,7 +11,6 @@ export class StockZone1 extends BaseCardContainer {
   stockCard: PIXI.Sprite;
   private cb: Function;
   waste: StockCardContainer;
-  //public decrement = 0;
   private canClick = true;
 
   constructor(cb: Function) {
@@ -79,10 +76,6 @@ export class StockZone1 extends BaseCardContainer {
           console.log("this.waste", this.waste);
           if (this.staticContainer.children.length > 0) {
             const next = this.staticContainer.children[0] as Card;
-            if (this.waste.cards.length) {
-              next.zIndex +=
-                this.waste.cards[this.waste.cards.length - 1].zIndex;
-            }
             if (!this.waste.cards.includes(next)) {
               this.waste.addCards([next as Card]);
               this.waste.flip();
