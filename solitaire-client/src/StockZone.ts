@@ -21,9 +21,9 @@ export class StockZone {
   reverse = true;
   countCreateStockContainer = 0;
   flipCard;
-  dragging;
-  draggableLength;
-  currentCard;
+  //dragging;
+  //draggableLength;
+  selectedCard;
   index;
   isClicked = false;
 
@@ -46,16 +46,12 @@ export class StockZone {
     this.stockContainer.position.set(100, 100);
     app.stage.addChild(this.wasteContainer);
     this.wasteContainer.position.set(0, 0);
-    app.stage.addChild(this.draggableContainer);
-    this.draggableContainer.position.set(210, 100);
 
     this.stock.map((c) => {
       let card = createCard(c, 0, 0);
       this.stockContainer.addChild(card);
     });
 
-    console.log("stockFromServer", this.stock)
-    console.log("wasteFromServer", this.waste)
     this.getCardFromStock()
     
   }
@@ -68,9 +64,9 @@ export class StockZone {
 
       if (flipResponse.type === "card") {
         this.stock.pop();
-        this.currentCard = createCard(flipResponse.card, 100, 100);
-        this.stock.push(this.currentCard );
-        this.stockContainer.addChild(this.currentCard );
+        this.selectedCard = createCard(flipResponse.card, 100, 100);
+        this.stock.push(this.selectedCard );
+        this.stockContainer.addChild(this.selectedCard );
         
         this.moveToWaste();
       } else if (flipResponse.type === "reset") {
@@ -90,9 +86,7 @@ export class StockZone {
         this.emptyCard.position.set(210, 100);
         this.wasteContainer.addChild(this.emptyCard);
 
-        console.log("last", this.currentCard);
-
-        let lastCard = this.currentCard;
+        let lastCard = this.selectedCard;
         app.stage.addChild(lastCard);
         
       gsap.to(lastCard, {pixi: {x: 100, y: 100}, duration: 0.5 ,
@@ -100,9 +94,7 @@ export class StockZone {
 
       app.stage.removeChild(lastCard);
       })
-  
     })
-
   }
 
   async moveToWaste() {
@@ -110,39 +102,28 @@ export class StockZone {
     const duration = 0.5;
   
     const tl = gsap.timeline();
-    tl.to(this.currentCard, {
+    tl.to(this.selectedCard, {
       pixi: { x: 210, y: 100 },
       duration,
-      onStart: () => this.currentCard.showFace(0.5),
+      onStart: () => this.selectedCard.showFace(0.5),
     });
 
-    this.waste.push(this.currentCard); 
-    this.wasteContainer.addChild(this.currentCard);
+    this.waste.push(this.selectedCard); 
+    this.wasteContainer.addChild(this.selectedCard);
 
     this.stock.pop();
 
-    this.currentCard.interactive = true;
+    this.selectedCard.interactive = true;
   
     this.handleClickEvent();
 
   }
 
   private handleClickEvent() {
-        this.currentCard.on('pointertap', async () => {
-        
+        this.selectedCard.on('pointertap', async () => {
+     
           this.isClicked = true;
 
-          //this.wasteContainer.removeChild(this.currentCard);
-          //this.index = this.waste.length - 1;
-          console.log("waste INDEX", this.waste.length - 1)
-    
-          //this.waste.pop()
-          this.currentCard.position.set(0, 0);
-          this.draggableContainer.zIndex = 25;
-          this.draggableContainer.addChild(this.currentCard);
-          this.draggableContainer.position.set(210, 100);
-
-        
       })
   }
 

@@ -42,23 +42,13 @@ export class BaseCardContainer {
   protected addEvents() {
     this.draggableContainer.interactive = true;
     this.staticContainer.interactive = true;
-   // this.draggableContainer.on("pointertap", this.handleMouseUp.bind(this));
-   // this.draggableContainer.on("mousedown", () => {
-      //this.dragging = true;
-   // });
-    // this.draggableContainer.on(
-    //   "globalmousemove",
-    //   this.handleMouseMove.bind(this)
-    // );
+
   }
 
   protected handleMouseUp(e) {
     this.dragging = false;
     if (this.draggableLength != 0) {
-      // this.draggableContainer.position.set(
-      //   this.staticContainer.x,
-      //   this.staticContainer.y
-      // );
+
       const x = this.cards.splice(
         this.cards.length - this.draggableLength,
         this.draggableLength
@@ -66,12 +56,7 @@ export class BaseCardContainer {
       this.addCards(x);
     }
   }
-  // private handleMouseMove(e) {
-  //   let [x, y] = [e.globalX, e.globalY];
-  //   if (this.dragging) {
-  //     this.draggableContainer.position.set(x, y);
-  //   }
-  // }
+
   public addCards(cards: Card[]) {
     for (let i = 0; i < cards.length; i++) {
       const card = cards[i];

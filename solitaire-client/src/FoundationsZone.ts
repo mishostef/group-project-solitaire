@@ -79,33 +79,59 @@ export class Foundations {
        container.interactive = true;
 
         container.on('pointertap', async () => {
-        let placeResponse;
+        //let placeResponse;
 
-        if (this.stockZone.draggableContainer.children.length === 1) {
+        if (this.stockZone.isClicked === true && this.piles.isClicked === false) {
 
-            placeResponse = await this.gameController.placeCard("stock", `${suit}`, this.stockZone.waste.length - 1);
+            const placeResponse = await this.gameController.placeCard("stock", `${suit}`, this.stockZone.waste.length - 1);
+
+            if (placeResponse === true) {
+                this.stockZone.selectedCard.position.set(0, 0);
+
+                container.addChild(this.stockZone.selectedCard)
+
+                this.stockZone.isClicked = false;
+              console.log("waste isClicked",  this.stockZone.isClicked)
+
+                this.stockZone.wasteContainer.removeChild(this.stockZone.selectedCard);
+                this.stockZone.waste.pop();
+              }
+    
+              if (placeResponse === false) {
+                  //this.stockZone.waste.push(this.stockZone.currentCard);
+                  this.stockZone.isClicked = false;
+              console.log("waste isClicked",  this.stockZone.isClicked)
+
+                
+                  //this.stockZone.wasteContainer.addChild(this.stockZone.currentCard);
+                 // this.stockZone.currentCard.position.set(210, 100);
+              }
         
-        } else {
+        } else if (this.piles.isClicked = true && this.stockZone.isClicked === false) {
 
-            placeResponse = await this.gameController.placeCard(this.piles.source, `${suit}`, this.piles.index);
+            const placeResponse = await this.gameController.placeCard(this.piles.source, `${suit}`, this.piles.index);
 
+            if (placeResponse === true) {
+
+                this.piles.allCardsArray[this.piles.columnNumber][this.piles.index].position.set(0, 0);
+                container.addChild(this.piles.allCardsArray[this.piles.columnNumber][this.piles.index])
+
+                this.piles.isClicked = false;
+                console.log("piles isClicked",  this.piles.isClicked)
+
+                this.piles.containers[this.piles.columnNumber].staticContainer.removeChild(this.piles.selectedCard);
+                this.piles.allCardsArray[this.piles.columnNumber][this.piles.index].pop();
+              }
+    
+              if (placeResponse === false) {
+                  //this.stockZone.waste.push(this.stockZone.currentCard);
+                  this.piles.isClicked = false;
+                 console.log("piles isClicked",  this.piles.isClicked)
+
+              }
         }
 
 
-          if (placeResponse === true) {
-            this.stockZone.draggableContainer.removeChild(this.stockZone.currentCard);
-            container.addChild(this.stockZone.currentCard)
-            this.stockZone.waste.pop();
-            this.stockZone.is.wasteContainer.removeChild(this.stockZone.currentCard);
-          }
-
-          if (placeResponse === false) {
-              //this.stockZone.waste.push(this.stockZone.currentCard);
- 
-              this.stockZone.wasteContainer.addChild(this.stockZone.currentCard);
-              this.stockZone.currentCard.position.set(210, 100);
-          }
-  
         })
 
     }

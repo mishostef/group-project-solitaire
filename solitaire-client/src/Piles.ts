@@ -15,13 +15,15 @@ export class Piles {
     source;
     index;
     isClicked = false;
+    card;
+    columnNumber;
+    allCardsArray = [];
 
    constructor(gameController, stockZone) {
     this.gameController = gameController;
     this.state = this.gameController.getState();
     this.pilesData = this.state.piles;
     this.stockZone = stockZone;
-    console.log("piles", this.pilesData)
     this.createPiles();
 
    } 
@@ -47,12 +49,13 @@ private createPiles() {
           cards[j].showFace(0);
         }
         columnCards.push(cards[j]);
-
+        
         if (j == cards.length - 1) {
-            this.addEventListenerOnCard(cards[j], i, j)
+          this.addEventListenerOnCard(cards[j], i, j)
         }
-
-    }
+        
+      }
+    this.allCardsArray.push(columnCards)
     this.containers[i].addCards(columnCards);
     }
   }
@@ -61,37 +64,39 @@ private addEventListenerOnCard(card: Card, columnNumber: number, index: number) 
         this.isClicked = true;
         card.interactive = true;
         card.on('pointertap', async() => {
+         
+          console.log("waste isClicked", this.stockZone.isClicked);
 
           if (this.stockZone.isClicked === true) {
 
           let placeResponse = await this.gameController.placeCard("stock", `pile${columnNumber}`, this.stockZone.waste.length - 1 )
          
             if (placeResponse ==  true) {
-              this.stockZone.draggableContainer.removeChild(this.stockZone.currentCard);
-              this.containers[columnNumber].addCards([this.stockZone.currentCard]);
+              this.stockZone.isClicked = false;
+             console.log("waste isClicked", this.stockZone.isClicked);
+
+              this.stockZone.wasteContainer.removeChild(this.stockZone.selectedCard);
+              this.containers[columnNumber].addCards([this.stockZone.selectedCard]);
               this.stockZone.waste.pop();
             }
 
             if (placeResponse == false) {
-              this.stockZone.draggableContainer.zIndex = this.stockZone.waste.length - 1;
-              //this.stockZone.waste.push(this.stockZone.currentCard)
-              //this.stockZone.wasteContainer.addChild(this.stockZone.currentCard);
-             // this.stockZone.currentCard.position.set(210, 100);
-              //this.stockZone.waste.push(this.stockZone.currentCard)
+              this.stockZone.isClicked = false;
+              console.log("waste isClicked", this.stockZone.isClicked);
+
             }
-          }
+          } else {
 
+              // card from piles is selected
+              this.isClicked = true;
+              this.source = `pile${columnNumber}`;
+              this.columnNumber = columnNumber;
+              this.index = index;
 
-          if ( this.stockZone.draggableContainer.children.length === 0) {
-            this.source = `pile${columnNumber}`;
-            this.index = index;
           }
 
         })    
 
-}
-
-
-
+  }
 
 }
