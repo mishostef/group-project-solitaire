@@ -20,7 +20,7 @@ export class StockZone1 extends BaseCardContainer {
     this.waste.X = 200;
     this.waste.Y = 100;
     this.cb = cb;
-    this.stockCard = card; 
+    this.stockCard = card;
     this.stockCard.interactive = true;
     this.stockCard.on("pointertap", () => this.createStockContainer());
   }
@@ -81,12 +81,13 @@ export class StockZone1 extends BaseCardContainer {
         this.waste.addCards([next as Card]);
         next.zIndex = this.waste.cards.length + 1;
         if (
-          this.waste.cards &&
+          this.waste.cards.length &&
           this.waste.cards[this.waste.cards.length - 1].zIndex >= next.zIndex
         ) {
           next.zIndex =
             this.waste.cards[this.waste.cards.length - 1].zIndex + 1;
         }
+        console.log("zzz", next.zIndex);
         this.waste.flip();
       }
       this.waste.staticContainer.sortChildren();

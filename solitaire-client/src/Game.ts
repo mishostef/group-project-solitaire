@@ -45,7 +45,10 @@ export class Game {
     this.stockZone = createStockZone(this.sendInfoToServer);
     this.stockZone.waste.cb = this.handleDragging.bind(this);
     Object.keys(foundationsMap).forEach((key, i) => {
-      this.foundations[i] = createCardContainer("CardContainer", Number(key));
+      this.foundations[i] = createCardContainer(
+        "StockCardContainer",
+        Number(key)
+      );
       this.foundations[i].X = -1 * Number(key);
       this.foundations[i].Y = 100;
     });
