@@ -3,8 +3,14 @@ import { IState, IStock, IMoves, IFoundations } from "./interfaces";
 import * as PIXI from "pixi.js";
 import { Card } from "./Card";
 import { cardMap, foundationsMap, Suits } from "./constants";
+import { gsap } from "gsap";
 import { StockZone1 } from "./StockZone1";
-import { checkLoseCondition, getSource, getTarget } from "./utils";
+import {
+  checkLoseCondition,
+  getSource,
+  getTarget,
+  randomIntFromInterval,
+} from "./utils";
 import {
   createContainer,
   createStock,
@@ -52,7 +58,6 @@ export class Game {
       this.foundations[i].X = -1 * Number(key);
       this.foundations[i].Y = 100;
     });
-
     app.ticker.add(this.update.bind(this));
   }
 
@@ -63,7 +68,6 @@ export class Game {
   }
 
   private processFoundations(foundations: IFoundations) {
-    console.log("ffounnd:", foundations);
     const keys = Object.values(foundationsMap);
     Object.keys(foundations).forEach((key) => {
       const index = keys.indexOf(key);
@@ -79,6 +83,7 @@ export class Game {
   private processWaste(state: IState) {
     const wasteCards = state.waste.cards.map((c) => this.createCard(c));
     this.stockZone.addCards(wasteCards);
+    //this.stockZone.shuffle();
     console.log("stockZone", this.stockZone);
   }
 

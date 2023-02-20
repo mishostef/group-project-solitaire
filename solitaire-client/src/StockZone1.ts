@@ -4,6 +4,7 @@ import { gsap } from "gsap";
 import * as PIXI from "pixi.js";
 import { StockCardContainer } from "./cardContainers/StockCardContainer";
 import { createCardContainer } from "./Game";
+import {randomIntFromInterval } from "./utils";
 
 export class StockZone1 extends BaseCardContainer {
   countCreateStockContainer = 1;
@@ -73,20 +74,35 @@ export class StockZone1 extends BaseCardContainer {
 
   onComplete() {
     this.canClick = true;
-      const next = this.staticContainer.children[0] as Card;
-      if (
-        this.waste.cards.length &&
-        this.waste.cards[this.waste.cards.length - 1].zIndex >= next.zIndex
-      ) {
-        next.zIndex = this.waste.cards[this.waste.cards.length - 1].zIndex + 1;
-      } else {
-        next.zIndex = this.waste.cards.length + 1;
-      }
-      if (!this.waste.cards.includes(next)) {
-        this.waste.addCards([next as Card]);
-        next.zIndex = this.waste.cards.length + 1;
-        this.waste.flip();
-      }
-      this.waste.staticContainer.sortChildren();
+    const next = this.staticContainer.children[0] as Card;
+    if (
+      this.waste.cards.length &&
+      this.waste.cards[this.waste.cards.length - 1].zIndex >= next.zIndex
+    ) {
+      next.zIndex = this.waste.cards[this.waste.cards.length - 1].zIndex + 1;
+    } else {
+      next.zIndex = this.waste.cards.length + 1;
+    }
+    if (!this.waste.cards.includes(next)) {
+      this.waste.addCards([next as Card]);
+      next.zIndex = this.waste.cards.length + 1;
+      this.waste.flip();
+    }
+    this.waste.staticContainer.sortChildren();
+  }
+
+  public shuffle() {
+    const dividing = randomIntFromInterval(1, this.cards.length);
+    const right = this.cards.filter((c, i) => i >= dividing);
+    const tl = gsap.timeline();
+    for (let i = 0; i < right.length; i++) {
+      const r = right[right.length - 1 - i];
+      tl.to(r, {
+        pixi: { x: "+=100" },
+        duration: 0.1,
+      });
+
+      tl.to(r, { pixi: { skewY: "-=180", x: "-=100" }, duration: 0.1 });
+    }
   }
 }

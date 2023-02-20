@@ -8,6 +8,7 @@ import {
   cardMap,
   cardsConstants,
   cardsFaces,
+  CARD_SCALE,
   foundationsMap,
   Suits,
 } from "./constants";
@@ -101,4 +102,8 @@ export function getSource(starting: CardContainer) {
     pileIndex = "stock";
   }
   return pileIndex;
+}
+
+export function randomIntFromInterval(min, max) { // min and max included 
+  return Math.floor(Math.random() * (max - min + 1) + min)
 }
