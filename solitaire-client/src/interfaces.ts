@@ -14,7 +14,7 @@ export interface IState {
   piles: { cards: ICard[] };
   stock: { cards: IStock[] };
   waste: { cards: ICard[] };
-  foundations: { cards: [] };
+  foundations: IFoundations;
 }
 
 export interface IMoves {
@@ -23,8 +23,14 @@ export interface IMoves {
 export interface IPileMove {
   flip: boolean;
   place: boolean;
-  take: number[]; 
+  take: number[];
 }
 
+export interface IFoundations {
+  clubs: { cards: ICard[] };
+  diamonds: { cards: ICard[] };
+  hearts: { cards: ICard[] };
+  spades: { cards: ICard[] };
+}
 
-export type ZoneType = "stock" | "waste" | "foundations" | "piles"
+export type ZoneType = "stock" | "waste" | "foundations" | "piles";

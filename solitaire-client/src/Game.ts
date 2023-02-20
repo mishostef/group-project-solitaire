@@ -1,5 +1,5 @@
 import { CardContainer } from "./cardContainers/CardContainer";
-import { IState, IStock, IMoves } from "./interfaces";
+import { IState, IStock, IMoves, IFoundations } from "./interfaces";
 import * as PIXI from "pixi.js";
 import { Card } from "./Card";
 import { cardMap, foundationsMap, Suits } from "./constants";
@@ -59,6 +59,21 @@ export class Game {
   public processState(state: IState) {
     this.processPiles(state);
     state.waste.cards.length && this.processWaste(state);
+    this.processFoundations(state.foundations);
+  }
+
+  private processFoundations(foundations: IFoundations) {
+    console.log("ffounnd:", foundations);
+    const keys = Object.values(foundationsMap);
+    Object.keys(foundations).forEach((key) => {
+      const index = keys.indexOf(key);
+      const cardInfo = foundations[key].cards;
+      if (cardInfo.length > 0) {
+        const cards = cardInfo.map(this.createCard);
+        cards.forEach((x) => x.showFace());
+        this.foundations[index].addCards(cards);
+      }
+    });
   }
 
   private processWaste(state: IState) {
