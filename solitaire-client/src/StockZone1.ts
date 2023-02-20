@@ -73,8 +73,6 @@ export class StockZone1 extends BaseCardContainer {
 
   onComplete() {
     this.canClick = true;
-    console.log("this.staticContainer:", this.staticContainer);
-    console.log("this.waste", this.waste);
       const next = this.staticContainer.children[0] as Card;
       if (
         this.waste.cards.length &&
@@ -87,7 +85,6 @@ export class StockZone1 extends BaseCardContainer {
       if (!this.waste.cards.includes(next)) {
         this.waste.addCards([next as Card]);
         next.zIndex = this.waste.cards.length + 1;
-        console.log("zzz", next.zIndex);
         this.waste.flip();
       }
       this.waste.staticContainer.sortChildren();

@@ -36,15 +36,6 @@ export function createDeckAssets() {
 
   return map;
 }
-export function createInteractiveBg() {
-  const bg = new PIXI.Graphics();
-  bg.beginFill(0);
-  bg.drawRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-  bg.alpha = 0;
-  bg.endFill();
-  bg.interactive = true;
-  return bg;
-}
 
 export function isDifferentColor(currentCard: Card, previousCard: Card) {
   const black = [Suits.clubs, Suits.spades];
