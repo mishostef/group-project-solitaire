@@ -4,7 +4,7 @@ import { gsap } from "gsap";
 import * as PIXI from "pixi.js";
 import { StockCardContainer } from "./cardContainers/StockCardContainer";
 import { createCardContainer } from "./Game";
-import {randomIntFromInterval } from "./utils";
+import { randomIntFromInterval } from "./utils";
 
 export class StockZone1 extends BaseCardContainer {
   countCreateStockContainer = 1;

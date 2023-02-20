@@ -21,7 +21,6 @@ PixiPlugin.registerPIXI(PIXI);
 
 export const flipCardSound = new Audio("/assets/flipCard.mp3");
 
-
 export function createDeckAssets() {
   const map = {};
   const x = 47;
@@ -51,43 +50,79 @@ export function checkLoseCondition(
   piles: CardContainer[],
   foundations: CardContainer[]
 ) {
-  const foundationsLastCards = foundations
-    .map((f) => f.cards[f.cards.length - 1])
-    .filter((x) => x !== undefined);
-  const pilesLastCards = piles
-    .map((p) => p.cards[p.cards.length - 1])
-    .filter((x) => x !== undefined);
+  const foundationsLastCards = getFoundationLastCards(foundations);
+  const pilesLastCards = getPilesLastCards(piles);
   const isEmptyPileAvailable = piles.some((p) => p.cards.length == 0);
 
   for (let i = 0; i < potentialCards.length; i++) {
-    const foundationsMovePossible = foundationsLastCards.some((flc) => {
-      const sameColor = !isDifferentColor(potentialCards[i], flc);
-      const sequential =
-        cardsFaces[potentialCards[i].face] - cardsFaces[flc.face] === 1;
-      return sameColor && sequential;
-    });
+    const foundationsMovePossible = isFoundationsMovePossible(
+      foundationsLastCards,
+      potentialCards,
+      i
+    );
     if (isEmptyPileAvailable) {
-      const pilesContainK = piles.some(
-        (pile) =>
-          pile.rowNumber > 0 &&
-          pile.cards.some((card,i) => card.face && card.face == "K" && i!==0)
-      );
+      const pilesContainK = getPilesContainingK(piles);
       if (potentialCards[i].face === "K" || pilesContainK) return false;
     }
     if (foundationsMovePossible) {
       return false;
     }
-    const pileMovePossible = pilesLastCards.some((plc) => {
-      const sequential =
-        cardsFaces[plc.face] - cardsFaces[potentialCards[i].face] === 1;
-      const differentColor = isDifferentColor(plc, potentialCards[i]);
-      return sequential && differentColor;
-    });
+    const pileMovePossible = isPileMovePossible(
+      pilesLastCards,
+      potentialCards,
+      i
+    );
     if (pileMovePossible) {
       return false;
     }
   }
   return true;
+}
+
+function getPilesContainingK(piles: CardContainer[]) {
+  return piles.some(
+    (pile) =>
+      pile.rowNumber > 0 &&
+      pile.cards.some((card, i) => card.face && card.face == "K" && i !== 0)
+  );
+}
+
+function isPileMovePossible(
+  pilesLastCards: Card[],
+  potentialCards: Card[],
+  i: number
+) {
+  return pilesLastCards.some((plc) => {
+    const sequential =
+      cardsFaces[plc.face] - cardsFaces[potentialCards[i].face] === 1;
+    const differentColor = isDifferentColor(plc, potentialCards[i]);
+    return sequential && differentColor;
+  });
+}
+
+function isFoundationsMovePossible(
+  foundationsLastCards: Card[],
+  potentialCards: Card[],
+  i: number
+) {
+  return foundationsLastCards.some((flc) => {
+    const sameColor = !isDifferentColor(potentialCards[i], flc);
+    const sequential =
+      cardsFaces[potentialCards[i].face] - cardsFaces[flc.face] === 1;
+    return sameColor && sequential;
+  });
+}
+
+function getPilesLastCards(piles: CardContainer[]) {
+  return piles
+    .map((p) => p.cards[p.cards.length - 1])
+    .filter((x) => x !== undefined);
+}
+
+function getFoundationLastCards(foundations: CardContainer[]) {
+  return foundations
+    .map((f) => f.cards[f.cards.length - 1])
+    .filter((x) => x !== undefined);
 }
 
 export function getTarget(target: CardContainer) {
@@ -104,6 +139,7 @@ export function getSource(starting: CardContainer) {
   return pileIndex;
 }
 
-export function randomIntFromInterval(min, max) { // min and max included 
-  return Math.floor(Math.random() * (max - min + 1) + min)
+export function randomIntFromInterval(min, max) {
+  // min and max included
+  return Math.floor(Math.random() * (max - min + 1) + min);
 }
