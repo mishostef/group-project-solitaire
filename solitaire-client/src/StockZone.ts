@@ -124,6 +124,9 @@ export class StockZone {
      
           this.isClicked = true;
 
+          this.selectedCard.front.tint = 0x00FFFF;
+          gsap.to( this.selectedCard.front, {  tint: 0xFFFFFF, duration: 0.05 })
+
       })
   }
 

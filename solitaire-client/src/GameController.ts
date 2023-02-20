@@ -110,8 +110,6 @@ export class GameController {
 
     }
 
-
-
     private getFlipResponse(data): FlipResponse {
         // todo: empty and reset stock
 
@@ -155,6 +153,20 @@ export class GameController {
         await this.openConnection();
         console.log("Connection open!!!!!");
         this.connection.send("startGame");
+        console.log("newGame sent to server!!!!!");
+        
+        return new Promise(function(resolve) {
+            console.log("inside promise!!!!!");
+            this.statePromiseResolve = resolve;
+
+        }.bind(this));
+    }
+
+    async restartGame() {
+        console.log("START NEW GAME!!!!!");
+        await this.openConnection();
+        console.log("Connection open!!!!!");
+        this.connection.send("newGame");
         console.log("newGame sent to server!!!!!");
         
         return new Promise(function(resolve) {

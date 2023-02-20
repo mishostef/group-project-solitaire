@@ -1,10 +1,15 @@
-import { GameController } from './GameController';
+
+import { app } from './app';
 import * as PIXI from "pixi.js";
 import { createCard } from './utils';
 import { CardContainer } from './CardContainer';
 import { Card } from './Card';
-import { gsap } from "gsap";
+import { gsap} from "gsap";
 import { loadStockEmptyCard } from './cardsTexture';
+import { PixiPlugin } from "gsap/PixiPlugin.js";
+
+gsap.registerPlugin(PixiPlugin);
+PixiPlugin.registerPIXI(PIXI);
 
 export class Piles {
     gameController;
@@ -64,17 +69,17 @@ private addEventListenerOnCard(card: Card, columnNumber: number, index: number) 
         this.isClicked = true;
         card.interactive = true;
         card.on('pointertap', async() => {
-         
+          
           console.log("waste isClicked", this.stockZone.isClicked);
-
+          
           if (this.stockZone.isClicked === true) {
-
-          let placeResponse = await this.gameController.placeCard("stock", `pile${columnNumber}`, this.stockZone.waste.length - 1 )
-         
+            
+            let placeResponse = await this.gameController.placeCard("stock", `pile${columnNumber}`, this.stockZone.waste.length - 1 )
+            
             if (placeResponse ==  true) {
               this.stockZone.isClicked = false;
-             console.log("waste isClicked", this.stockZone.isClicked);
-
+              console.log("waste isClicked", this.stockZone.isClicked);
+              
               this.stockZone.wasteContainer.removeChild(this.stockZone.selectedCard);
               this.containers[columnNumber].addCards([this.stockZone.selectedCard]);
               this.stockZone.waste.pop();
@@ -83,10 +88,15 @@ private addEventListenerOnCard(card: Card, columnNumber: number, index: number) 
             if (placeResponse == false) {
               this.stockZone.isClicked = false;
               console.log("waste isClicked", this.stockZone.isClicked);
-
+              
             }
+            
           } else {
 
+            card.front.tint = 0x00FFFF;
+            gsap.to(card.front, {  tint: 0xFFFFFF, duration: 0.05 })
+           //gsap.to(card.front, {  colorProps: { tint: 0xFFFFFF}, duration: 1 })
+            
               // card from piles is selected
               this.isClicked = true;
               this.source = `pile${columnNumber}`;
@@ -94,8 +104,21 @@ private addEventListenerOnCard(card: Card, columnNumber: number, index: number) 
               this.index = index;
 
           }
-
         })    
+  }
+
+  async flipCard(columnNumber: number, index: number) {
+    let flipResponse = await this.gameController.flip(`pile${columnNumber}`, index - 1);
+
+    let card = createCard(flipResponse.card, 0, 0);
+    card.showFace();
+
+    this.containers[columnNumber].addCards([card]);
+    this.allCardsArray[columnNumber].push(card);
+
+    
+   // app.stage.addChild(card)
+  
 
   }
 

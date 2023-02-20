@@ -1,17 +1,10 @@
 import { GameController } from './GameController';
 import { Connection } from "./Connection";
-import { engine } from "./engine";
 import * as PIXI from "pixi.js";
 import { gsap } from "gsap";
 import { PixiPlugin } from "gsap/PixiPlugin.js";
-import { clearScreen, InteractiveBackground } from "./utils";
-
-import { CANVAS_WIDTH, CARD_HEIGHT, CARD_SCALE, CARD_WIDTH } from "./constants";
 import { Foundations } from "./FoundationsZone";
-import { Card } from "./Card";
-import { Suits } from "./constants";
 import { StockZone } from "./StockZone";
-import src from "gsap/src";
 import { Piles } from './Piles';
 
 gsap.registerPlugin(PixiPlugin);
@@ -67,7 +60,6 @@ function start() {
       gameController.setState(state)
       
       showBoard();
-      
     
    // connection.send("startGame");
   });
@@ -77,10 +69,13 @@ function start() {
     showInit();
   });
 
-  // const diamondsFoundation = new Foundations(Suits.diamonds);
-  // const clubFoundation = new Foundations(Suits.clubs);
-  // const heartsFoundation = new Foundations(Suits.hearts);
-  // const spadesFoundation = new Foundations(Suits.spades);
+  document.getElementById('restart').addEventListener('click', () => {
+    const choice = confirm('Are you sure?');
+    if (choice) {
+        gameController.restartGame();
+    }
+});
+
 
   function showBoard() {
     initSection.style.display = "none";

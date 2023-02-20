@@ -81,7 +81,7 @@ export class Foundations {
         container.on('pointertap', async () => {
         //let placeResponse;
 
-        if (this.stockZone.isClicked === true && this.piles.isClicked === false) {
+        if (this.stockZone.isClicked === true ) {
 
             const placeResponse = await this.gameController.placeCard("stock", `${suit}`, this.stockZone.waste.length - 1);
 
@@ -95,6 +95,8 @@ export class Foundations {
 
                 this.stockZone.wasteContainer.removeChild(this.stockZone.selectedCard);
                 this.stockZone.waste.pop();
+
+                this.stockZone.selectedCard = null;
               }
     
               if (placeResponse === false) {
@@ -107,7 +109,7 @@ export class Foundations {
                  // this.stockZone.currentCard.position.set(210, 100);
               }
         
-        } else if (this.piles.isClicked = true && this.stockZone.isClicked === false) {
+        } else if (this.piles.isClicked = true) {
 
             const placeResponse = await this.gameController.placeCard(this.piles.source, `${suit}`, this.piles.index);
 
@@ -120,7 +122,10 @@ export class Foundations {
                 console.log("piles isClicked",  this.piles.isClicked)
 
                 this.piles.containers[this.piles.columnNumber].staticContainer.removeChild(this.piles.selectedCard);
-                this.piles.allCardsArray[this.piles.columnNumber][this.piles.index].pop();
+                app.stage.removeChild(this.piles.selectedCard);
+                this.piles.allCardsArray[this.piles.columnNumber].pop();
+
+                this.piles.flipCard(this.piles.columnNumber, this.piles.index - 1);
               }
     
               if (placeResponse === false) {
