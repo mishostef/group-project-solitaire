@@ -78,7 +78,7 @@ export function checkLoseCondition(
       const pilesContainK = piles.some(
         (pile) =>
           pile.rowNumber > 1 &&
-          pile.cards.some((card) => card.face && card.face == "K")
+          pile.cards.some((card,i) => card.face && card.face == "K" && i!==0)
       );
       if (potentialCards[i].face === "K" || pilesContainK) return false;
     }

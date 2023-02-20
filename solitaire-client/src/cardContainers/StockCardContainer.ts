@@ -11,7 +11,6 @@ export class StockCardContainer extends CardContainer {
   public addCards(cards: Card[]) {
     for (let i = 0; i < cards.length; i++) {
       const card = cards[i];
-      console.log("card.zIndex", card.zIndex);
       this.cards.push(card);
       this.staticContainer.addChild(card);
       card.position.set(0, 0);
