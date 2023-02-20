@@ -140,7 +140,6 @@ export class Game {
     if (this.isInSockZone()) {
       this.stockZone.addCards([card]);
       this.stockZone.moveCardsToWaste();
-      // this.stockZone.waste.staticContainer.sortChildren();
     } else if (
       this.starting.rowNumber !== 0 &&
       this.starting.staticContainer.children.length > 0
@@ -154,9 +153,6 @@ export class Game {
       this.stockZone.moveCardsToWaste();
     }
     this.stockZone.waste.staticContainer.sortChildren();
-    if (this.data.faceUp) {
-      card.showFace(0);
-    }
   }
 
   private isInSockZone() {
