@@ -81,9 +81,9 @@ export class BaseCardContainer {
       card.position.set(0, 0);
     }
   }
-  public removeCardFromContainer(card: Card) {
-    this.cards.pop();
-    this.staticContainer.removeChild(card);
+  public removeLastCardFromContainer() {
+    const lastCard = this.cards.pop();
+    this.staticContainer.removeChild(lastCard);
   }
 
   public merge(target: BaseCardContainer) {
@@ -128,10 +128,10 @@ export class BaseCardContainer {
     this.draggableContainer.y = newY;
   }
 
-  flip() {
+  flip(cb?: Function) {
     const lastCard = this.staticContainer.children[
       this.staticContainer.children.length - 1
     ] as Card;
-    lastCard.showFace();
+    lastCard.showFace(0.3, cb);
   }
 }

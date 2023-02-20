@@ -77,7 +77,7 @@ export function checkLoseCondition(
     if (isEmptyPileAvailable) {
       const pilesContainK = piles.some(
         (pile) =>
-          pile.rowNumber > 1 &&
+          pile.rowNumber > 0 &&
           pile.cards.some((card,i) => card.face && card.face == "K" && i!==0)
       );
       if (potentialCards[i].face === "K" || pilesContainK) return false;

@@ -75,7 +75,6 @@ export class StockZone1 extends BaseCardContainer {
     this.canClick = true;
     console.log("this.staticContainer:", this.staticContainer);
     console.log("this.waste", this.waste);
-  //  if (this.staticContainer.children.length > 0) {
       const next = this.staticContainer.children[0] as Card;
       if (
         this.waste.cards.length &&
@@ -92,6 +91,5 @@ export class StockZone1 extends BaseCardContainer {
         this.waste.flip();
       }
       this.waste.staticContainer.sortChildren();
-   // }
   }
 }

@@ -140,22 +140,20 @@ export class Game {
     if (this.isInSockZone()) {
       this.stockZone.addCards([card]);
       this.stockZone.moveCardsToWaste();
-      this.stockZone.waste.staticContainer.sortChildren();
+      // this.stockZone.waste.staticContainer.sortChildren();
     } else if (
       this.starting.rowNumber !== 0 &&
       this.starting.staticContainer.children.length > 0
     ) {
-      const lastel = this.starting.cards.pop();
-      this.starting.staticContainer.removeChild(lastel);
+      this.starting.removeLastCardFromContainer();
       this.starting.addCards([card]);
-      this.starting.flip(); ////
+      this.starting.flip();
       this.starting = null;
     } else {
       this.stockZone.addCards([card]);
       this.stockZone.moveCardsToWaste();
-      this.stockZone.waste.staticContainer.sortChildren();
     }
-
+    this.stockZone.waste.staticContainer.sortChildren();
     if (this.data.faceUp) {
       card.showFace(0);
     }
