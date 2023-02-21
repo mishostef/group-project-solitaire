@@ -22,7 +22,7 @@ export enum Suits {
   null,
 }
 
-export const cardsConstants = [
+export const cardsFaces = [
   "A",
   "2",
   "3",
@@ -71,19 +71,4 @@ export const cardMap = {
   14: null,
 };
 
-export const cardsFaces = [
-  "A",
-  "2",
-  "3",
-  "4",
-  "5",
-  "6",
-  "7",
-  "8",
-  "9",
-  "10",
-  "J",
-  "Q",
-  "K",
-  null,
-];
+

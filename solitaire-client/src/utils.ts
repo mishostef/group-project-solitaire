@@ -6,7 +6,6 @@ import {
   CANVAS_HEIGHT,
   CANVAS_WIDTH,
   cardMap,
-  cardsConstants,
   cardsFaces,
   CARD_SCALE,
   foundationsMap,
@@ -28,7 +27,7 @@ export function createDeckAssets() {
   let row = 50;
   ["clubs", "hearts", "spades", "diamonds"].forEach((suit) => {
     sliceDeck([], x, y, row).forEach((asset, i) => {
-      map[`${cardsConstants[i]}${suit}`] = asset;
+      map[`${cardsFaces[i]}${suit}`] = asset;
     });
     y += 660;
     row += 150;
