@@ -41,6 +41,7 @@ export class StockZone1 extends BaseCardContainer {
   returnCardsToStock() {
     this.staticContainer.removeChildren();
     this.cards = [];
+    this.staticContainer.removeChildren();
     this.waste.cards.forEach((card, index) => {
       const tl = gsap.timeline();
       tl.fromTo(
@@ -49,7 +50,7 @@ export class StockZone1 extends BaseCardContainer {
           pixi: { x: 100 },
         },
         { pixi: { x: -100 }, duration: 2, onStart: () => card.showBack() }
-      );
+      ).then(() => this.waste.staticContainer.addChild(card));
     });
     this.waste.cards = [];
   }
@@ -77,12 +78,19 @@ export class StockZone1 extends BaseCardContainer {
     if (
       !this.waste.cards.some((c) => c.suit == card.suit && c.face == card.face)
     ) {
-      card.zIndex = Math.max(
-        ...this.waste.staticContainer.children.map((x) => x.zIndex || 1)
-      );
+      card.zIndex =
+        Math.max(
+          ...this.waste.staticContainer.children.map((x) => {
+            if (x.zIndex > 0) {
+              return x.zIndex;
+            } else {
+              return 1;
+            }
+          })
+        ) + 1;
       this.waste.addCards([card as Card]);
       this.waste.staticContainer.sortChildren();
-      this.waste.flip(() => this.waste.staticContainer.sortChildren());
+      this.waste.flip();
     }
   }
 
