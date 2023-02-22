@@ -57,8 +57,9 @@ export class StockZone1 extends BaseCardContainer {
   public moveCardsToWaste() {
     let index = 0;
     this.canClick = false;
-    while (index < this.staticContainer.children.length) {
-      const card = this.staticContainer.children[index] as Card;
+    while (this.cards.length) {
+      const card = this.cards.shift();
+      card.showBack(0);
       const duration = 0.5;
 
       const tl = gsap.timeline();
@@ -66,29 +67,23 @@ export class StockZone1 extends BaseCardContainer {
         pixi: { x: "+=100" },
         duration,
         onStart: () => card.showFace(0.5),
-        onComplete: this.onComplete.bind(this),
+        onComplete: this.onComplete.bind(this, card),
       });
-      index++;
     }
   }
 
-  onComplete() {
+  onComplete(card) {
     this.canClick = true;
-    const next = this.staticContainer.children[0] as Card;
     if (
-      this.waste.cards.length &&
-      this.waste.cards[this.waste.cards.length - 1].zIndex >= next.zIndex
+      !this.waste.cards.some((c) => c.suit == card.suit && c.face == card.face)
     ) {
-      next.zIndex = this.waste.cards[this.waste.cards.length - 1].zIndex + 1;
-    } else {
-      next.zIndex = this.waste.cards.length + 1;
+      card.zIndex = Math.max(
+        ...this.waste.staticContainer.children.map((x) => x.zIndex || 1)
+      );
+      this.waste.addCards([card as Card]);
+      this.waste.staticContainer.sortChildren();
+      this.waste.flip(() => this.waste.staticContainer.sortChildren());
     }
-    if (!this.waste.cards.includes(next)) {
-      this.waste.addCards([next as Card]);
-      next.zIndex = this.waste.cards.length + 1;
-      this.waste.flip();
-    }
-    this.waste.staticContainer.sortChildren();
   }
 
   public shuffle() {
